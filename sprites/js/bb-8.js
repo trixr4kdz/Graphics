@@ -1,6 +1,3 @@
-// Yes, we can use jQuery here, but avoid it just in case you
-// really don't want to use it.  We do still keep things away
-// from the global namespace.
 $(function () {
     // Note there is not SpriteLibrary (yet)
     // window.SpriteLibrary = window.SpriteLibrary || { };
@@ -58,20 +55,17 @@ $(function () {
         renderingContext.fillStyle = renderingContext.strokeStyle;
         renderingContext.beginPath();
         renderingContext.arc(xBody, yBody, headRadius, 0, Math.PI / 1.5, false);
-        renderingContext.rotate(Math.PI);
-        // renderingContext.translate(-1,0);
+        renderingContext.translate(-1,0);
         renderingContext.stroke();
         renderingContext.fill();
-
-        // renderingContext.rotate(Math.PI / 5);
 
         console.log("xBody " + xBody);
         console.log("yBody " + yBody);
 
-        // window.requestAnimationFrame(render);
+        window.requestAnimationFrame(render);
     }
 
-    // window.requestAnimationFrame(render);
+    window.requestAnimationFrame(render);
     render();
 
 }(jQuery));
