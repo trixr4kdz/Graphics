@@ -2,7 +2,7 @@ $(function () {
 	
 	window.Sprites = window.Sprites || { };
 	
-	Sprites.kyloRen = function () {
+	Sprites.tieFighter = function () {
 
 
 
