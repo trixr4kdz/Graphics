@@ -18,10 +18,11 @@
             var canvas = $("canvas");
             var drawScene = function () {
                 Sprites.lightsaber();
-                
-                window.requestAnimationFrame(drawScene);
+
+                // window.requestAnimationFrame(drawScene);
             }
-            window.requestAnimationFrame(drawScene);
+            drawScene();
+            // window.requestAnimationFrame(drawScene);
         }());
       
     </script>
