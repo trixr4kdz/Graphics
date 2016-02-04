@@ -8,7 +8,8 @@ $(function () {
 		kyloLoaded = true;
 	}, false);
 	kyloRenImg.src = "images/kylo-ren.jpg";
-	kyloRenImg.width()
+	kyloRenImg.style.width = "100px";
+	kyloRenImg.style.height = "100px";
 
 	Sprites.kyloRen = function () {
 		// var canvas = document.getElementById("canvas");

@@ -7,10 +7,14 @@ $(function () {
         // var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
 
-        var radialGradient = ctx.createRadialGradient(500, 250, 40, 250, 250, 400);
+        var bodyGradient = ctx.createRadialGradient(500, 250, 40, 250, 250, 400);
+        var headGradient = ctx.createRadialGradient(500, 200, 40, 300, 100, 450)
 
-        radialGradient.addColorStop(0, "white");
-        radialGradient.addColorStop(1, "gray");
+        bodyGradient.addColorStop(0, "white");
+        bodyGradient.addColorStop(1, "gray");
+
+        headGradient.addColorStop(0, "white");
+        headGradient.addColorStop(1, "gray");
 
         var data = {};
 
@@ -26,58 +30,31 @@ $(function () {
             var centerCircleRadius = headRadius * 0.75;
             var bbOrange = "rgb(255, 120, 0)";
             
-            ctx.fillStyle = radialGradient;
+            ctx.fillStyle = bodyGradient;
             ctx.beginPath();
             ctx.arc(xBody, yBody, bodyRadius, 0, Math.PI * 2, true);
             ctx.fill();
             ctx.closePath();
 
-            ctx.beginPath();
-            ctx.moveTo(xBody , yBody + (centerCircleRadius * 2 * 0.8));
-            ctx.lineTo(xBody, yBody - (centerCircleRadius * 2 * 0.8));
-            ctx.stroke();
+            drawCenterCross(ctx, xBody, yBody + (centerCircleRadius * 2 * 0.8), xBody, yBody - (centerCircleRadius * 2 * 0.8))
+            drawCenterCross(ctx, xBody - centerCircleRadius * 2 * 0.8, yBody, xBody + centerCircleRadius * 2 * 0.8, yBody);
 
-            ctx.beginPath();
-            ctx.moveTo(xBody - centerCircleRadius * 2 * 0.8, yBody);
-            ctx.lineTo(xBody + centerCircleRadius * 2 * 0.8, yBody);
-            ctx.stroke();
+            // ctx.beginPath();
+            // ctx.fillRect();
 
-            ctx.fillStyle = "gray";
+            ctx.fillStyle = headGradient;
             ctx.beginPath();
             ctx.save();
             ctx.scale(0.8, 1);
             ctx.arc(xBody * 5 / 4, (yBody - headOffset - 5), headRadius, 0, Math.PI, true);
             ctx.closePath();
             ctx.fill();
-            ctx.stroke();
             ctx.restore();
 
-            ctx.beginPath();
-            ctx.arc(xBody, yBody - headOffset - 45, 15, 0, 2 * Math.PI, true);
-            ctx.fillStyle = "black";
-            ctx.fill();
-
-            ctx.beginPath();
-            ctx.arc(xBody + 20, yBody - headOffset - 25, 5, 0, 2 * Math.PI, true);
-            ctx.fillStyle = "black";
-            ctx.fill();
-
-            ctx.strokeStyle = "black";
-            ctx.fillStyle = bbOrange;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.arc(xBody, yBody, headRadius * .80, 0, Math.PI * 2, true);
-            // ctx.translate(-0.5,0);
-            ctx.fill();
-            ctx.stroke();
-
-            ctx.strokeStyle = "black";
-            ctx.fillStyle = "white";
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.arc(xBody, yBody, headRadius / 1.75, 0, Math.PI * 2, true);
-            ctx.fill();
-            ctx.stroke();
+            drawInnerCircles(ctx, "black", 15, xBody, yBody - headOffset - 45);
+            drawInnerCircles(ctx, "black", 5, xBody + 20, yBody - headOffset - 25);
+            drawInnerCircles(ctx, bbOrange, headRadius * .80, xBody, yBody);
+            drawInnerCircles(ctx, "white", headRadius / 1.75, xBody, yBody);
 
             // ctx.fillStyle = bbOrange;
             // ctx.beginPath();
@@ -85,6 +62,8 @@ $(function () {
 
             ctx.fillStyle = bbOrange;
 
+            // parameterize this
+            // x = xBody, y = yBody, xOffset, yOffset 
             ctx.beginPath();
             ctx.moveTo(xBody + bodyRadius * 0.8, yBody + bodyRadius * .6);
             ctx.lineTo(xBody + bodyRadius * 0.8, yBody - bodyRadius * 0.6);
@@ -131,12 +110,27 @@ $(function () {
         render();
     }
 
-    // var drawSideCircles = function (xBody, yBody, scale, offset, bodyRadius) {
+    var drawInnerCircles = function (ctx, fillStyle, radius, x, y) {
+        ctx.fillStyle = fillStyle;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2, true);
+        ctx.fill();
+        ctx.stroke();
+    }
+
+    var drawCenterCross = function (ctx, x0, y0, x1, y1) {
+        ctx.beginPath();
+        ctx.moveTo(x0, y0);
+        ctx.lineTo(x1, y1);
+        ctx.stroke();
+    }
+
+    // var drawOuterCircles = function (x, y, xOffset0, yOffset0, xOffset1, yOffset1) {
     //     ctx.beginPath()
-    //     ctx.moveTo(xBody + bodyRadius * scale, yBody + bodyRadius * scale);
-    //     ctx.lineTo(xBody + bodyRadius * scale, yBody - bodyRadius * scale);
-    //     ctx.lineTo(xBody + bodyRadius * scale + offset, yBody - bodyRadius * scale + offset);
-    //     ctx.lineTo(xBody + bodyRadius * scale + offset, yBody + bodyRadius * scale - offset);
+    //     ctx.moveTo(x + xOffset, y + bodyRadius * scale);
+    //     ctx.lineTo(x + xOffset, y - bodyRadius * scale);
+    //     ctx.lineTo(x + xOffset + offset, y - bodyRadius * scale + offset);
+    //     ctx.lineTo(x + xOffset + offset, y + bodyRadius * scale - offset);
     //     ctx.closePath();
     //     ctx.fill();
     //     ctx.stroke();
