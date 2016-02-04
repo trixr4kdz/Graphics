@@ -12,13 +12,22 @@
 
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="js/bb-8.js"></script>
-    <script src="js/kylo-ren.js"></script>
+    <!--<script src="js/kylo-ren.js"></script>-->
     <script src="js/tie-fighter.js"></script>
 
     <script>
-      Sprites.bb8();
-      Sprites.kyloRen();
-      Sprites.tieFigher();
+        (function () {
+            var canvas = $("canvas");
+            var drawScene = function () {
+                Sprites.bb8();
+                Sprites.kyloRen();
+                Sprites.tieFighter();
+
+                window.requestAnimationFrame(drawScene);
+            }
+            window.requestAnimationFrame(drawScene);
+        }());
+      
     </script>
   </body>
 </html>
