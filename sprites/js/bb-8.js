@@ -24,6 +24,7 @@ $(function () {
             var headOffset = 90;
             var headRadius = bodyRadius / 1.5;
             var centerCircleRadius = headRadius * 0.75;
+            var bbOrange = "rgb(255, 120, 0)";
             
             ctx.fillStyle = radialGradient;
             ctx.beginPath();
@@ -32,13 +33,13 @@ $(function () {
             ctx.closePath();
 
             ctx.beginPath();
-            ctx.moveTo(xBody , yBody + (centerCircleRadius * 2));
-            ctx.lineTo(xBody, yBody - (centerCircleRadius * 2));
+            ctx.moveTo(xBody , yBody + (centerCircleRadius * 2 * 0.8));
+            ctx.lineTo(xBody, yBody - (centerCircleRadius * 2 * 0.8));
             ctx.stroke();
 
             ctx.beginPath();
-            ctx.moveTo(xBody - centerCircleRadius * 2, yBody);
-            ctx.lineTo(xBody + centerCircleRadius * 2, yBody);
+            ctx.moveTo(xBody - centerCircleRadius * 2 * 0.8, yBody);
+            ctx.lineTo(xBody + centerCircleRadius * 2 * 0.8, yBody);
             ctx.stroke();
 
             ctx.fillStyle = "gray";
@@ -62,7 +63,7 @@ $(function () {
             ctx.fill();
 
             ctx.strokeStyle = "black";
-            ctx.fillStyle = "rgb(255, 120, 0)";
+            ctx.fillStyle = bbOrange;
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.arc(xBody, yBody, headRadius * .80, 0, Math.PI * 2, true);
@@ -78,26 +79,47 @@ $(function () {
             ctx.fill();
             ctx.stroke();
 
+            // ctx.fillStyle = bbOrange;
+            // ctx.beginPath();
+            // ctx.fillRect(xBody, yBody - headRadius / 1.75, 10, 2 * headRadius / 1.75);
+
+            ctx.fillStyle = bbOrange;
+
             ctx.beginPath();
-            ctx.moveTo(xBody + bodyRadius * 0.70, yBody + bodyRadius * .7);
-            ctx.lineTo(xBody + bodyRadius * 0.70, yBody - bodyRadius * 0.70);
-            // ctx.stroke();
-
-            // ctx.beginPath();
-            // ctx.moveTo(xBody + bodyRadius * 0.70, yBody + bodyRadius * 0.70);
-            ctx.lineTo(xBody + bodyRadius * 0.70 + 10, yBody + bodyRadius * .7 - 10);
-            // ctx.stroke();
-
-            // ctx.beginPath();
-            // ctx.moveTo(xBody + bodyRadius * 0.70 + 10, yBody + bodyRadius * .7 - 10);
-            ctx.lineTo(xBody + bodyRadius * 0.70 + 10, yBody - bodyRadius * 0.70 + 10);
-            ctx.stroke();
+            ctx.moveTo(xBody + bodyRadius * 0.8, yBody + bodyRadius * .6);
+            ctx.lineTo(xBody + bodyRadius * 0.8, yBody - bodyRadius * 0.6);
+            ctx.lineTo(xBody + bodyRadius * 0.8 + 10, yBody - bodyRadius * .6 + 16);
+            ctx.lineTo(xBody + bodyRadius * 0.8 + 10, yBody + bodyRadius * 0.6 - 16);
             ctx.closePath();
-
-            // ctx.moveTo();
-            // ctx.lineTo();
-            // ctx.stroke();
             ctx.fill();
+            ctx.stroke();
+
+            ctx.beginPath()
+            ctx.moveTo(xBody - bodyRadius * 0.8, yBody + bodyRadius * 0.6);
+            ctx.lineTo(xBody - bodyRadius * 0.8, yBody - bodyRadius * 0.6);
+            ctx.lineTo(xBody - bodyRadius * 0.8 - 10, yBody - bodyRadius * .6 + 16);
+            ctx.lineTo(xBody - bodyRadius * 0.8 - 10, yBody + bodyRadius * 0.6 - 16);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.beginPath()
+            ctx.moveTo(xBody - bodyRadius * 0.6, yBody + bodyRadius * 0.8);
+            ctx.lineTo(xBody + bodyRadius * 0.6, yBody + bodyRadius * 0.8);
+            ctx.lineTo(xBody + bodyRadius * 0.6 - 16, yBody + bodyRadius * 0.8 + 10);
+            ctx.lineTo(xBody - bodyRadius * 0.6 + 16, yBody + bodyRadius * 0.8 + 10);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.beginPath()
+            ctx.moveTo(xBody - bodyRadius * 0.6, yBody - bodyRadius * 0.8);
+            ctx.lineTo(xBody + bodyRadius * 0.6, yBody - bodyRadius * 0.8);
+            ctx.lineTo(xBody + bodyRadius * 0.6 - 16, yBody - bodyRadius * 0.8 - 10);
+            ctx.lineTo(xBody - bodyRadius * 0.6 + 16, yBody - bodyRadius * 0.8 - 10);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
 
             console.log("xBody " + xBody);
             console.log("yBody " + yBody);
@@ -108,5 +130,18 @@ $(function () {
         // window.requestAnimationFrame(render);
         render();
     }
+
+    // var drawSideCircles = function (xBody, yBody, scale, offset, bodyRadius) {
+    //     ctx.beginPath()
+    //     ctx.moveTo(xBody + bodyRadius * scale, yBody + bodyRadius * scale);
+    //     ctx.lineTo(xBody + bodyRadius * scale, yBody - bodyRadius * scale);
+    //     ctx.lineTo(xBody + bodyRadius * scale + offset, yBody - bodyRadius * scale + offset);
+    //     ctx.lineTo(xBody + bodyRadius * scale + offset, yBody + bodyRadius * scale - offset);
+    //     ctx.closePath();
+    //     ctx.fill();
+    //     ctx.stroke();
+    // }
+
+    // Use cos wave for scaling bb-8 turning sideways
 
 }(jQuery));
