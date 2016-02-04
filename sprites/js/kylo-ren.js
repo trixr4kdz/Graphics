@@ -7,7 +7,8 @@ $(function () {
 	kyloRenImg.addEventListener("load", function () {
 		kyloLoaded = true;
 	}, false);
-	// kyloRenImg.src = "images/kylo-ren.jpg";
+	kyloRenImg.src = "images/kylo-ren.jpg";
+	kyloRenImg.width()
 
 	Sprites.kyloRen = function () {
 		// var canvas = document.getElementById("canvas");
@@ -16,6 +17,9 @@ $(function () {
 		if (kyloLoaded) {
 			ctx.drawImage(kyloRenImg, 0, 0);
 		}
+
+
+
 	}
 
 }(jQuery));

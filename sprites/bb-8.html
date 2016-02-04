@@ -18,10 +18,8 @@
             var canvas = $("canvas");
             var drawScene = function () {
                 Sprites.bb8();
-
-                window.requestAnimationFrame(drawScene);
             }
-            window.requestAnimationFrame(drawScene);
+            drawScene();
         }());
       
     </script>

@@ -14,20 +14,8 @@
     <script src="js/bb-8.js"></script>
     <script src="js/kylo-ren.js"></script>
     <script src="js/tie-fighter.js"></script>
+    <script scr="js/lightsaber.js"></script>
+    <script src="js/scene.js"></script>
 
-    <script>
-        (function () {
-            var canvas = $("canvas");
-            var drawScene = function () {
-                Sprites.bb8();
-                Sprites.kyloRen();
-                Sprites.tieFighter();
-
-                window.requestAnimationFrame(drawScene);
-            }
-            window.requestAnimationFrame(drawScene);
-        }());
-      
-    </script>
   </body>
 </html>
