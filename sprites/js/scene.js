@@ -31,7 +31,6 @@ $(function () {
             ctx: ctx,
             x: 500,
             y: 500,
-            color: "blue",
             on: true
         });
         ctx.restore();
