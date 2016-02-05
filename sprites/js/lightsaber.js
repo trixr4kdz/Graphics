@@ -2,32 +2,26 @@ $(function () {
 
 	window.Sprites = window.Sprites || { };
 
-	Sprites.lightsaber = function () {
-		var ctx = canvas.getContext("2d");
+	Sprites.lightsaber = function (specs) {
+		var ctx = specs.ctx;
+		var HANDLE_WIDTH = 300;
+		var HANDLE_HEIGHT = HANDLE_WIDTH / 4;
+		var CROSSGUARD_OFFSET = 20;
+		var CROSSGUARD_WIDTH = HANDLE_HEIGHT / 2;
+		var CROSSGUARD_HEIGHT = HANDLE_WIDTH / 2
+		var BLADE_OFFSET = 10;
 
 		var draw = function () {
-			var xHandle = 2 * 1024 / 3;
-			var yHandle = 200;
-			var handleWidth = 300;
-			var handleHeight = handleWidth / 4;
-			var crossGuardOffset = 20;
-			var crossGuardWidth = handleHeight / 2;
-			var crossGuardHeight = handleWidth / 2
-			var bladeOffset = 10;
+			var xHandle = specs.x;
+			var yHandle = specs.y;
+			var color = specs.color || "red";
+			var on = specs.on || true;
 
-			ctx.fillStyle = "red";
-			ctx.beginPath();
-			ctx.ellipse(xHandle + crossGuardOffset + crossGuardWidth / 2, yHandle - crossGuardWidth + crossGuardHeight / 2, 10, 200, 0, 0, 2 * Math.PI);
-			ctx.fill();
-
-			drawHandle(ctx, xHandle, yHandle, handleWidth, handleHeight, crossGuardWidth, crossGuardHeight, crossGuardOffset);
-			// drawMainBlade(ctx, xHandle, yHandle, bladeOffset, -500, "red");
-
-			ctx.beginPath();
-			ctx.moveTo(xHandle, yHandle + bladeOffset);
-			ctx.quadraticCurveTo(-500, yHandle + handleHeight / 2, xHandle, yHandle + handleHeight - bladeOffset);
-			ctx.fillStyle = "red";
-			ctx.fill();
+			if (on) {
+				drawSideBlades(ctx, xHandle, yHandle, 200, color);
+				drawMainBlade(ctx, xHandle, yHandle, BLADE_OFFSET, -500, color);
+			}
+			drawHandle(ctx, xHandle, yHandle, HANDLE_WIDTH, HANDLE_HEIGHT, CROSSGUARD_WIDTH, CROSSGUARD_HEIGHT, CROSSGUARD_OFFSET);
 		}
 
 		var drawHandle = function (ctx, x, y, mainWidth, mainHeight, crossGuardWidth, crossGuardHeight, offset) {
@@ -39,19 +33,18 @@ $(function () {
 		var drawMainBlade = function (ctx, x, y, offset, bladeHeight, color) {
 			ctx.beginPath();
 			ctx.moveTo(x, y + offset);
-			ctx.quadraticCurveTo(bladeHeight, y + handleHeight / 2, x, y + handleHeight - offset);
+			ctx.quadraticCurveTo(bladeHeight, y + HANDLE_HEIGHT / 2, x, y + HANDLE_HEIGHT - offset);
 			ctx.fillStyle = color;
 			ctx.fill();
 		}
 
-		var drawSideBlades = function (ctx, x, y, bladeHeight color) {
+		var drawSideBlades = function (ctx, x, y, bladeHeight, color) {
 			ctx.fillStyle = color;
 			ctx.beginPath();
-			ctx.ellipse(x + crossGuardOffset + crossGuardWidth / 2, y - crossGuardWidth + crossGuardHeight / 2, 10, bladeHeight, 0, 0, 2 * Math.PI);
+			ctx.ellipse(x + CROSSGUARD_OFFSET + CROSSGUARD_WIDTH / 2, y - CROSSGUARD_WIDTH + CROSSGUARD_HEIGHT / 2, 10, bladeHeight, 0, 0, 2 * Math.PI);
 			ctx.fill();
 		}
 		draw();
-
 	}
 
 }(jQuery));
