@@ -40,6 +40,7 @@ $(function () {
 			ctx.rect(-armWidth / 2, 0, armWidth, armHeight);
 			ctx.fill();
 			ctx.stroke();
+			ctx.arc(0, armHeight + fistRadius, fistRadius, 0, 2 * Math.PI, true);
 			ctx.restore();
 		};
 
@@ -47,13 +48,11 @@ $(function () {
 		if (kyloLoaded) {
 			ctx.strokeStyle = "gray";
 			ctx.lineWidth = 3;
+			
 			drawArm(ctx, rightArmAngle, armHeight * 0.75);
-
 			ctx.drawImage(kyloRenImg, xHead, yHead, HEAD_WIDTH, HEAD_HEIGHT);
-
 			ctx.fillRect(xHead + HEAD_WIDTH / 2, HEAD_HEIGHT / 3 * 2, HEAD_WIDTH / 3, HEAD_HEIGHT / 4);
 			ctx.fillRect(xBody, yBody, BODY_WIDTH, BODY_HEIGHT);
-
 			drawArm(ctx, leftArmAngle, armHeight);
 
 			ctx.save();
@@ -63,14 +62,8 @@ $(function () {
 			ctx.stroke();
 			ctx.fill();
 			ctx.restore();
-
-			ctx.beginPath();
-			ctx.arc(0, armHeight + fistRadius, fistRadius, 0, 2 * Math.PI, true);
-			ctx.fill();
 		}
 		ctx.restore();
-
-		
 
 	}
 
