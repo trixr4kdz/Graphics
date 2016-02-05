@@ -2,10 +2,14 @@ $(function () {
 
 	var ctx = $("#canvas")[0].getContext("2d");
     var drawScene = function () {
+
     	ctx.save();
     	ctx.translate(200, 100);
     	Sprites.bb8({
-    		ctx: ctx
+    		ctx: ctx,
+    		x: 200,
+    		y: 200,
+    		headTurn: -30
     	});
     	ctx.restore();
 
@@ -20,10 +24,6 @@ $(function () {
     		color: "blue",
     		on: true
     	});
-
-        // Sprites.bb8();
-        // Sprites.kyloRen();
-        // Sprites.lightsaber();
 
         window.requestAnimationFrame(drawScene);
     }
