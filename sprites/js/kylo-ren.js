@@ -37,9 +37,11 @@ $(function () {
             ctx.save();
             ctx.translate(xBody + shoulderOffset, yBody);
             ctx.rotate(armAngle);
-            ctx.rect(-armWidth / 2, 0, armWidth, armHeight);
-            ctx.fill();
+            ctx.fillRect(-armWidth / 2, 0, armWidth, armHeight);
+            ctx.beginPath();
             ctx.arc(0, armHeight + fistRadius, fistRadius, 0, 2 * Math.PI, true);
+            ctx.closePath();
+            ctx.fill();
             ctx.restore();
         };
 
@@ -47,9 +49,7 @@ $(function () {
             ctx.save();
             ctx.translate(xBody + BODY_WIDTH - legOffset, yBody + BODY_HEIGHT - legOffset);
             ctx.rotate(legAngle);
-            ctx.rect(0, 0, legWidth, legHeight);
-            ctx.stroke();
-            ctx.fill();
+            ctx.fillRect(0, 0, legWidth, legHeight);
             ctx.restore();
         };
 
