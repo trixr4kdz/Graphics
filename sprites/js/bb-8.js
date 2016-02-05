@@ -2,7 +2,7 @@ $(function () {
 
     window.Sprites = window.Sprites || { };
 
-    Sprites.bb8 = function (x, y) {
+    Sprites.bb8 = function () {
 
         var ctx = canvas.getContext("2d");
 
@@ -92,14 +92,7 @@ $(function () {
             ctx.closePath();
             ctx.fill();
             ctx.stroke();
-
-            console.log("xBody " + xBody);
-            console.log("yBody " + yBody);
-
-            // window.requestAnimationFrame(render);
         }
-
-        // window.requestAnimationFrame(render);
         render();
     }
 
