@@ -1,34 +1,33 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Rolling BB-8</title>
-  </head>
-  <body>
-    <canvas id="canvas" width="1024" height="512">
-      Sorry, but you need a web browser that supports the
-      <code>canvas</code> element.
-    </canvas>
+    <head>
+        <meta charset="utf-8" />
+        <title>Rolling BB-8</title>
+    </head>
+    <body>
+        <canvas id="canvas" width="1024" height="512">
+            Sorry, but you need a web browser that supports the
+            <code>canvas</code> element.
+        </canvas>
 
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="js/bb-8.js"></script>
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script src="js/bb-8.js"></script>
 
-    <script>
-        (function () {
-            var ctx = $("canvas")[0].getContext("2d");
-            var drawScene = function () {
-                Sprites.bb8({
-                    ctx: ctx,
-                    x: 512,
-                    y: 300,
-                    headTurn: 10,
-                    // bodyTurn: 0,
-                    color: "rgb(255, 120, 0)"
-                });
-            }
-            drawScene();
-        }());
-      
-    </script>
-  </body>
+        <script>
+            (function () {
+                var ctx = $("canvas")[0].getContext("2d");
+                var drawScene = function () {
+                    Sprites.bb8({
+                        ctx: ctx,
+                        x: 512,
+                        y: 300,
+                        headTurn: 10,
+                        // bodyTurn: 0,
+                        color: "rgb(255, 120, 0)"
+                    });
+                }
+                drawScene();
+            }());
+        </script>
+    </body>
 </html>

@@ -1,33 +1,32 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Lightsaber!!!</title>
-  </head>
-  <body>
-    <canvas id="canvas" width="1024" height="512">
-      Sorry, but you need a web browser that supports the
-      <code>canvas</code> element.
-    </canvas>
+    <head>
+        <meta charset="utf-8" />
+        <title>Lightsaber!!!</title>
+    </head>
+    <body>
+        <canvas id="canvas" width="1024" height="512">
+            Sorry, but you need a web browser that supports the
+            <code>canvas</code> element.
+        </canvas>
 
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="js/lightsaber.js"></script>
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script src="js/lightsaber.js"></script>
 
-    <script>
-        (function () {
-            var ctx = $("canvas")[0].getContext("2d");
-            var drawScene = function () {
-                Sprites.lightsaber({
-                  ctx: ctx,
-                  x: 1024 * 2 / 3,
-                  y: 200,
-                  color: "green",
-                  on: true
-                });
-            }
-            drawScene();
-        }());
-      
-    </script>
-  </body>
+        <script>
+            (function () {
+                var ctx = $("canvas")[0].getContext("2d");
+                var drawScene = function () {
+                    Sprites.lightsaber({
+                      ctx: ctx,
+                      x: 1024 * 2 / 3,
+                      y: 200,
+                      color: "green",
+                      on: true
+                    });
+                }
+                drawScene();
+            }());
+        </script>
+    </body>
 </html>
