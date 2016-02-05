@@ -2,9 +2,8 @@ $(function () {
 
     window.Sprites = window.Sprites || { };
 
-    Sprites.bb8 = function () {
+    Sprites.bb8 = function (x, y) {
 
-        // var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
 
         var bodyGradient = ctx.createRadialGradient(500, 250, 40, 250, 250, 400);
@@ -16,18 +15,15 @@ $(function () {
         headGradient.addColorStop(0, "white");
         headGradient.addColorStop(1, "gray");
 
-        var data = {};
-
         var render = function () {
 
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
             var bodyRadius = 100;
-            var xBody = 512;
-            var yBody = 300;
+            var xBody = 512;    // need to change this
+            var yBody = 300;    // this too
 
             var headOffset = 90;
             var headRadius = bodyRadius / 1.5;
-            var centerCircleRadius = headRadius * 0.75;
+            var centerCircleRadius = headRadius * 1.25;
             var bbOrange = "rgb(255, 120, 0)";
             
             ctx.fillStyle = bodyGradient;
@@ -36,11 +32,8 @@ $(function () {
             ctx.fill();
             ctx.closePath();
 
-            drawCenterCross(ctx, xBody, yBody + (centerCircleRadius * 2 * 0.8), xBody, yBody - (centerCircleRadius * 2 * 0.8))
-            drawCenterCross(ctx, xBody - centerCircleRadius * 2 * 0.8, yBody, xBody + centerCircleRadius * 2 * 0.8, yBody);
-
-            // ctx.beginPath();
-            // ctx.fillRect();
+            drawCenterCross(ctx, xBody, yBody + (centerCircleRadius), xBody, yBody - (centerCircleRadius))
+            drawCenterCross(ctx, xBody - centerCircleRadius, yBody, xBody + centerCircleRadius, yBody);
 
             ctx.fillStyle = headGradient;
             ctx.beginPath();

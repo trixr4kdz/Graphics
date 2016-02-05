@@ -19,15 +19,24 @@ $(function () {
 			var crossGuardOffset = 20;
 			var crossGuardWidth = handleHeight / 2;
 			var crossGuardHeight = handleWidth / 2
+			var bladeOffset = 10;
 
+			ctx.fillStyle = "red";
+			ctx.beginPath();
+			ctx.ellipse(xHandle + crossGuardOffset + crossGuardWidth / 2, yHandle - crossGuardWidth + crossGuardHeight / 2, 10, 200, 0, 0, 2 * Math.PI);
+			ctx.fill();
+
+			ctx.fillStyle = "black";
 			ctx.fillRect(xHandle, yHandle, handleWidth, handleHeight);
 			ctx.fillRect(xHandle + crossGuardOffset, yHandle - crossGuardWidth, crossGuardWidth, crossGuardHeight);
 
 			ctx.beginPath();
-			ctx.moveTo(xHandle, yHandle + 10);
-			ctx.quadraticCurveTo(-xHandle - handleHeight / 2 + 1000, yHandle + handleHeight / 2, xHandle, yHandle + handleHeight - 10);
+			ctx.moveTo(xHandle, yHandle + bladeOffset);
+			ctx.quadraticCurveTo(-500, yHandle + handleHeight / 2, xHandle, yHandle + handleHeight - bladeOffset);
 			ctx.fillStyle = "red";
 			ctx.fill();
+
+			
 
 			// ctx.beginPath();
 			// ctx.moveTo(xHandle, yHandle);
