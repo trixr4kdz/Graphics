@@ -56,8 +56,8 @@ $(function () {
         ctx.save();
         if (kyloLoaded) {
 
-            drawArm(ctx, rightArmAngle, armHeight * 0.75);
             ctx.drawImage(kyloRenImg, xHead, yHead, HEAD_WIDTH, HEAD_HEIGHT);
+            drawArm(ctx, rightArmAngle, armHeight * 0.75);
             ctx.fillRect(xHead + HEAD_WIDTH / 2, HEAD_HEIGHT / 3 * 2, HEAD_WIDTH / 3, HEAD_HEIGHT / 4);
             ctx.fillRect(xBody, yBody, BODY_WIDTH, BODY_HEIGHT);
             ctx.lineWidth = 3;
