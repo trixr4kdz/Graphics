@@ -11,19 +11,21 @@ $(function () {
         var ctx = specs.ctx;
         var headTurn = specs.headTurn || 0;
         var bodyTurn = specs.bodyTurn || 0;
+        var headTilt = specs.headTilt || 0;
         var color = specs.color || "rgb(255, 120, 0)";
         var xBody = specs.x;
         var yBody = specs.y;
         var xHead = xBody;
         var yHead = yBody - HEAD_OFFSET;
-        var bodyGradient = ctx.createRadialGradient(500, 250, 40, 250, 250, 400);
-        var headGradient = ctx.createRadialGradient(500, 200, 60, 300, 100, 450);
+        var bodyGradient = ctx.createRadialGradient(500, 250, 10, 250, 300, 800);
+        var headGradient = ctx.createRadialGradient(400, 150, 10, 300, 100, 800);
 
         bodyGradient.addColorStop(0, "white");
         bodyGradient.addColorStop(1, "gray");
 
         headGradient.addColorStop(0, "white");
         headGradient.addColorStop(1, "gray");
+        ctx.restore();
 
         var outerCircleConstants = {
             scale0: 0.8,
@@ -40,18 +42,32 @@ $(function () {
             ctx.closePath();
 
             rotateBody(bodyTurn);
-            
+            rotateHead(headTilt);
+        }
+
+        var rotateHead = function (tilt) {
+            var LEFTEST = -60;
+            var RIGHTEST = -LEFTEST;
+            ctx.save();
+            ctx.translate(xBody, yBody);
+            if (tilt < LEFTEST || tilt > RIGHTEST) {
+                tilt = tilt < LEFTEST ? LEFTEST : RIGHTEST;
+            }
+            ctx.rotate(Math.PI / 180 * tilt);
+            drawHead();
+            ctx.restore();
+        }
+
+        var drawHead = function () {
             ctx.fillStyle = headGradient;
             ctx.beginPath();
             ctx.save();
             ctx.scale(outerCircleConstants.scale0, 1);
-            ctx.arc(xBody * 5 / 4, (yBody - HEAD_OFFSET - 5), HEAD_RADIUS, 0, Math.PI, true);
+            ctx.arc(0, -BODY_RADIUS + 10, HEAD_RADIUS, 0, Math.PI, true);
             ctx.closePath();
             ctx.fill();
-            ctx.restore();
-
-            ctx.save();
-            ctx.translate(xHead, yHead);
+            ctx.stroke();
+            ctx.translate(0, -HEAD_OFFSET);
             drawEye(headTurn);
             ctx.restore();
         }
@@ -67,6 +83,7 @@ $(function () {
         }
 
         var drawEye = function (turn) {
+            ctx.save();
             var RIGHTEST = 40;
             var LEFTEST = -40;
             var EYE_OFFSET = 45;
@@ -80,6 +97,7 @@ $(function () {
             if (turn < RIGHTEST - 10) {
                 drawInnerCircles(ctx, "black", 5, LOWER_DOT_OFFSET + turn, -LOWER_DOT_OFFSET);
             }
+            ctx.restore();
         }
 
         var drawInnerCircles = function (ctx, fillStyle, radius, x, y) {
@@ -90,7 +108,7 @@ $(function () {
             ctx.stroke();
         }
 
-        var drawCenterCross = function (ctx, x0, y0, x1, y1) {
+        var drawCenterLine = function (ctx, x0, y0, x1, y1) {
             ctx.beginPath();
             ctx.moveTo(x0, y0);
             ctx.lineTo(x1, y1);
@@ -111,10 +129,11 @@ $(function () {
         }
 
         var drawBody = function () {
-            drawCenterCross(ctx, -BODY_RADIUS * outerCircleConstants.scale0, 0, BODY_RADIUS * outerCircleConstants.scale0, 0)
-            drawCenterCross(ctx, 0, -BODY_RADIUS * outerCircleConstants.scale0, 0, BODY_RADIUS * outerCircleConstants.scale0);
+            drawCenterLine(ctx, -BODY_RADIUS * outerCircleConstants.scale0, 0, BODY_RADIUS * outerCircleConstants.scale0, 0)
+            drawCenterLine(ctx, 0, -BODY_RADIUS * outerCircleConstants.scale0, 0, BODY_RADIUS * outerCircleConstants.scale0);
             drawInnerCircles(ctx, color, HEAD_RADIUS * outerCircleConstants.scale0, 0, 0);
             drawInnerCircles(ctx, "white", HEAD_RADIUS / 1.75, 0, 0);
+            drawInnerCircles(ctx, "gray", HEAD_RADIUS / 2.25, 0, 0);
 
             ctx.fillStyle = color;
 

@@ -16,17 +16,24 @@
         <script>
             (function () {
                 var ctx = $("canvas")[0].getContext("2d");
+                var bodyTurn = 0;
+                var headTurn = -20;
+                var headTilt = 30;
                 var drawScene = function () {
                     Sprites.bb8({
                         ctx: ctx,
-                        x: 500,
+                        x: 800,
                         y: 300,
-                        headTurn: -70,
-                        bodyTurn: 75,
+                        headTurn: headTurn,
+                        bodyTurn: bodyTurn,
+                        headTilt: headTilt,
                         color: "rgb(255, 120, 0)"
                     });
+                    bodyTurn += -2;
+                    headTurn += -0.1;
+                    window.requestAnimationFrame(drawScene);
                 }
-                drawScene();
+                window.requestAnimationFrame(drawScene);
             }());
         </script>
     </body>
