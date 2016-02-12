@@ -16,14 +16,13 @@
         <script>
             (function () {
                 var ctx = $("canvas")[0].getContext("2d");
-                // ctx.scale(0.5, 0.5);
                 var drawScene = function () {
                     Sprites.bb8({
                         ctx: ctx,
                         x: 500,
                         y: 300,
-                        headTurn: 00,
-                        bodyTurn: 0,
+                        headTurn: -70,
+                        bodyTurn: 75,
                         color: "rgb(255, 120, 0)"
                     });
                 }
