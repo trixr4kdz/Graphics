@@ -20,6 +20,10 @@
             renderingContext.stroke();
         },
 
+        bb8 = function () {
+            
+        }
+
         // Then, we have "easing functions" that determine how
         // intermediate frames are computed.
 
