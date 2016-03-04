@@ -274,14 +274,43 @@ var Primitives = {
      */
     plotCirclePoints: function (context, xc, yc, x, y, color) {
         color = color || [0, 0, 0];
-        this.setPixel(context, xc + x, yc + y, color[0], color[1], color[2]);
-        this.setPixel(context, xc + x, yc - y, color[0], color[1], color[2]);
-        this.setPixel(context, xc + y, yc + x, color[0], color[1], color[2]);
-        this.setPixel(context, xc + y, yc - x, color[0], color[1], color[2]);
-        this.setPixel(context, xc - x, yc + y, color[0], color[1], color[2]);
-        this.setPixel(context, xc - x, yc - y, color[0], color[1], color[2]);
-        this.setPixel(context, xc - y, yc + x, color[0], color[1], color[2]);
-        this.setPixel(context, xc - y, yc - x, color[0], color[1], color[2]);
+
+        for (i = y; i < bottom; i += 1) {
+            // Move to the next "vertical" color level.
+            currentColor = [leftColor[0], leftColor[1], leftColor[2]];
+            hDelta = [(rightColor[0] - leftColor[0]) / w,
+                      (rightColor[1] - leftColor[1]) / w,
+                      (rightColor[2] - leftColor[2]) / w];
+
+            for (j = x; j < right; j += 1) {
+                module.setPixel(context, j, i,
+                        currentColor[0],
+                        currentColor[1],
+                        currentColor[2]);
+
+                // Move to the next color horizontally.
+                currentColor[0] += hDelta[0];
+                currentColor[1] += hDelta[1];
+                currentColor[2] += hDelta[2];
+            }
+
+            // The color on each side "grades" at different rates.
+            leftColor[0] += leftVDelta[0];
+            leftColor[1] += leftVDelta[1];
+            leftColor[2] += leftVDelta[2];
+            rightColor[0] += rightVDelta[0];
+            rightColor[1] += rightVDelta[1];
+            rightColor[2] += rightVDelta[2];
+        }
+        
+        // this.setPixel(context, xc + x, yc + y, color[0], color[1], color[2]);
+        // this.setPixel(context, xc + x, yc - y, color[0], color[1], color[2]);
+        // this.setPixel(context, xc + y, yc + x, color[0], color[1], color[2]);
+        // this.setPixel(context, xc + y, yc - x, color[0], color[1], color[2]);
+        // this.setPixel(context, xc - x, yc + y, color[0], color[1], color[2]);
+        // this.setPixel(context, xc - x, yc - y, color[0], color[1], color[2]);
+        // this.setPixel(context, xc - y, yc + x, color[0], color[1], color[2]);
+        // this.setPixel(context, xc - y, yc - x, color[0], color[1], color[2]);
     },
 
     // First, the most naive possible implementation: circle by trigonometry.
