@@ -13,11 +13,11 @@ var Nanoshop = {
 
     brighten: function (r, g, b, a) {
         return [r * 2, g * 2, b * 2, a];
-    }
+    },
 
     sepia: function (r, g, b, a) {
         //TODO
-    }
+    },
 
     shiftRight: function (r, g, b, a) {
         var red = a,
@@ -25,7 +25,7 @@ var Nanoshop = {
             blue = g,
             amount = b;
         return [red, green, blue, amount];
-    }
+    },
 
     applyFilter: function (imageData, filter) {
         // For every pixel, replace with something determined by the filter.
