@@ -24,7 +24,7 @@
     Primitives.lineBresenham(renderingContext, 825, 210, 1024, 110);
 
     // A few circles.
-    Primitives.circleTrig(renderingContext, 105, 315, 100);
+    Primitives.circleTrig(renderingContext, 105, 315, 100, [100, 100, 100], [0, 120, 240], [120, 240, 0], [240, 120, 0]);
     Primitives.circleDDA(renderingContext, 310, 315, 100);
     Primitives.circleBres1(renderingContext, 515, 315, 100);
     Primitives.circleBres2(renderingContext, 720, 315, 100);

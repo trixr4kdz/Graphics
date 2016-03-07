@@ -290,8 +290,8 @@ var Primitives = {
                 j,
                 bottom = y + yc,
                 right = x + xc,
-                // leftColor = c1 ? [c1[0], c1[1], c1[2]] : c1,
-                // rightColor = c2 ? [c2[0], c2[1], c2[2]] : c2,
+                leftColor = color1 ? [color1[0], color1[1], color1[2]] : color1,
+                rightColor = color2 ? [color2[0], color2[1], color2[2]] : color2,
                 leftVDelta,
                 rightVDelta,
                 hDelta,
@@ -299,14 +299,14 @@ var Primitives = {
 
                 // fillCircleFourColors = function () {
 
-            for (i = y; i < bottom; i += 1) {
+            for (i = yc; i < bottom; i += 1) {
                 // Move to the next "vertical" color level.
                 currentColor = [leftColor[0], leftColor[1], leftColor[2]];
-                hDelta = [(rightColor[0] - leftColor[0]) / w,
-                          (rightColor[1] - leftColor[1]) / w,
-                          (rightColor[2] - leftColor[2]) / w];
+                hDelta = [(rightColor[0] - leftColor[0]) / x,
+                          (rightColor[1] - leftColor[1]) / x,
+                          (rightColor[2] - leftColor[2]) / x];
 
-                for (j = x; j < right; j += 1) {
+                for (j = xc; j < right; j += 1) {
                     module.setPixel(context, j, i,
                             currentColor[0],
                             currentColor[1],
@@ -318,6 +318,13 @@ var Primitives = {
                     currentColor[2] += hDelta[2];
                 }
 
+                leftVDelta = [(color3[0] - color1[0]) / y,
+                      (color3[1] - color1[1]) / y,
+                      (color3[2] - color1[2]) / y];
+                rightVDelta = [(color4[0] - color2[0]) / y,
+                      (color4[1] - color2[1]) / y,
+                      (color4[2] - color2[2]) / y];
+
                 // The color on each side "grades" at different rates.
                 leftColor[0] += leftVDelta[0];
                 leftColor[1] += leftVDelta[1];
@@ -327,6 +334,7 @@ var Primitives = {
                 rightColor[2] += rightVDelta[2];
             }
                 // }
+            // fillRectFourColors();
         }
     },
 
