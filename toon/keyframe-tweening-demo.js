@@ -13,13 +13,6 @@
             renderingContext.fillRect(-20, -20, 40, 40);
         },
 
-        circle = function (renderingContext) {
-            renderingContext.strokeStyle = "red";
-            renderingContext.beginPath();
-            renderingContext.arc(0, 0, 50, 0, Math.PI * 2);
-            renderingContext.stroke();
-        },
-
         bb8 = function (renderingContext) {
             Sprites.bb8({
                 ctx: renderingContext,
@@ -30,33 +23,33 @@
                 // headTilt: 30,
                 color: "rgb(255, 120, 0)"
             });
-        }
+        },
 
-        lightsaber = function (renderingContext) {
-            Sprites.lightsaber({
-                ctx: renderingContext,
-                // x: 1024 * 2 / 3,
-                // y: 200,
-                // color: "red",
-                // on: true
-            });
-        }
+        // lightsaber = function (renderingContext) {
+        //     Sprites.lightsaber({
+        //         ctx: renderingContext,
+        //         // x: 1024 * 2 / 3,
+        //         // y: 200,
+        //         // color: "red",
+        //         // on: true
+        //     });
+        // },
 
-        kyloRen = function (renderingContext) {
-            renderingContext.save();
-            renderingContext.scale(0.5, 0.5);
-            renderingContext.translate(300, 0);
-            Sprites.kyloRen({
-                ctx: renderingContext,
-                // leftArmAngle: Math.PI / 8,
-                // rightArmAngle: Math.PI / 2,
-                // leftLegAngle: Math.PI / 8,
-                // rightLegAngle: -Math.PI / 8,
-                // x: 300,
-                // y: 0
-            });
-            renderingContext.restore();
-        }
+        // kyloRen = function (renderingContext) {
+        //     renderingContext.save();
+        //     renderingContext.scale(0.5, 0.5);
+        //     renderingContext.translate(300, 0);
+        //     Sprites.kyloRen({
+        //         ctx: renderingContext,
+        //         // leftArmAngle: Math.PI / 8,
+        //         // rightArmAngle: Math.PI / 2,
+        //         // leftLegAngle: Math.PI / 8,
+        //         // rightLegAngle: -Math.PI / 8,
+        //         // x: 300,
+        //         // y: 0
+        //     });
+        //     renderingContext.restore();
+        // },
 
         // Then, we have "easing functions" that determine how
         // intermediate frames are computed.
@@ -92,7 +85,7 @@
             },
 
             {
-                draw: bb8,
+                draw: square,
                 keyframes: [
                     {
                         frame: 50,

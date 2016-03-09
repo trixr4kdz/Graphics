@@ -8,7 +8,7 @@ $(function () {
     kyloRenImg.addEventListener("load", function () {
         kyloLoaded = true;
     }, false);
-    kyloRenImg.src = "images/kylo-ren.jpg";
+    kyloRenImg.src = "../sprites/images/kylo-ren.jpg";
 
     Sprites.kyloRen = function (specs) {
         var BODY_WIDTH = 125;

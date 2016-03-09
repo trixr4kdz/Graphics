@@ -3,6 +3,7 @@
  * canvas elements.
  */
 (function () {
+
     // The big one: animation initialization.  The settings parameter
     // is expected to be a JavaScript object with the following
     // properties:
@@ -30,6 +31,7 @@
     // - sx, sy: the scale factor of the sprite (default is 1, 1)
     // - rotate: the rotation angle of the sprite (default is 0)
     var initializeAnimation = function (settings) {
+
         // We need to keep track of the current frame.
         var currentFrame = 0,
 
@@ -39,6 +41,9 @@
             width = settings.width,
             height = settings.height,
             sprites = settings.sprites,
+            background = settings.background || function (renderingContext) {
+                renderingContext.clearRect(0, 0, width, height);
+            }
 
             previousTimestamp = null,
             nextFrame = function (timestamp) {
