@@ -38,7 +38,8 @@
         desert.addEventListener("load", function () {
             desertLoaded = true;
         }, false);
-        desert.src = "../toon/images/desert.jpg"
+        desert.src = "../toon/images/desert.jpg";
+
         // We need to keep track of the current frame.
         var currentFrame = 0,
 
@@ -48,10 +49,9 @@
             width = settings.width,
             height = settings.height,
             sprites = settings.sprites,
-            background = settings.background || function (renderingContext) {
+            background = function (renderingContext) {
                 renderingContext.drawImage(desert, 0, 0, canvas.width, canvas.height);
             }
-
 
             previousTimestamp = null,
             nextFrame = function (timestamp) {

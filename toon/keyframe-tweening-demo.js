@@ -37,25 +37,25 @@
                 keyframes: [
                     {
                         frame: 0,
-                        tx: 20,
-                        ty: 20,
+                        tx: canvas.width,
+                        ty: canvas.height * 0.75,
                         ease: KeyframeTweener.linear
                     },
 
                     {
-                        frame: 30,
-                        tx: 100,
-                        ty: 50,
+                        frame: 20,
+                        tx: canvas.width * 0.9,
+                        ty: canvas.height * 0.75,
                         ease: KeyframeTweener.linear
                     },
 
-                    // The last keyframe does not need an easing function.
-                    {
-                        frame: 80,
-                        tx: 80,
-                        ty: 500,
-                        rotate: 60 // Keyframe.rotate uses degrees.
-                    }
+                    // // The last keyframe does not need an easing function.
+                    // {
+                    //     frame: 80,
+                    //     tx: 80,
+                    //     ty: 500,
+                    //     rotate: 60 // Keyframe.rotate uses degrees.
+                    // }
                 ]
             },
 
@@ -86,6 +86,31 @@
                         ty: 600,
                         sx: 0.5,
                         sy: 0.5
+                    }
+                ]
+            },
+
+            {
+                draw: kyloRen,
+                keyframes: [
+                    {
+                        frame: 50,
+                        tx: canvas.width * 0.9,
+                        ty: canvas.height * 0.75,
+                        ease: KeyframeTweener.linear
+                    },
+
+                    {
+                        frame: 100,
+                        tx: canvas.width,
+                        ty: canvas.height * 0.75,
+                        ease: KeyframeTweener.linear
+                    },
+
+                    {
+                        frame: 150,
+                        tx: 300,
+                        ty: 600
                     }
                 ]
             }
