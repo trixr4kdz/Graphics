@@ -15,9 +15,10 @@ $(function () {
             var xHandle = 0;
             var yHandle = 0;
             var color = specs.color || "red";
-            var on = specs.on || true;
+            var on = specs.on;
 
             if (on) {
+                console.log("WAT")
                 drawSideBlades(ctx, xHandle, yHandle, 200, color);
                 drawMainBlade(ctx, xHandle, yHandle, BLADE_OFFSET, -500, color);
             }
