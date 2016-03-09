@@ -32,6 +32,13 @@
     // - rotate: the rotation angle of the sprite (default is 0)
     var initializeAnimation = function (settings) {
 
+        var desert = new Image();
+        var desertLoaded = false;
+
+        desert.addEventListener("load", function () {
+            desertLoaded = true;
+        }, false);
+        desert.src = "../toon/images/desert.jpg"
         // We need to keep track of the current frame.
         var currentFrame = 0,
 
@@ -42,8 +49,9 @@
             height = settings.height,
             sprites = settings.sprites,
             background = settings.background || function (renderingContext) {
-                renderingContext.clearRect(0, 0, width, height);
+                renderingContext.drawImage(desert, 0, 0, canvas.width, canvas.height);
             }
+
 
             previousTimestamp = null,
             nextFrame = function (timestamp) {
@@ -61,7 +69,7 @@
                 }
 
                 // Clear the canvas.
-                renderingContext.clearRect(0, 0, width, height);
+                background(renderingContext);
 
                 // For every sprite, go to the current pair of keyframes.
                 // Then, draw the sprite based on the current frame.

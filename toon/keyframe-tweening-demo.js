@@ -99,13 +99,5 @@
         width: canvas.width,
         height: canvas.height,
         sprites: sprites, 
-        background: function (renderingContext) {
-            renderingContext.save();
-            renderingContext.fillStyle = "rgb(229, 200, 173)";
-            renderingContext.fillRect(0, 0, canvas.width, canvas.height);
-            renderingContext.fillStyle = "rgb(94, 52, 20)";
-            renderingContext.fillStyle(canvas.width * 0.75, canvas.height * 0.75, canvas.width, canvas.height);
-            renderingContext.restore();
-        }
     });
 }());
