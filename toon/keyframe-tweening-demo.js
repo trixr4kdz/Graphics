@@ -8,48 +8,23 @@
         // First, a selection of "drawing functions" from which we
         // can choose.  Their common trait: they all accept a single
         // renderingContext argument.
-        square = function (renderingContext) {
-            renderingContext.fillStyle = "blue";
-            renderingContext.fillRect(-20, -20, 40, 40);
-        },
-
         bb8 = function (renderingContext) {
             Sprites.bb8({
-                ctx: renderingContext,
-                // x: 800,
-                // y: 300,
-                // headTurn: -20,
-                // bodyTurn: 0,
-                // headTilt: 30,
-                color: "rgb(255, 120, 0)"
+                ctx: renderingContext
             });
         },
 
-        // lightsaber = function (renderingContext) {
-        //     Sprites.lightsaber({
-        //         ctx: renderingContext,
-        //         // x: 1024 * 2 / 3,
-        //         // y: 200,
-        //         // color: "red",
-        //         // on: true
-        //     });
-        // },
+        lightsaber = function (renderingContext) {
+            Sprites.lightsaber({
+                ctx: renderingContext
+            });
+        },
 
-        // kyloRen = function (renderingContext) {
-        //     renderingContext.save();
-        //     renderingContext.scale(0.5, 0.5);
-        //     renderingContext.translate(300, 0);
-        //     Sprites.kyloRen({
-        //         ctx: renderingContext,
-        //         // leftArmAngle: Math.PI / 8,
-        //         // rightArmAngle: Math.PI / 2,
-        //         // leftLegAngle: Math.PI / 8,
-        //         // rightLegAngle: -Math.PI / 8,
-        //         // x: 300,
-        //         // y: 0
-        //     });
-        //     renderingContext.restore();
-        // },
+        kyloRen = function (renderingContext) {
+            Sprites.kyloRen({
+                ctx: renderingContext
+            });
+        },
 
         // Then, we have "easing functions" that determine how
         // intermediate frames are computed.
@@ -71,7 +46,7 @@
                         frame: 30,
                         tx: 100,
                         ty: 50,
-                        ease: KeyframeTweener.elastic
+                        ease: KeyframeTweener.linear
                     },
 
                     // The last keyframe does not need an easing function.
@@ -85,7 +60,7 @@
             },
 
             {
-                draw: square,
+                draw: lightsaber,
                 keyframes: [
                     {
                         frame: 50,
@@ -93,7 +68,7 @@
                         ty: 600,
                         sx: 0.5,
                         sy: 0.5,
-                        ease: KeyframeTweener.quadEaseOut
+                        ease: KeyframeTweener.linear
                     },
 
                     {
@@ -102,7 +77,7 @@
                         ty: 0,
                         sx: 3,
                         sy: 0.25,
-                        ease: KeyframeTweener.quadEaseOut
+                        ease: KeyframeTweener.linear
                     },
 
                     {
