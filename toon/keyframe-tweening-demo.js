@@ -20,8 +20,42 @@
             renderingContext.stroke();
         },
 
-        bb8 = function () {
-            
+        bb8 = function (renderingContext) {
+            Sprites.bb8({
+                ctx: renderingContext,
+                // x: 800,
+                // y: 300,
+                // headTurn: -20,
+                // bodyTurn: 0,
+                // headTilt: 30,
+                color: "rgb(255, 120, 0)"
+            });
+        }
+
+        lightsaber = function (renderingContext) {
+            Sprites.lightsaber({
+                ctx: renderingContext,
+                // x: 1024 * 2 / 3,
+                // y: 200,
+                // color: "red",
+                // on: true
+            });
+        }
+
+        kyloRen = function (renderingContext) {
+            renderingContext.save();
+            renderingContext.scale(0.5, 0.5);
+            renderingContext.translate(300, 0);
+            Sprites.kyloRen({
+                ctx: renderingContext,
+                // leftArmAngle: Math.PI / 8,
+                // rightArmAngle: Math.PI / 2,
+                // leftLegAngle: Math.PI / 8,
+                // rightLegAngle: -Math.PI / 8,
+                // x: 300,
+                // y: 0
+            });
+            renderingContext.restore();
         }
 
         // Then, we have "easing functions" that determine how
@@ -31,7 +65,7 @@
         // has a drawing function and an array of keyframes.
         sprites = [
             {
-                draw: square,
+                draw: bb8,
                 keyframes: [
                     {
                         frame: 0,
@@ -44,7 +78,7 @@
                         frame: 30,
                         tx: 100,
                         ty: 50,
-                        ease: KeyframeTweener.quadEaseInOut
+                        ease: KeyframeTweener.elastic
                     },
 
                     // The last keyframe does not need an easing function.
@@ -58,7 +92,7 @@
             },
 
             {
-                draw: circle,
+                draw: bb8,
                 keyframes: [
                     {
                         frame: 50,
@@ -96,6 +130,14 @@
         renderingContext: canvas.getContext("2d"),
         width: canvas.width,
         height: canvas.height,
-        sprites: sprites
+        sprites: sprites, 
+        background: function (renderingContext) {
+            renderingContext.save();
+            renderingContext.fillStyle = "rgb(229, 200, 173)";
+            renderingContext.fillRect(0, 0, canvas.width, canvas.height);
+            renderingContext.fillStyle = "rgb(94, 52, 20)";
+            renderingContext.fillStyle(canvas.width * 0.75, canvas.height * 0.75, canvas.width, canvas.height);
+            renderingContext.restore();
+        }
     });
 }());

@@ -5,38 +5,13 @@
         <title>STR WRS - Episode 1: The Phantom Keyframe Tweener</title>
     </head>
     <body>
-        <!-- <h1>Sprite-tacular!</h1> -->
-
         <canvas id="canvas" width="1024" height="768"></canvas>
         <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
-        <script src="../../sprites/js/bb-8.js"></script>
-        <script>
-            (function () {
-                var ctx = $("canvas")[0].getContext("2d");
-                var bodyTurn = 0;
-                var headTurn = -20;
-                var headTilt = 30;
-                var drawScene = function () {
-                    Sprites.bb8({
-                        ctx: ctx,
-                        x: 800,
-                        y: 300,
-                        headTurn: headTurn,
-                        bodyTurn: bodyTurn,
-                        headTilt: headTilt,
-                        color: "rgb(255, 120, 0)"
-                    });
-                    bodyTurn += -2;
-                    headTurn += -0.1;
-                    window.requestAnimationFrame(drawScene);
-                }
-                window.requestAnimationFrame(drawScene);
-            }());
-        </script>
-        <!-- <script src="../sprites/js/kylo-ren.js"></script> -->
-        <!-- <script src="../sprites/js/lightsaber.js"></script> -->
-        <!-- <script src="keyframe-tweener.js"></script> -->
-        <!-- <script src="keyframe-tweening-demo.js"></script> -->
+        <script src="../sprites/js/bb-8.js"></script>
+        <script src="../sprites/js/kylo-ren.js"></script>
+        <script src="../sprites/js/lightsaber.js"></script>
+        <script src="keyframe-tweener.js"></script>
+        <script src="keyframe-tweening-demo.js"></script>
     </body>
 </html>
