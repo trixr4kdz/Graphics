@@ -16,7 +16,8 @@
 
         lightsaber = function (renderingContext) {
             Sprites.lightsaber({
-                ctx: renderingContext
+                ctx: renderingContext,
+                on: false
             });
         },
 
@@ -43,19 +44,19 @@
                     },
 
                     {
-                        frame: 20,
-                        tx: canvas.width * 0.9,
+                        frame: 100,
+                        tx: canvas.width / 2 + 150,
                         ty: canvas.height * 0.75,
                         ease: KeyframeTweener.linear
                     },
 
                     // // The last keyframe does not need an easing function.
-                    // {
-                    //     frame: 80,
-                    //     tx: 80,
-                    //     ty: 500,
-                    //     rotate: 60 // Keyframe.rotate uses degrees.
-                    // }
+                    {
+                        frame: 300,
+                        tx: canvas.width / 2 + 150,
+                        ty: canvas.height * 0.75,
+                        // rotate: 60 // Keyframe.rotate uses degrees.
+                    }
                 ]
             },
 
@@ -63,54 +64,70 @@
                 draw: lightsaber,
                 keyframes: [
                     {
-                        frame: 50,
-                        tx: 300,
-                        ty: 600,
-                        sx: 0.5,
-                        sy: 0.5,
-                        ease: KeyframeTweener.linear
+                        frame: 0,
+                        tx: canvas.width / 2,
+                        ty: canvas.height * 0.85,
+                        sx: 0.3,
+                        sy: 0.3,
                     },
 
                     {
                         frame: 100,
-                        tx: 300,
-                        ty: 0,
-                        sx: 3,
-                        sy: 0.25,
-                        ease: KeyframeTweener.linear
+                        tx: canvas.width / 2,
+                        ty: canvas.height * 0.85,
+                        sx: 0.3,
+                        sy: 0.3
                     },
 
                     {
                         frame: 150,
-                        tx: 300,
-                        ty: 600,
-                        sx: 0.5,
-                        sy: 0.5
-                    }
+                        rotate: 60,
+                        tx: canvas.width - 200,
+                        ty: canvas.height / 2 - 100,
+                        sx: 0.3,
+                        sy: 0.3,
+                    },
+
+                    // {
+                    //     frame: 100,
+                    //     tx: 300,
+                    //     ty: 0,
+                    //     ease: KeyframeTweener.linear
+                    // },
+
+                    // {
+                    //     frame: 150,
+                    //     tx: 300,
+                    //     ty: 600,
+                    // }
                 ]
             },
 
             {
                 draw: kyloRen,
                 keyframes: [
-                    {
-                        frame: 50,
-                        tx: canvas.width * 0.9,
-                        ty: canvas.height * 0.75,
-                        ease: KeyframeTweener.linear
-                    },
+                    // {
+                    //     frame: 50,
+                    //     tx: 0,
+                    //     ty: canvas.height * 0.75,
+                    //     ease: KeyframeTweener.linear
+                    // },
 
                     {
                         frame: 100,
                         tx: canvas.width,
-                        ty: canvas.height * 0.75,
-                        ease: KeyframeTweener.linear
+                        ty: 155,
+                        ease: KeyframeTweener.linear,
+                        sx: 0.5,
+                        sy: 0.5
                     },
 
                     {
-                        frame: 150,
-                        tx: 300,
-                        ty: 600
+                        frame: 230,
+                        tx: canvas.width - 200,
+                        ty: 155,
+                        sx: 0.5,
+                        sy: 0.5
                     }
                 ]
             }
