@@ -150,6 +150,24 @@
                     (-distance / 2) * ((percentComplete - 1) * (percentComplete - 3) - 1) + start;
         },
 
+        elastic: function (currentTime, start, distance, duration) {
+            var percentComplete = currentTime / duration;
+            return distance * (-1 * Math.pow(4, -8 * percentComplete) * Math.sin((percentComplete * 6 - 1) * (2 * Math.PI) / 2) + 1) + start;
+        },
+
+        bounce: function (currentTime, start, distance, duration) {
+            var percentComplete = currentTime / duration;
+            if (percentComplete < (1 / 2.75)) {
+                return distance * (7.5625 * percentComplete * percentComplete) + start;
+            } else if (percentComplete < (2 / 2.75)) {
+                return distance * (7.5625 * (percentComplete -= (1.5 / 2.75)) * percentComplete + 0.75) + start;
+            } else if (percentComplete < (2.5 / 2.75)) {
+                return distance * (7.5625 * (percentComplete -= (2.25 / 2.75)) * percentComplete + 0.9375) + start;
+            } else {
+                return distance * (7.5625 * (percentComplete -= (2.625 / 2.75)) * percentComplete + 0.984375) + start;
+            }
+        },
+
         initialize: initializeAnimation
     };
 }());
