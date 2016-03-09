@@ -16,16 +16,17 @@
         <script>
             (function () {
                 var ctx = $("canvas")[0].getContext("2d");
+                ctx.save();
+                ctx.translate(1024 * 2 / 3, 200);
                 var drawScene = function () {
                     Sprites.lightsaber({
                       ctx: ctx,
-                      x: 1024 * 2 / 3,
-                      y: 200,
                       color: "green",
                       on: true
                     });
                 }
                 drawScene();
+                ctx.restore();
             }());
         </script>
     </body>

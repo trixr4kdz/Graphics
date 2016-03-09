@@ -12,8 +12,8 @@ $(function () {
         var BLADE_OFFSET = 10;
 
         var draw = function () {
-            var xHandle = specs.x;
-            var yHandle = specs.y;
+            var xHandle = 0;
+            var yHandle = 0;
             var color = specs.color || "red";
             var on = specs.on || true;
 

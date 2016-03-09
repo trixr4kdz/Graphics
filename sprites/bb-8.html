@@ -16,14 +16,14 @@
         <script>
             (function () {
                 var ctx = $("canvas")[0].getContext("2d");
+                ctx.save();
+                ctx.translate(800, 300);
                 var bodyTurn = 0;
                 var headTurn = -20;
                 var headTilt = 30;
                 var drawScene = function () {
                     Sprites.bb8({
                         ctx: ctx,
-                        x: 800,
-                        y: 300,
                         headTurn: headTurn,
                         bodyTurn: bodyTurn,
                         headTilt: headTilt,
@@ -31,9 +31,8 @@
                     });
                     bodyTurn += -2;
                     headTurn += -0.1;
-                    window.requestAnimationFrame(drawScene);
                 }
-                window.requestAnimationFrame(drawScene);
+                drawScene();
             }());
         </script>
     </body>

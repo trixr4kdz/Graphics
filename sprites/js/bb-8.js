@@ -13,8 +13,8 @@ $(function () {
         var bodyTurn = specs.bodyTurn || 0;
         var headTilt = specs.headTilt || 0;
         var color = specs.color || "rgb(255, 120, 0)";
-        var xBody = specs.x;
-        var yBody = specs.y;
+        var xBody = 0;
+        var yBody = 0;
         var xHead = xBody;
         var yHead = yBody - HEAD_OFFSET;
         var bodyGradient = ctx.createRadialGradient(500, 250, 10, 250, 300, 800);
@@ -25,7 +25,6 @@ $(function () {
 
         headGradient.addColorStop(0, "white");
         headGradient.addColorStop(1, "gray");
-        ctx.restore();
 
         var outerCircleConstants = {
             scale0: 0.8,

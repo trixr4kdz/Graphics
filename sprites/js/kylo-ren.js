@@ -16,8 +16,8 @@ $(function () {
         var HEAD_WIDTH = 200;
         var HEAD_HEIGHT = 200;
         var ctx = specs.ctx;
-        var xHead = specs.x || 0;
-        var yHead = specs.y || 0;
+        var xHead = 0;
+        var yHead = 0;
         var xBody = xHead + HEAD_WIDTH / 3;
         var yBody = HEAD_HEIGHT - 20;
         var shoulderOffset = yBody / 2;

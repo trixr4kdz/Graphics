@@ -20,15 +20,15 @@
             var drawScene = function () {
                 ctx.save();
                 ctx.scale(0.5, 0.5);
-                ctx.translate(300, 0);
+                ctx.translate(600, 0);
                 Sprites.kyloRen({
                   ctx: ctx,
                   leftArmAngle: Math.PI / 8,
                   rightArmAngle: Math.PI / 2,
                   leftLegAngle: Math.PI / 8,
-                  rightLegAngle: -Math.PI / 8,
-                  x: 300,
-                  y: 0
+                  rightLegAngle: -Math.PI / 8
+                  // x: 300,
+                  // y: 0
                 });
                 ctx.restore();
 
