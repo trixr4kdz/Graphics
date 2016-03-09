@@ -11,20 +11,25 @@ var Nanoshop = {
      * pixel as a 4-element array representing an RGBA value.
      */
 
-    brighten: function (r, g, b, a) {
-        return [r * 2, g * 2, b * 2, a];
+    brighter: function (x, y, r, g, b, a) {
+        return [r + 10, g + 10, b + 10, a];
     },
 
-    sepia: function (r, g, b, a) {
-        //TODO
+    sepia: function (x, y, r, g, b, a) {
+        return [r + (r * 0.3), g + (g * 0.82), b + (b * 0.62), a];
     },
 
-    shiftRight: function (r, g, b, a) {
+    shiftRight: function (x, y, r, g, b, a) {
         var red = a,
             green = r,
             blue = g,
             amount = b;
         return [red, green, blue, amount];
+    },
+
+    // Dondi's example
+    darkener: function (x, y, r, g, b, a) {
+        return [r / 2, g / 2, b / 2, a];
     },
 
     applyFilter: function (imageData, filter) {
