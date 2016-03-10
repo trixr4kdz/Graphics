@@ -20,7 +20,7 @@ var Nanoshop = {
     },
 
     sepia: function (x, y, r, g, b, a) {
-        return [r + 112, g + 66, b + 20, a];
+        return [r + 112, g + 66, b + 20, a + 10];
     },
 
     grid: function (x, y, r, g, b, a) {
