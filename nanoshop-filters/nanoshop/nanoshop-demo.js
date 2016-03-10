@@ -51,17 +51,6 @@
     // (end of adapted code by Tyler Nichols)
 
     // Set a little event handler to apply the filter.
-    $("#reset-button").click(function () {
-        // Filter time.
-        renderingContext.putImageData(
-            Nanoshop.applyFilter(
-                renderingContext.getImageData(0, 0, canvas.width, canvas.height),
-                Nanoshop.sepia
-            ),
-            0, 0
-        );
-    });
-
     $("#apply-sepia-button").click(function () {
         // Filter time.
         renderingContext.putImageData(
@@ -79,16 +68,6 @@
             Nanoshop.applyFilter(
                 renderingContext.getImageData(0, 0, canvas.width, canvas.height),
                 Nanoshop.brighter
-            ),
-            0, 0
-        );
-    });
-    $("#apply-other-button").click(function () {
-        // Filter time.
-        renderingContext.putImageData(
-            Nanoshop.applyFilter(
-                renderingContext.getImageData(0, 0, canvas.width, canvas.height),
-                Nanoshop.shiftRight
             ),
             0, 0
         );
