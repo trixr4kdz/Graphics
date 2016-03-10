@@ -15,8 +15,22 @@ var Nanoshop = {
         return [r + 50, g + 50, b + 50, a];
     },
 
+    darkener: function (x, y, r, g, b, a) {
+        return [r / 2, g / 2, b / 2, a];
+    },
+
     sepia: function (x, y, r, g, b, a) {
         return [r + 112, g + 66, b + 20, a];
+    },
+
+    grid: function (x, y, r, g, b, a) {
+        var colorX = x % 50,
+            colorY = y % 50;
+
+        if (colorX === 0 || colorY === 0) {
+            return [0, 0, 0, 255];
+        }
+        return [r, g, b, a];
     },
 
     applyFilter: function (imageData, filter) {

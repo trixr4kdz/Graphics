@@ -62,12 +62,12 @@
         );
     });
 
-    $("#apply-brighter-button").click(function () {
+    $("#apply-grid-button").click(function () {
         // Filter time.
         renderingContext.putImageData(
             Nanoshop.applyFilter(
                 renderingContext.getImageData(0, 0, canvas.width, canvas.height),
-                Nanoshop.brighter
+                Nanoshop.grid
             ),
             0, 0
         );
