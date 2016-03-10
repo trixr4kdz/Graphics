@@ -18,9 +18,8 @@ $(function () {
             var on = specs.on;
 
             if (on) {
-                console.log("WAT")
                 drawSideBlades(ctx, xHandle, yHandle, 200, color);
-                drawMainBlade(ctx, xHandle, yHandle, BLADE_OFFSET, -500, color);
+                drawMainBlade(ctx, xHandle, yHandle, BLADE_OFFSET, -1200, color);
             }
             drawHandle(ctx, xHandle, yHandle, HANDLE_WIDTH, HANDLE_HEIGHT, CROSSGUARD_WIDTH, CROSSGUARD_HEIGHT, CROSSGUARD_OFFSET);
         }
