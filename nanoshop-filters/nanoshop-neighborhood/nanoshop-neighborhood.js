@@ -37,6 +37,38 @@ var NanoshopNeighborhood = {
         return [ rTotal / 9, gTotal / 9, bTotal / 9, aTotal / 9 ];
     },
 
+    mesh: function (x, y, rgbaNeighborhood) {
+        var newR = rgbaNeighborhood[4].r,
+            newG = rgbaNeighborhood[4].g,
+            newB = rgbaNeighborhood[4].b,
+            newA = rgbaNeighborhood[4].a;
+
+        for (var i = 0; i < 9; i++) {
+            if (i % 2 === 0 && x % 2 === 0 && y % 2 === 0) {
+                newR += rgbaNeighborhood[i].r;
+                newG += rgbaNeighborhood[i].g;
+                newB += rgbaNeighborhood[i].b;
+                newA += rgbaNeighborhood[i].a;
+            }
+        }
+        return [newR / 2, newG / 2, newB / 2, newA];
+    },
+
+    psychedelic: function (x, y, rgbaNeighborhood) {
+        var newR = 0,
+            newG = 0,
+            newB = 0;
+
+        for (var i = 0; i < 5; i++) {
+            for (var j = 5; j < 9; j++) {
+                newR += Math.abs(rgbaNeighborhood[i].r - rgbaNeighborhood[j].r);
+                newG += Math.abs(rgbaNeighborhood[i].g - rgbaNeighborhood[j].g);
+                newB += Math.abs(rgbaNeighborhood[i].b - rgbaNeighborhood[j].b);
+            }
+        }
+        return[newR * 2, newG * 2, newB * 2, rgbaNeighborhood[4].a];
+    },
+
     /*
      * Applies the given filter to the given ImageData object,
      * then modifies its pixels according to the given filter.
