@@ -300,9 +300,9 @@ var Primitives = {
                 posX = (r + x) / circleHeight;
 
             currentColor = [leftColor[0], leftColor[1], leftColor[2]];
-            hDelta = [(rightColor[0] - leftColor[0]) / (2 * x),
-                      (rightColor[1] - leftColor[1]) / (2 * x),
-                      (rightColor[2] - leftColor[2]) / (2 * x)];
+            hDelta = [(rightColor[0] - leftColor[0]) / x,
+                      (rightColor[1] - leftColor[1]) / x,
+                      (rightColor[2] - leftColor[2]) / x];
 
             leftVDelta = [(color3[0] - color1[0]) / y,
                   (color3[1] - color1[1]) / y,
@@ -311,26 +311,24 @@ var Primitives = {
                   (color4[1] - color2[1]) / y,
                   (color4[2] - color2[2]) / y];
 
-            for (var i = -x; i < x; i++) {
-                this.setPixel(context, xc - i, yc + y, ((currentColor[0] * negY) + currentColor[0] * posY),
-                                                       ((currentColor[1] * negY) + currentColor[1] * posY),
-                                                       ((currentColor[2] * negY) + currentColor[2] * posY));
-                this.setPixel(context, xc - i, yc - y, ((currentColor[0] * posY) + currentColor[0] * negY), 
-                                                       ((currentColor[1] * posY) + currentColor[1] * negY), 
-                                                       ((currentColor[2] * posY) + currentColor[2] * negY));
+            for (var i = x; i > -x; i--) {
+                currentColor = [leftColor[0], leftColor[1], leftColor[2]];
+                hDelta = [(rightColor[0] - leftColor[0]) / x,
+                      (rightColor[1] - leftColor[1]) / x,
+                      (rightColor[2] - leftColor[2]) / x];
+                // this.setPixel(context, xc - i, yc + y, ((currentColor[0] * negY) + currentColor[0] * posY),
+                //                                        ((currentColor[1] * negY) + currentColor[1] * posY),
+                //                                        ((currentColor[2] * negY) + currentColor[2] * posY));
+                this.setPixel(context, xc - i, yc - y, (currentColor[0]), 
+                                                       (currentColor[1]), 
+                                                       (currentColor[2]));
+                this.setPixel(context, xc - i, yc + y, (currentColor[0]),
+                                                       (currentColor[1]),
+                                                       (currentColor[2]));
 
-                currentColor[0] += hDelta[0];
-                currentColor[1] += hDelta[1];
-                currentColor[2] += hDelta[2];
-            }
-
-            for (var i = -y; i < y; i++) { 
-                this.setPixel(context, xc - i, yc + x, ((currentColor[0] * negX) + currentColor[0] * posX),
-                                                       ((currentColor[1] * negX) + currentColor[1] * posX),
-                                                       ((currentColor[2] * negX) + currentColor[2] * posX));
-                this.setPixel(context, xc - i, yc - x, ((currentColor[0] * posX) + currentColor[0] * negX), 
-                                                       ((currentColor[1] * posX) + currentColor[1] * negX), 
-                                                       ((currentColor[2] * posX) + currentColor[2] * negX));
+                // currentColor[0] += hDelta[0];
+                // currentColor[1] += hDelta[1];
+                // currentColor[2] += hDelta[2];
                 leftColor[0] += leftVDelta[0];
                 leftColor[1] += leftVDelta[1];
                 leftColor[2] += leftVDelta[2];
@@ -339,6 +337,36 @@ var Primitives = {
                 rightColor[2] += rightVDelta[2];
             }
 
+            // for (var i = y; i > -y; i--) { 
+            //     // this.setPixel(context, xc - i, yc + y, ((currentColor[0] * negY) + currentColor[0] * posY),
+            //     //                                        ((currentColor[1] * negY) + currentColor[1] * posY),
+            //     //                                        ((currentColor[2] * negY) + currentColor[2] * posY));
+            //     // this.setPixel(context, xc - i, yc - y, ((currentColor[0] * posY) + currentColor[0] * negY), 
+            //     //                                        ((currentColor[1] * posY) + currentColor[1] * negY), 
+            //     //                                        ((currentColor[2] * posY) + currentColor[2] * negY));
+
+            //     // this.setPixel(context, xc - i, yc + x, ((currentColor[0] * negY) + currentColor[0] * posY),
+            //     //                                        ((currentColor[1] * negY) + currentColor[1] * posY),
+            //     //                                        ((currentColor[2] * negY) + currentColor[2] * posY));
+            //     this.setPixel(context, xc - i, yc - x, (currentColor[0] * posY) + currentColor[0] * negY, 
+            //                                            (currentColor[1] * posY) + currentColor[1] * negY, 
+            //                                            (currentColor[2] * posY) + currentColor[2] * negY);
+
+            //     currentColor[0] += leftVDelta[0];
+            //     currentColor[1] += leftVDelta[1];
+            //     currentColor[2] += leftVDelta[2];
+
+            //     // currentColor[0] += (rightVDelta[0] + leftVDelta[0]) / 2;
+            //     // currentColor[1] += (rightVDelta[1] + leftVDelta[1]) / 2;
+            //     // currentColor[2] += (rightVDelta[2] + leftVDelta[2]) / 2;
+
+            //     leftColor[0] += leftVDelta[0];
+            //     leftColor[1] += leftVDelta[1];
+            //     leftColor[2] += leftVDelta[2];
+            //     rightColor[0] += rightVDelta[0];
+            //     rightColor[1] += rightVDelta[1];
+            //     rightColor[2] += rightVDelta[2];
+            // }
         }
         
     },
