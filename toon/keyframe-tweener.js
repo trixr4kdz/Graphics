@@ -123,18 +123,12 @@
 
                             var tweenSpec = function (startKeyframe, ease, duration) {
                                 var spec = Object.keys(startKeyframe);
-                                console.log("startKeyframe: " + startKeyframe);
                                 for (var key of spec) {
-                                    // console.log(param[key]);
-                                    console.log("spec: " + spec);
-                                    // console.log(startKeyframe[key])
-                                    // console.log(endKeyframe[key])
-                                    var dist = startKeyframe[key] - endKeyframe[key];
+                                    var dist = endKeyframe[key] - startKeyframe[key];
                                     if (typeof startKeyframe[key] !== "function") {
                                         startKeyframe[key] = ease(currentTweenFrame, startKeyframe[key], dist, duration);
                                     }
                                 }
-                                // console.log(dist);
                                 return startKeyframe;
                             }
                             

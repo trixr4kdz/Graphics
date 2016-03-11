@@ -50,42 +50,60 @@
                         ty: canvas.height * 0.75,
                         ease: KeyframeTweener.linear,
                         bodyTurn: 100,
-                        headTurn: 50
+                        headTurn: -40
                     },
 
                     {
                         frame: 100,
                         tx: canvas.width / 2 + 150,
                         ty: canvas.height * 0.75,
-                        ease: KeyframeTweener.linear,
-                        bodyTurn: 500,
-                        headTurn: 55
+                        ease: KeyframeTweener.bounce,
+                        bodyTurn: -70,
+                        headTurn: -40
+                    },
+
+                    // BB-8 bumps into lightsaber
+                    {
+                        frame: 105,
+                        tx: canvas.width / 2 + 150 + 5,
+                        ty: canvas.height * 0.75,
+                        bodyTurn: -65,
+                        headTurn: -40
+                    },
+
+                    // {
+                    //     frame: 200,
+                    //     tx: canvas.width / 2 + 150 + 5,
+                    //     ty: canvas.height * 0.75,
+                    //     bodyTurn: -67,
+                    //     headTurn: -40
+                    // },
+
+                    // {
+                    //     frame: 205,
+                    //     tx: canvas.width / 2 + 150 + 5,
+                    //     ty: canvas.height * 0.75,
+                    //     bodyTurn: -67,
+                    //     headTurn: -40
+                    // },
+
+                    {
+                        frame: 240,
+                        tx: canvas.width / 2 + 150 + 5,
+                        ty: canvas.height * 0.75,
+                        bodyTurn: -65,
+                        headTurn: -40,
+                        ease: KeyframeTweener.elastic
+                        // headTilt: 30
                     },
 
                     {
                         frame: 300,
-                        tx: canvas.width / 2 + 150,
-                        ty: canvas.height * 0.75,
-                        ease: KeyframeTweener.bounce,
-                        bodyTurn: 500,
-                        headTurn: 55,
-                    },
-
-                    {
-                        frame: 400,
-                        tx: canvas.width - 200,
-                        ty: canvas.height * 0.75,
-                        ease: KeyframeTweener.elastic,
-                        bodyTurn: 500,
-                        headTurn: 55
-                    },
-
-                    {
-                        frame: 475,
                         tx: 0,
                         ty: canvas.height * 0.75,
-                        bodyTurn: 500,
-                        headTurn: 55
+                        bodyTurn: -300,
+                        headTurn: -40,
+                        headTilt: -40,
                     },
                 ]
             },
@@ -102,7 +120,7 @@
                     },
 
                     {
-                        frame: 300,
+                        frame: 200,
                         tx: canvas.width / 2,
                         ty: canvas.height * 0.85,
                         sx: 0.3,
@@ -111,13 +129,25 @@
                     },
 
                     {
-                        frame: 500,
+                        frame: 250,
                         rotate: 60,
                         tx: canvas.width - 200,
                         ty: canvas.height / 2 - 100,
                         sx: 0.3,
                         sy: 0.3
+                    },
+
+                    {
+                        frame: 270,
+                        // rotate: 60,
+                        tx: canvas.width - 200,
+                        ty: canvas.height / 2 - 100,
+                        sx: 0.3,
+                        sy: 0.3,
+                        on: true
                     }
+
+
                 ]
             },
 
@@ -130,7 +160,11 @@
                         ty: canvas.height * 0.1,
                         ease: KeyframeTweener.linear,
                         sx: 0.5,
-                        sy: 0.5
+                        sy: 0.5,
+                        rightArmAngle: 10,
+                        leftArmAngle: -20,
+                        rightLegAngle: 10,
+                        leftLegAngle: -20
                     },
 
                     {
@@ -138,7 +172,11 @@
                         tx: canvas.width - 200,
                         ty: canvas.height * 0.1,
                         sx: 0.5,
-                        sy: 0.5
+                        sy: 0.5,
+                        rightArmAngle: 30,
+                        leftArmAngle: 30,
+                        rightLegAngle: 30,
+                        leftLegAngle: 30
                     },
 
                     {
@@ -146,7 +184,8 @@
                         tx: canvas.width - 200,
                         ty: canvas.height * 0.1,
                         sx: 0.5,
-                        sy: 0.5
+                        sy: 0.5,
+                        
                     }
                 ]
             }
