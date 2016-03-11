@@ -50,7 +50,8 @@
                         ty: canvas.height * 0.75,
                         ease: KeyframeTweener.linear,
                         bodyTurn: 100,
-                        headTurn: -40
+                        headTurn: -40,
+                        headTilt: 30,
                     },
 
                     {
@@ -59,7 +60,8 @@
                         ty: canvas.height * 0.75,
                         ease: KeyframeTweener.elastic,
                         bodyTurn: -70,
-                        headTurn: -40
+                        headTurn: -40,
+                        headTilt: 70
                     },
 
                     // BB-8 bumps into lightsaber
@@ -68,7 +70,8 @@
                         tx: canvas.width / 2 + 150 + 5,
                         ty: canvas.height * 0.75,
                         bodyTurn: -65,
-                        headTurn: -40
+                        headTurn: -40,
+                        headTilt: 5
                     },
 
                     {
