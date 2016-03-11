@@ -285,12 +285,15 @@ var Primitives = {
             hDelta,
             currentColor,
             dist,
+            diameter = 2 * r,
+            left = xc - r,
+            top = yc - r,
 
         fillNoColor = function () {
             // The rendering context will just ignore the
             // undefined colors in this case.
-            for (i = y; i < bottom; i += 1) {
-                for (j = x; j < right; j += 1) {
+            for (i = top; i < bottom; i += 1) {
+                for (j = left; j < right; j += 1) {
                     dist = Math.sqrt(Math.pow(xc - j, 2) + Math.pow(yc - i, 2));
                     if (dist <= r) {
                         module.setPixel(context, j, i);
@@ -300,9 +303,10 @@ var Primitives = {
         },
 
         fillOneColor = function () {
+            // console.log("making 1-way linear gradient");
             // Single color all the way through.
-            for (i = y; i < bottom; i += 1) {
-                for (j = x; j < right; j += 1) {
+            for (i = top; i < bottom; i += 1) {
+                for (j = left; j < right; j += 1) {
                     dist = Math.sqrt(Math.pow(xc - j, 2) + Math.pow(yc - i, 2));
                     if (dist <= r) {
                         module.setPixel(context, j, i, color1[0], color1[1], color1[2]);
@@ -312,9 +316,10 @@ var Primitives = {
         },
 
         fillTwoColors = function () {
+            // console.log("making 2-way linear gradient");
             // This modifies the color vertically only.
-            for (i = y; i < bottom; i += 1) {
-                for (j = x; j < right; j += 1) {
+            for (i = top; i < bottom; i += 1) {
+                for (j = left; j < right; j += 1) {
                     dist = Math.sqrt(Math.pow(xc - j, 2) + Math.pow(yc - i, 2));
                     if (dist <= r) {
                         module.setPixel(context, j, i,
@@ -332,23 +337,15 @@ var Primitives = {
         },
 
         fillFourColors = function () {
-            console.log(r);
-
-            // leftVDelta = [(color3[0] - color1[0]) / (2 * r),
-            //           (color3[1] - color1[1]) / (2 * r),
-            //           (color3[2] - color1[2]) / (2 * r)];
-            // rightVDelta = [(color4[0] - color2[0]) / (2 * r),
-            //           (color4[1] - color2[1]) / (2 * r),
-            //           (color4[2] - color2[2]) / (2 * r)];
-
-            for (i = yc - r; i < bottom; i += 1) {
+            // console.log("making 4-way linear gradient");
+            for (i = top; i < bottom; i += 1) {
                 // Move to the next "vertical" color level.
                 currentColor = [leftColor[0], leftColor[1], leftColor[2]];
                 hDelta = [(rightColor[0] - leftColor[0]) / (2 * r),
                           (rightColor[1] - leftColor[1]) / (2 * r),
                           (rightColor[2] - leftColor[2]) / (2 * r)];
 
-                for (j = xc - r; j < right; j += 1) {
+                for (j = left; j < right; j += 1) {
                     dist = Math.sqrt(Math.pow(xc - j, 2) + Math.pow(yc - i, 2));
                     if (dist <= r) {
                         module.setPixel(context, j, i,
@@ -379,34 +376,23 @@ var Primitives = {
             fillOneColor();
         } else if (!color3) {
             // For this case, we set up the left vertical deltas.
-            leftVDelta = [(color2[0] - color1[0]) / (2 * r),
-                      (color2[1] - color1[1]) / (2 * r),
-                      (color2[2] - color1[2]) / (2 * r)];
+            leftVDelta = [(color2[0] - color1[0]) / diameter,
+                      (color2[1] - color1[1]) / diameter,
+                      (color2[2] - color1[2]) / diameter];
             fillTwoColors();
         } else {
             // The four-color case, with a quick assignment in case
             // there are only three colors.
             color4 = color4 || color3;
 
-            leftVDelta = [(color3[0] - color1[0]) / (2 * r),
-                      (color3[1] - color1[1]) / (2 * r),
-                      (color3[2] - color1[2]) / (2 * r)];
-            rightVDelta = [(color4[0] - color2[0]) / (2 * r),
-                      (color4[1] - color2[1]) / (2 * r),
-                      (color4[2] - color2[2]) / (2 * r)];
+            leftVDelta = [(color3[0] - color1[0]) / diameter,
+                      (color3[1] - color1[1]) / diameter,
+                      (color3[2] - color1[2]) / diameter];
+            rightVDelta = [(color4[0] - color2[0]) / diameter,
+                      (color4[1] - color2[1]) / diameter,
+                      (color4[2] - color2[2]) / diameter];
             fillFourColors();
-        }
-
-        // Dondi's original code
-        //     color1 = color1 || [0, 0, 0];
-        //     this.setPixel(context, xc + x, yc + y, color1[0], color1[1], color1[2]);
-        //     this.setPixel(context, xc + x, yc - y, color1[0], color1[1], color1[2]);
-        //     this.setPixel(context, xc + y, yc + x, color1[0], color1[1], color1[2]);
-        //     this.setPixel(context, xc + y, yc - x, color1[0], color1[1], color1[2]);
-        //     this.setPixel(context, xc - x, yc + y, color1[0], color1[1], color1[2]);
-        //     this.setPixel(context, xc - x, yc - y, color1[0], color1[1], color1[2]);
-        //     this.setPixel(context, xc - y, yc + x, color1[0], color1[1], color1[2]);
-        //     this.setPixel(context, xc - y, yc - x, color1[0], color1[1], color1[2]);                    
+        }             
     },
 
     // First, the most naive possible implementation: circle by trigonometry.
