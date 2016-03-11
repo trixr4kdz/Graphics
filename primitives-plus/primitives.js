@@ -272,7 +272,7 @@ var Primitives = {
      * permutations of that eighth's coordinates.  So we define a helper
      * function that all of the circle implementations will use...
      */
-    plotCirclePoints: function (context, xc, yc, x, y, color1, color2, color3, color4) {
+    plotCirclePoints: function (context, xc, yc, x, y, r, color1, color2, color3, color4) {
 
         if (!color2) {
             color1 = color1 || [0, 0, 0];
@@ -285,50 +285,50 @@ var Primitives = {
             this.setPixel(context, xc - y, yc + x, color1[0], color1[1], color1[2]);
             this.setPixel(context, xc - y, yc - x, color1[0], color1[1], color1[2]);
         } else {
-            var leftColor = color1 ? [color1[0], color1[1], color1[2]] : color1,
-                rightColor = color2 ? [color2[0], color2[1], color2[2]] : color2,
-                leftVDelta,
-                rightVDelta,
-                hDelta,
-                currentColor,
-                r = Math.sqrt(x ^ 2 + y ^ 2),
+            // var r = Math.sqrt(x ^ 2 + y ^ 2);
+            console.log(r)
+            var module = this,
+            i,
+            j,
+            bottom = yc + r,
+            right = xc + r,
+            leftColor = color1 ? [color1[0], color1[1], color1[2]] : color1,
+            rightColor = color2 ? [color2[0], color2[1], color2[2]] : color2,
+            leftVDelta,
+            rightVDelta,
+            hDelta,
+            currentColor;
 
-                circleHeight = r * 2,
-                negY = (r - y) / circleHeight,
-                posY = (r + y) / circleHeight,
-                negX = (r - x) / circleHeight,
-                posX = (r + x) / circleHeight;
+            leftVDelta = [(color3[0] - color1[0]) / r,
+                      (color3[1] - color1[1]) / r,
+                      (color3[2] - color1[2]) / r];
+            rightVDelta = [(color4[0] - color2[0]) / r,
+                      (color4[1] - color2[1]) / r,
+                      (color4[2] - color2[2]) / r];
 
-            currentColor = [leftColor[0], leftColor[1], leftColor[2]];
-            hDelta = [(rightColor[0] - leftColor[0]) / x,
-                      (rightColor[1] - leftColor[1]) / x,
-                      (rightColor[2] - leftColor[2]) / x];
-
-            leftVDelta = [(color3[0] - color1[0]) / y,
-                  (color3[1] - color1[1]) / y,
-                  (color3[2] - color1[2]) / y];
-            rightVDelta = [(color4[0] - color2[0]) / y,
-                  (color4[1] - color2[1]) / y,
-                  (color4[2] - color2[2]) / y];
-
-            for (var i = x; i > -x; i--) {
+            for (i = yc - r; i < bottom; i += 1) {
+                // Move to the next "vertical" color level.
                 currentColor = [leftColor[0], leftColor[1], leftColor[2]];
-                hDelta = [(rightColor[0] - leftColor[0]) / x,
-                      (rightColor[1] - leftColor[1]) / x,
-                      (rightColor[2] - leftColor[2]) / x];
-                // this.setPixel(context, xc - i, yc + y, ((currentColor[0] * negY) + currentColor[0] * posY),
-                //                                        ((currentColor[1] * negY) + currentColor[1] * posY),
-                //                                        ((currentColor[2] * negY) + currentColor[2] * posY));
-                this.setPixel(context, xc - i, yc - y, (currentColor[0]), 
-                                                       (currentColor[1]), 
-                                                       (currentColor[2]));
-                this.setPixel(context, xc - i, yc + y, (currentColor[0]),
-                                                       (currentColor[1]),
-                                                       (currentColor[2]));
+                hDelta = [(rightColor[0] - leftColor[0]) / r,
+                          (rightColor[1] - leftColor[1]) / r,
+                          (rightColor[2] - leftColor[2]) / r];
 
-                // currentColor[0] += hDelta[0];
-                // currentColor[1] += hDelta[1];
-                // currentColor[2] += hDelta[2];
+                for (j = xc - r; j < right; j += 1) {
+
+                    if () {
+                        module.setPixel(context, j, i,
+                                currentColor[0],
+                                currentColor[1],
+                                currentColor[2]);
+
+                        // Move to the next color horizontally.
+                        currentColor[0] += hDelta[0];
+                        currentColor[1] += hDelta[1];
+                        currentColor[2] += hDelta[2];
+                    }
+                }
+
+                // The color on each side "grades" at different rates.
                 leftColor[0] += leftVDelta[0];
                 leftColor[1] += leftVDelta[1];
                 leftColor[2] += leftVDelta[2];
@@ -336,37 +336,7 @@ var Primitives = {
                 rightColor[1] += rightVDelta[1];
                 rightColor[2] += rightVDelta[2];
             }
-
-            // for (var i = y; i > -y; i--) { 
-            //     // this.setPixel(context, xc - i, yc + y, ((currentColor[0] * negY) + currentColor[0] * posY),
-            //     //                                        ((currentColor[1] * negY) + currentColor[1] * posY),
-            //     //                                        ((currentColor[2] * negY) + currentColor[2] * posY));
-            //     // this.setPixel(context, xc - i, yc - y, ((currentColor[0] * posY) + currentColor[0] * negY), 
-            //     //                                        ((currentColor[1] * posY) + currentColor[1] * negY), 
-            //     //                                        ((currentColor[2] * posY) + currentColor[2] * negY));
-
-            //     // this.setPixel(context, xc - i, yc + x, ((currentColor[0] * negY) + currentColor[0] * posY),
-            //     //                                        ((currentColor[1] * negY) + currentColor[1] * posY),
-            //     //                                        ((currentColor[2] * negY) + currentColor[2] * posY));
-            //     this.setPixel(context, xc - i, yc - x, (currentColor[0] * posY) + currentColor[0] * negY, 
-            //                                            (currentColor[1] * posY) + currentColor[1] * negY, 
-            //                                            (currentColor[2] * posY) + currentColor[2] * negY);
-
-            //     currentColor[0] += leftVDelta[0];
-            //     currentColor[1] += leftVDelta[1];
-            //     currentColor[2] += leftVDelta[2];
-
-            //     // currentColor[0] += (rightVDelta[0] + leftVDelta[0]) / 2;
-            //     // currentColor[1] += (rightVDelta[1] + leftVDelta[1]) / 2;
-            //     // currentColor[2] += (rightVDelta[2] + leftVDelta[2]) / 2;
-
-            //     leftColor[0] += leftVDelta[0];
-            //     leftColor[1] += leftVDelta[1];
-            //     leftColor[2] += leftVDelta[2];
-            //     rightColor[0] += rightVDelta[0];
-            //     rightColor[1] += rightVDelta[1];
-            //     rightColor[2] += rightVDelta[2];
-            // }
+            
         }
         
     },
@@ -384,7 +354,7 @@ var Primitives = {
             y = 0;
 
         while (x >= y) {
-            this.plotCirclePoints(context, xc, yc, x, y, color1, color2, color3, color4);
+            this.plotCirclePoints(context, xc, yc, x, y, r, color1, color2, color3, color4);
             x = x * c - y * s;
             y = x * s + y * c;
         }
