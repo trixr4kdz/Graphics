@@ -303,7 +303,7 @@ var Primitives = {
         },
 
         fillOneColor = function () {
-            console.log("making 1-way linear gradient");
+            // console.log("making 1-way linear gradient");
             // Single color all the way through.
             for (i = top; i < bottom; i += 1) {
                 for (j = left; j < right; j += 1) {
@@ -316,7 +316,7 @@ var Primitives = {
         },
 
         fillTwoColors = function () {
-            console.log("making 2-way linear gradient");
+            // console.log("making 2-way linear gradient");
             // This modifies the color vertically only.
             for (i = top; i < bottom; i += 1) {
                 for (j = left; j < right; j += 1) {
@@ -337,7 +337,7 @@ var Primitives = {
         },
 
         fillFourColors = function () {
-            console.log("making 4-way linear gradient");
+            // console.log("making 4-way linear gradient");
             for (i = top; i < bottom; i += 1) {
                 // Move to the next "vertical" color level.
                 currentColor = [leftColor[0], leftColor[1], leftColor[2]];
