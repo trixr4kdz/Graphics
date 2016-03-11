@@ -103,9 +103,9 @@
                                 syDistance = (endKeyframe.sy || 1) - syStart,
 
                                 rotateStart = (startKeyframe.rotate || 0) * Math.PI / 180,
-                                rotateDistance = (endKeyframe.rotate || 0) * Math.PI / 180 - rotateStart;
+                                rotateDistance = (endKeyframe.rotate || 0) * Math.PI / 180 - rotateStart,
 
-                            var currentTweenFrame = currentFrame - startKeyframe.frame,
+                                currentTweenFrame = currentFrame - startKeyframe.frame,
                                 duration = endKeyframe.frame - startKeyframe.frame + 1;
 
                             // Build our transform according to where we should be.
@@ -121,8 +121,30 @@
                                 ease(currentTweenFrame, rotateStart, rotateDistance, duration)
                             );
 
+                            var tweenSpec = function (startKeyframe, ease, duration) {
+                                var spec = Object.keys(startKeyframe);
+                                console.log("startKeyframe: " + startKeyframe);
+                                for (var key of spec) {
+                                    // console.log(param[key]);
+                                    console.log("spec: " + spec);
+                                    // console.log(startKeyframe[key])
+                                    // console.log(endKeyframe[key])
+                                    var dist = startKeyframe[key] - endKeyframe[key];
+                                    if (typeof startKeyframe[key] !== "function") {
+                                        startKeyframe[key] = ease(currentTweenFrame, startKeyframe[key], dist, duration);
+                                    }
+                                }
+                                // console.log(dist);
+                                return startKeyframe;
+                            }
+                            
                             // Draw the sprite.
-                            sprites[i].draw(renderingContext);
+                            sprites[i].draw(renderingContext, 
+                                tweenSpec(
+                                    startKeyframe, 
+                                    ease,
+                                    duration
+                                ));
 
                             // Clean up.
                             renderingContext.restore();
@@ -180,6 +202,31 @@
                 return distance * (7.5625 * (percentComplete -= (2.625 / 2.75)) * percentComplete + 0.984375) + start;
             }
         },
+
+        easeInElastic: function (currentTime, start, distance, duration) {
+            var easingChange = 1.70158;
+            var changeInDuration = 0;
+            var previousDistance = distance;
+            if (currentTime == 0) {
+                return start;  
+            }
+            if ((currentTime /= duration) == 1) {
+                return start + distance;  
+            }
+            if (!changeInDuration) {
+                changeInDuration = duration * 0.3;
+            }
+            if (previousDistance < Math.abs(distance)) { 
+                previousDistance = distance; 
+                var easingChange = changeInDuration / 4; 
+            }
+            else {
+                var easingChange = changeInDuration / (2 * Math.PI) * Math.asin (distance / previousDistance);
+            }
+            return -(previousDistance * Math.pow(2, 10 * (currentTime -= 1)) * 
+                      Math.sin((currentTime * duration - easingChange) * 
+                      (2 * Math.PI) / changeInDuration)) + start;
+        },  
 
         initialize: initializeAnimation
     };

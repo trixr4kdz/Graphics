@@ -8,22 +8,30 @@
         // First, a selection of "drawing functions" from which we
         // can choose.  Their common trait: they all accept a single
         // renderingContext argument.
-        bb8 = function (renderingContext) {
+        bb8 = function (renderingContext, spec) {
             Sprites.bb8({
-                ctx: renderingContext
+                ctx: renderingContext,
+                bodyTurn: spec.bodyTurn,
+                headTurn: spec.headTurn,
+                headTilt: spec.headTilt
             });
         },
 
-        lightsaber = function (renderingContext) {
+        lightsaber = function (renderingContext, spec) {
             Sprites.lightsaber({
                 ctx: renderingContext,
-                on: false
+                on: spec.on,
+
             });
         },
 
-        kyloRen = function (renderingContext) {
+        kyloRen = function (renderingContext, spec) {
             Sprites.kyloRen({
-                ctx: renderingContext
+                ctx: renderingContext,
+                leftArmAngle: spec.leftArmAngle,
+                rightArmAngle: spec.rightArmAngle,
+                leftLegAngle: spec.leftLegAngle,
+                rightLegAngle: spec.rightLegAngle
             });
         },
 
@@ -40,23 +48,45 @@
                         frame: 0,
                         tx: canvas.width,
                         ty: canvas.height * 0.75,
-                        ease: KeyframeTweener.linear
+                        ease: KeyframeTweener.linear,
+                        bodyTurn: 100,
+                        headTurn: 50
                     },
 
                     {
                         frame: 100,
                         tx: canvas.width / 2 + 150,
                         ty: canvas.height * 0.75,
-                        ease: KeyframeTweener.linear
+                        ease: KeyframeTweener.linear,
+                        bodyTurn: 500,
+                        headTurn: 55
                     },
 
-                    // // The last keyframe does not need an easing function.
                     {
                         frame: 300,
                         tx: canvas.width / 2 + 150,
                         ty: canvas.height * 0.75,
-                        // rotate: 60 // Keyframe.rotate uses degrees.
-                    }
+                        ease: KeyframeTweener.bounce,
+                        bodyTurn: 500,
+                        headTurn: 55,
+                    },
+
+                    {
+                        frame: 400,
+                        tx: canvas.width - 200,
+                        ty: canvas.height * 0.75,
+                        ease: KeyframeTweener.elastic,
+                        bodyTurn: 500,
+                        headTurn: 55
+                    },
+
+                    {
+                        frame: 475,
+                        tx: 0,
+                        ty: canvas.height * 0.75,
+                        bodyTurn: 500,
+                        headTurn: 55
+                    },
                 ]
             },
 
@@ -68,55 +98,36 @@
                         tx: canvas.width / 2,
                         ty: canvas.height * 0.85,
                         sx: 0.3,
-                        sy: 0.3,
-                    },
-
-                    {
-                        frame: 100,
-                        tx: canvas.width / 2,
-                        ty: canvas.height * 0.85,
-                        sx: 0.3,
                         sy: 0.3
                     },
 
                     {
-                        frame: 150,
+                        frame: 300,
+                        tx: canvas.width / 2,
+                        ty: canvas.height * 0.85,
+                        sx: 0.3,
+                        sy: 0.3,
+                        ease: KeyframeTweener.easeInElastic
+                    },
+
+                    {
+                        frame: 500,
                         rotate: 60,
                         tx: canvas.width - 200,
                         ty: canvas.height / 2 - 100,
                         sx: 0.3,
-                        sy: 0.3,
-                    },
-
-                    // {
-                    //     frame: 100,
-                    //     tx: 300,
-                    //     ty: 0,
-                    //     ease: KeyframeTweener.linear
-                    // },
-
-                    // {
-                    //     frame: 150,
-                    //     tx: 300,
-                    //     ty: 600,
-                    // }
+                        sy: 0.3
+                    }
                 ]
             },
 
             {
                 draw: kyloRen,
                 keyframes: [
-                    // {
-                    //     frame: 50,
-                    //     tx: 0,
-                    //     ty: canvas.height * 0.75,
-                    //     ease: KeyframeTweener.linear
-                    // },
-
                     {
                         frame: 100,
                         tx: canvas.width,
-                        ty: 155,
+                        ty: canvas.height * 0.1,
                         ease: KeyframeTweener.linear,
                         sx: 0.5,
                         sy: 0.5
@@ -125,7 +136,15 @@
                     {
                         frame: 230,
                         tx: canvas.width - 200,
-                        ty: 155,
+                        ty: canvas.height * 0.1,
+                        sx: 0.5,
+                        sy: 0.5
+                    },
+
+                    {
+                        frame: 400,
+                        tx: canvas.width - 200,
+                        ty: canvas.height * 0.1,
                         sx: 0.5,
                         sy: 0.5
                     }
@@ -140,6 +159,6 @@
         renderingContext: canvas.getContext("2d"),
         width: canvas.width,
         height: canvas.height,
-        sprites: sprites, 
+        sprites: sprites
     });
 }());
