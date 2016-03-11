@@ -297,36 +297,48 @@ var Primitives = {
             leftVDelta,
             rightVDelta,
             hDelta,
-            currentColor;
+            currentColor,
 
-            leftVDelta = [(color3[0] - color1[0]) / r,
-                      (color3[1] - color1[1]) / r,
-                      (color3[2] - color1[2]) / r];
-            rightVDelta = [(color4[0] - color2[0]) / r,
-                      (color4[1] - color2[1]) / r,
-                      (color4[2] - color2[2]) / r];
+            leftVDelta = [(color3[0] - color1[0]) / (2 * r),
+                      (color3[1] - color1[1]) / (2 * r),
+                      (color3[2] - color1[2]) / (2 * r)];
+            rightVDelta = [(color4[0] - color2[0]) / (2 * r),
+                      (color4[1] - color2[1]) / (2 * r),
+                      (color4[2] - color2[2]) / (2 * r)];
 
             for (i = yc - r; i < bottom; i += 1) {
                 // Move to the next "vertical" color level.
                 currentColor = [leftColor[0], leftColor[1], leftColor[2]];
-                hDelta = [(rightColor[0] - leftColor[0]) / r,
-                          (rightColor[1] - leftColor[1]) / r,
-                          (rightColor[2] - leftColor[2]) / r];
+                hDelta = [(rightColor[0] - leftColor[0]) / (2 * r),
+                          (rightColor[1] - leftColor[1]) / (2 * r),
+                          (rightColor[2] - leftColor[2]) / (2 * r)];
 
                 for (j = xc - r; j < right; j += 1) {
-
-                    if () {
+                    var dist = Math.sqrt(Math.pow(xc - j, 2) + Math.pow(yc - i, 2));
+                    if(isNaN(dist)){
+                        console.log("xc is a" + typeof(xc));
+                        console.log("yc is a" + typeof(yc));
+                        console.log("x is a" + typeof(j));
+                        console.log("y is a" + typeof(i));
+                        console.log((xc - j)^2);
+                        console.log((yc - i)^2);
+                        console.log("current xc:" + xc + " current yc:" + yc);
+                    console.log("current x:" + j + " current y:" + i);
+                        return;
+                    }
+                    
+                    if (dist <= r) {
                         module.setPixel(context, j, i,
                                 currentColor[0],
                                 currentColor[1],
                                 currentColor[2]);
-
-                        // Move to the next color horizontally.
-                        currentColor[0] += hDelta[0];
-                        currentColor[1] += hDelta[1];
-                        currentColor[2] += hDelta[2];
+                    // Move to the next color horizontally.
+                    currentColor[0] += hDelta[0];
+                    currentColor[1] += hDelta[1];
+                    currentColor[2] += hDelta[2];
                     }
                 }
+                // }
 
                 // The color on each side "grades" at different rates.
                 leftColor[0] += leftVDelta[0];
@@ -367,7 +379,7 @@ var Primitives = {
             y = 0;
 
         while (x >= y) {
-            this.plotCirclePoints(context, xc, yc, x, y, color1, color2, color3, color4);
+            this.plotCirclePoints(context, xc, yc, x, y, r, color1, color2, color3, color4);
             x = x - (epsilon * y);
             y = y + (epsilon * x);
         }
@@ -380,7 +392,7 @@ var Primitives = {
             y = r;
 
         while (x < y) {
-            this.plotCirclePoints(context, xc, yc, x, y, color1, color2, color3, color4);
+            this.plotCirclePoints(context, xc, yc, x, y, r, color1, color2, color3, color4);
             if (p < 0) {
                 p = p + 4 * x + 6;
             } else {
@@ -390,7 +402,7 @@ var Primitives = {
             x += 1;
         }
         if (x === y) {
-            this.plotCirclePoints(context, xc, yc, x, y, color1, color2, color3, color4);
+            this.plotCirclePoints(context, xc, yc, x, y, r, color1, color2, color3, color4);
         }
     },
 
@@ -403,7 +415,7 @@ var Primitives = {
             v = e - r;
 
         while (x <= y) {
-            this.plotCirclePoints(context, xc, yc, x, y, color1, color2, color3, color4);
+            this.plotCirclePoints(context, xc, yc, x, y, r, color1, color2, color3, color4);
             if (e < 0) {
                 x += 1;
                 u += 2;
@@ -426,7 +438,7 @@ var Primitives = {
             e = 0;
 
         while (y <= x) {
-            this.plotCirclePoints(context, xc, yc, x, y, color1, color2, color3, color4);
+            this.plotCirclePoints(context, xc, yc, x, y, r, color1, color2, color3, color4);
             y += 1;
             e += (2 * y - 1);
             if (e > x) {
