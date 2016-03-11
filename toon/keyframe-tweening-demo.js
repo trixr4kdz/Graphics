@@ -80,8 +80,8 @@
                         ty: canvas.height * 0.75,
                         bodyTurn: -65,
                         headTurn: -40,
-                        ease: KeyframeTweener.quadEaseOut,
-                        headTilt: 0
+                        ease: KeyframeTweener.quadEaseOut
+                        // headTilt: 30
                     },
 
                     {
