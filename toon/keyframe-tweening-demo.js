@@ -71,22 +71,6 @@
                         headTurn: -40
                     },
 
-                    // {
-                    //     frame: 200,
-                    //     tx: canvas.width / 2 + 150 + 5,
-                    //     ty: canvas.height * 0.75,
-                    //     bodyTurn: -67,
-                    //     headTurn: -40
-                    // },
-
-                    // {
-                    //     frame: 205,
-                    //     tx: canvas.width / 2 + 150 + 5,
-                    //     ty: canvas.height * 0.75,
-                    //     bodyTurn: -67,
-                    //     headTurn: -40
-                    // },
-
                     {
                         frame: 240,
                         tx: canvas.width / 2 + 150 + 5,
@@ -151,7 +135,7 @@
                     {
                         frame: 250,
                         rotate: 60,
-                        tx: canvas.width - 200,
+                        tx: canvas.width - 350,
                         ty: canvas.height / 2 - 100,
                         sx: 0.3,
                         sy: 0.3,
@@ -161,7 +145,7 @@
                     {
                         frame: 270,
                         // rotate: 60,
-                        tx: canvas.width - 200,
+                        tx: canvas.width - 350,
                         ty: canvas.height / 2 - 100,
                         sx: 0.3,
                         sy: 0.3,
