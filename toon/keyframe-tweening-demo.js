@@ -116,7 +116,26 @@
                         tx: canvas.width / 2,
                         ty: canvas.height * 0.85,
                         sx: 0.3,
-                        sy: 0.3
+                        sy: 0.3,
+                        on: false
+                    },
+
+                    {
+                        frame: 104,
+                        tx: canvas.width / 2,
+                        ty: canvas.height * 0.85,
+                        sx: 0.3,
+                        sy: 0.3,
+                        on: false
+                    },
+
+                    {
+                        frame: 105,
+                        tx: canvas.width / 2,
+                        ty: canvas.height * 0.85,
+                        sx: 0.3,
+                        sy: 0.3,
+                        on: true
                     },
 
                     {
@@ -125,7 +144,8 @@
                         ty: canvas.height * 0.85,
                         sx: 0.3,
                         sy: 0.3,
-                        ease: KeyframeTweener.easeInElastic
+                        ease: KeyframeTweener.easeInElastic,
+                        on: true
                     },
 
                     {
@@ -134,7 +154,8 @@
                         tx: canvas.width - 200,
                         ty: canvas.height / 2 - 100,
                         sx: 0.3,
-                        sy: 0.3
+                        sy: 0.3,
+                        on: true,
                     },
 
                     {
