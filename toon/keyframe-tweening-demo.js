@@ -57,7 +57,7 @@
                         frame: 100,
                         tx: canvas.width / 2 + 150,
                         ty: canvas.height * 0.75,
-                        ease: KeyframeTweener.bounce,
+                        ease: KeyframeTweener.elastic,
                         bodyTurn: -70,
                         headTurn: -40
                     },
@@ -93,7 +93,7 @@
                         ty: canvas.height * 0.75,
                         bodyTurn: -65,
                         headTurn: -40,
-                        ease: KeyframeTweener.elastic
+                        // ease: KeyframeTweener.elastic
                         // headTilt: 30
                     },
 
