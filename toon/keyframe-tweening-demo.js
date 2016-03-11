@@ -61,7 +61,7 @@
                         ease: KeyframeTweener.elastic,
                         bodyTurn: -70,
                         headTurn: -40,
-                        headTilt: 70
+                        headTilt: 30
                     },
 
                     // BB-8 bumps into lightsaber
@@ -71,7 +71,7 @@
                         ty: canvas.height * 0.75,
                         bodyTurn: -65,
                         headTurn: -40,
-                        headTilt: 5
+                        headTilt: 20
                     },
 
                     {
@@ -80,8 +80,8 @@
                         ty: canvas.height * 0.75,
                         bodyTurn: -65,
                         headTurn: -40,
-                        // ease: KeyframeTweener.elastic
-                        // headTilt: 30
+                        ease: KeyframeTweener.quadEaseOut,
+                        headTilt: 0
                     },
 
                     {
@@ -90,7 +90,7 @@
                         ty: canvas.height * 0.75,
                         bodyTurn: -300,
                         headTurn: -40,
-                        headTilt: -40,
+                        headTilt: 30,
                     },
                 ]
             },
