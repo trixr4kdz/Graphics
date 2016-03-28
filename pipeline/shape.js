@@ -8,6 +8,7 @@ var Shape = {
         var X = 0.5,
             Y = 0.5,
             Z = 0.5;
+
         return {
             vertices: [
                 [ X, Y, Z ],
@@ -21,7 +22,18 @@ var Shape = {
             ],
 
             indices: [
-
+                [0, 1, 3],
+                [0, 2, 3],
+                [1, 5, 4],
+                [1, 0, 4],
+                [0, 2, 6],
+                [0, 4, 6],
+                [1, 3, 7],
+                [1, 5, 7],
+                [4, 5, 7],
+                [4, 6, 7],
+                [2, 3, 7],
+                [2, 6, 7]
             ]
         };
     },
@@ -29,7 +41,10 @@ var Shape = {
     tetrahedron: function () {
         return {
             vertices: [
-                
+                [],
+                [],
+                [],
+                []
             ],
 
             indices: [
