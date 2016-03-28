@@ -4,6 +4,29 @@
  * converting these into "raw" coordinate arrays.
  */
 var Shape = {
+    cube: function () {
+        return {
+            vertices: [
+                [  ],
+                [  ],
+                [  ],
+                [  ],
+                [  ],
+                [  ]
+            ],
+
+            indices: [
+
+            ]
+        };
+    },
+
+    sphere: function () {
+        return {
+
+        }
+    },
+
     /*
      * Returns the vertices for a small icosahedron.
      */
