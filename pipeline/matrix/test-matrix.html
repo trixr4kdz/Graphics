@@ -1,0 +1,22 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Matrix Tests</title>
+</head>
+<body>
+    <div id="mocha"></div>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://cdn.rawgit.com/Automattic/expect.js/0.3.1/index.js"></script>
+    <script src="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
+    <script>mocha.setup('bdd')</script>
+    <!-- <script src="test.array.js"></script>
+    <script src="test.object.js"></script>
+    <script src="test.xhr.js"></script> -->
+    <script src="./test-matrix.js"></script>
+    <script>
+        mocha.checkLeaks();
+        mocha.globals(['jQuery']);
+        mocha.run();
+    </script>
+</body>
+</html>
