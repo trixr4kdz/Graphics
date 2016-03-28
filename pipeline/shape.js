@@ -5,14 +5,19 @@
  */
 var Shape = {
     cube: function () {
+        var X = 0.5,
+            Y = 0.5,
+            Z = 0.5;
         return {
             vertices: [
-                [  ],
-                [  ],
-                [  ],
-                [  ],
-                [  ],
-                [  ]
+                [ X, Y, Z ],
+                [ X, -Y, Z ],
+                [ X, Y, -Z ],
+                [ X, -Y, -Z ],
+                [ -X, Y, Z ],
+                [ -X, -Y, Z ],
+                [ -X, Y, -Z ],
+                [ -X, -Y, -Z ]
             ],
 
             indices: [
@@ -21,7 +26,19 @@ var Shape = {
         };
     },
 
-    sphere: function () {
+    tetrahedron: function () {
+        return {
+            vertices: [
+                
+            ],
+
+            indices: [
+
+            ]
+        }
+    }, 
+
+    sphere: function (radius, verticalLength, horizontalLength) {
         return {
 
         }
