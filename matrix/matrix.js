@@ -12,7 +12,8 @@
  * more compact, while sacrificing generality.
  */
 var Matrix = (function () {
-    var matrix = function() {
+    // Constructor for a 4x4 identity matrix
+    var matrix = function () {
         this.elements = [
             [1, 0, 0, 0], 
             [0, 1, 0, 0], 
@@ -21,13 +22,24 @@ var Matrix = (function () {
         ];
     };
 
+    // var matrix = function (row1, row2, row3, row4) {
+    //     this.elements = [
+    //         row1,
+    //         row2,
+    //         row3,
+    //         row4
+    //     ]
+    // };
+
     matrix.prototype.multiply = function (matrix) {
-        var result = []
-        for (var i = 0; i < this.length; i++) {
-            for (var j = 0; i < matrix.length; j++) {
+        var result = new Matrix();
+
+        for (var i = 0; i < this.elements.length; i++) {
+            var m = this.elements[i];
+            for (var j = 0; j < m.length; j++) {
                 var sumOfProducts = 0;
-                sumOfProducts += this[i][j] * matrix[j][i];
-                result.push(sumOfProducts);
+                sumOfProducts += this.elements[i][j] * matrix.elements[j][i];
+                result.elements[i][j] = sumOfProducts;
             }
         }
         return result;

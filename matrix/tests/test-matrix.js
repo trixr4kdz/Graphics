@@ -1,7 +1,7 @@
 var expect = chai.expect;
 
-describe("Constructing a matrix", function () {
-    it("successfully creates the default 4x4 matrix", function (done) {
+describe("Constructing a default matrix", function () {
+    it("successfully creates the 4x4 identity matrix", function (done) {
         var m = new Matrix();
         expect(m.elements).to.eql([
             [1, 0, 0, 0],
@@ -13,10 +13,29 @@ describe("Constructing a matrix", function () {
     });
 });
 
+// describe("Constructing a 4x4 matrix", function () {
+//     it("successfully creates the 4x4 matrix with specified elements", function (done) {
+//         var m = new Matrix(
+//             [1, 2, 3, 4],
+//             [2, 3, 4, 5],
+//             [3, 4, 5, 6],
+//             [4, 5, 6, 7]
+//         );
+//         expect(m.elements).to.eql([
+//             [1, 2, 3, 4],
+//             [2, 3, 4, 5],
+//             [3, 4, 5, 6],
+//             [4, 5, 6, 7]
+//         ]);
+//         done();
+//     });
+// });
+
 describe("Matrix multiplication", function () {
     it("successfully multiplies 2 matrices", function (done) {
         var m1 = new Matrix();
         var m2 = new Matrix();
+        console.log("m1.multiply(m2) " + m1.multiply(m2));
         var result = m1.multiply(m2);
         expect(result.elements).to.eql([
             [1, 0, 0, 0],
