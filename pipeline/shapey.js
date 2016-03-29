@@ -81,7 +81,7 @@
     var objectsToDraw = [
         {
             color: { r: 0.0, g: 0.5, b: 0.0 },
-            vertices: Shape.toRawLineArray(Shape.cylinder()),
+            vertices: Shape.toRawLineArray(Shape.sphere()),
             mode: gl.LINES
         },
 
@@ -91,8 +91,6 @@
             mode: gl.LINES
         }
     ];
-
-    console.log(objectsToDraw[0].vertices);
 
     // Pass the vertices to WebGL.
     for (var i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {

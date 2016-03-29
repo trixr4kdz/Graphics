@@ -97,36 +97,36 @@ var Shape = {
         }
     },
 
-    sphere: function () {
+    sphere: function (radius, horizontal, vertical) {
         var vertices = [],
             indices = [],
-            radius = 0.5,
-            vertical = 0.5,
-            horizontal = 0.5;
+            radius = radius || 0.5,
+            vertical = vertical || 50,
+            horizontal = horizontal || 50;
 
-        for (var i = 0; i < vertical; i++) {
+        for (var i = 0; i < horizontal + 1; i++) {
 
-            // hDelta = [(rightColor[0] - leftColor[0]) / (2 * r),
-            //           (rightColor[1] - leftColor[1]) / (2 * r),
-            //           (rightColor[2] - leftColor[2]) / (2 * r)];
+            var theta = i * Math.PI / horizontal,
+                sinTheta = Math.sin(theta),
+                cosTheta = Math.cos(theta);
 
-            for (var j = 0; j < Math.PI * 2; j += 0.1) {
-                var dist = Math.sqrt(Math.pow(Math.sin(j), 2) + Math.pow(Math.cos(j), 2));
-                if (dist <= radius) {
-                    vertices.push([radius, j, i]);
-                }
-                // var dist = Math.sqrt(Math.pow(xc - j, 2) + Math.pow(yc - i, 2));
-                // if (dist <= radius) {
-                //     module.setPixel(context, j, i,
-                //             currentColor[0],
-                //             currentColor[1],
-                //             currentColor[2]);
+            for (var j = 0; j < vertical + 1; j++) {
+                var phi = j * 2 * Math.PI / vertical,
+                    x = radius * Math.cos(phi) * sinTheta,
+                    y = radius * cosTheta,
+                    z = radius * Math.sin(phi) * sinTheta;
 
-                //     currentColor[0] += hDelta[0];
-                //     currentColor[1] += hDelta[1];
-                //     currentColor[2] += hDelta[2];
+                vertices.push([x, y, z]);
+            }
+        }
 
-                //     vertices.push();
+        for (var i = 0; i < horizontal; i++) {
+            for (var j = 0; j < vertical; j++) {
+                var top = i * (vertical + 1) + j,
+                    bottom = top + vertical + 1;
+
+                indices.push([top, bottom, top + 1]);
+                indices.push([bottom, bottom + 1, top + 1]);
             }
         }
 
