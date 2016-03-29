@@ -14,14 +14,34 @@
 var Matrix = (function () {
     var matrix = function() {
         this.elements = [
-            1, 0, 0, 0, 
-            0, 1, 0, 0, 
-            0, 0, 1, 0,
-            0, 0, 0, 1
-        ]
+            [1, 0, 0, 0], 
+            [0, 1, 0, 0], 
+            [0, 0, 1, 0],
+            [0, 0, 0, 1]
+        ];
     };
 
-    var getRotationMatrix = function (angle, x, y, z) {
+    matrix.prototype.multiply = function (matrix) {
+        var result = []
+        for (var i = 0; i < this.length; i++) {
+            for (var j = 0; i < matrix.length; j++) {
+                var sumOfProducts = 0;
+                sumOfProducts += this[i][j] * matrix[j][i];
+                result.push(sumOfProducts);
+            }
+        }
+        return result;
+    };
+
+    matrix.prototype.getTranslationMatrix = function () {
+        return [];
+    };
+
+    matrix.prototype.getScalingMatrix = function () {
+        return [];
+    };
+
+    matrix.prototype.getRotationMatrix = function (angle, x, y, z) {
         // In production code, this function should be associated
         // with a matrix object with associated functions.
         var axisLength = Math.sqrt((x * x) + (y * y) + (z * z));
@@ -70,7 +90,7 @@ var Matrix = (function () {
         ];
     };
 
-    var getOrthoMatrix = function (left, right, bottom, top, zNear, zFar) {
+    matrix.prototype.getOrthoMatrix = function (left, right, bottom, top, zNear, zFar) {
         var width = right - left;
         var height = top - bottom;
         var depth = zFar - zNear;
@@ -97,6 +117,22 @@ var Matrix = (function () {
             1.0
         ];
     };
+
+    matrix.prototype.getPerspectMatrix = function () {
+
+    };
+
+    matrix.prototype.convert = function () {
+        var result = [];
+        for (var i = 0; i < this.elements.length; i++) {
+            var matrix = this.elements[i];
+            for (var j = 0; j < matrix.length; j++) {
+                result.push(this.elements[i][j]);
+            }
+        }
+        return result;
+    };
+
     return matrix;
 })();
 
