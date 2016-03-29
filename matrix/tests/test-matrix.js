@@ -35,7 +35,6 @@ describe("Matrix multiplication", function () {
     it("successfully multiplies 2 matrices", function (done) {
         var m1 = new Matrix();
         var m2 = new Matrix();
-        console.log("m1.multiply(m2) " + m1.multiply(m2));
         var result = m1.multiply(m2);
         expect(result.elements).to.eql([
             [1, 0, 0, 0],
@@ -50,18 +49,37 @@ describe("Matrix multiplication", function () {
 
 describe("Rotating", function () {
     it("successfully rotates the matrix", function (done) {
+        var m = new Matrix();
         done();
     });
 });
 
 describe("Translating", function () {
     it("successfully translates the matrix", function (done) {
+        var m = new Matrix(),
+            translated = m.getTranslationMatrix(1, 2, 3);
+
+        expect(translated.elements).to.eql([
+            [1, 0, 0, 1],
+            [0, 1, 0, 2],
+            [0, 0, 1, 3],
+            [0, 0, 0, 1]
+        ]);
         done();
     });
 });
 
 describe("Scaling", function () {
     it("successfully scales the matrix", function (done) {
+        var m = new Matrix(),
+            scaled = m.getScalingMatrix(1, 2, 3);
+
+        expect(scaled.elements).to.eql([
+            [1, 0, 0, 0],
+            [0, 2, 0, 0],
+            [0, 0, 3, 0],
+            [0, 0, 0, 1]
+        ]);
         done();
     });
 });

@@ -13,7 +13,7 @@
  */
 var Matrix = (function () {
     // Constructor for a 4x4 identity matrix
-    var matrix = function () {
+    var matrix = function (elements) {
         this.elements = [
             [1, 0, 0, 0], 
             [0, 1, 0, 0], 
@@ -22,15 +22,6 @@ var Matrix = (function () {
         ];
     };
 
-    // var matrix = function (row1, row2, row3, row4) {
-    //     this.elements = [
-    //         row1,
-    //         row2,
-    //         row3,
-    //         row4
-    //     ]
-    // };
-
     matrix.prototype.multiply = function (matrix) {
         var result = new Matrix();
 
@@ -38,10 +29,26 @@ var Matrix = (function () {
             var m = this.elements[i];
             for (var j = 0; j < m.length; j++) {
                 var sumOfProducts = 0;
-                sumOfProducts += this.elements[i][j] * matrix.elements[j][i];
+                for (var k = 0; k < this.elements.length; k++) {
+                    sumOfProducts += this.elements[i][j] * matrix.elements[j][i];
+                }
+                // console.log("this.elements[" + 3 + "][" + 2 + "] is " + this.elements[3][2]);
+                // console.log("sumOfProducts is " + sumOfProducts);
+                // result.elements[i][j] = sumOfProducts;
                 result.elements[i][j] = sumOfProducts;
             }
         }
+
+        // for (var i = 0; i < this.elements.length; i++) {
+        //     result.elements[i] = [];
+        //     for (var j = 0; j < this.elements[0].length; j++) {
+        //         var sumOfProducts = 0;
+        //         for (var k = 0; k < this.elements.length; k++) {
+        //             sumOfProducts += this.elements[k][i] * matrix.elements[j][k];
+        //         }
+        //         result.elements[j].push(sumOfProducts);
+        //     }
+        // }
         return result;
     };
 
