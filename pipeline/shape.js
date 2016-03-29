@@ -3,6 +3,12 @@
  * The "shapes" are returned as indexed vertices, with utility functions for
  * converting these into "raw" coordinate arrays.
  */
+// var Shape = function (spec) {
+//     this.x = spec.x;
+//     this.y = spec.y;
+//     this.z = spec.z;
+// }
+
 var Shape = {
     cube: function (x, y, z) {
         var X = x || 0.5,
@@ -66,10 +72,42 @@ var Shape = {
         }
     }, 
 
-    sphere: function (radius, verticalLength, horizontalLength) {
+    sphere: function () {
+        var vertices = [],
+            indices = [],
+            radius = 0.5,
+            vertical = 0.5,
+            horizontal = 0.5;
+
+        for (var i = 0; i < vertical; i++) {
+
+            // hDelta = [(rightColor[0] - leftColor[0]) / (2 * r),
+            //           (rightColor[1] - leftColor[1]) / (2 * r),
+            //           (rightColor[2] - leftColor[2]) / (2 * r)];
+
+            for (var j = 0; j < Math.PI * 2; j += 0.1) {
+                var dist = Math.sqrt(Math.pow(Math.sin(j), 2) + Math.pow(Math.cos(j), 2));
+                if (dist <= radius) {
+                    vertices.push([radius, i, j]);
+                }
+                // var dist = Math.sqrt(Math.pow(xc - j, 2) + Math.pow(yc - i, 2));
+                // if (dist <= radius) {
+                //     module.setPixel(context, j, i,
+                //             currentColor[0],
+                //             currentColor[1],
+                //             currentColor[2]);
+
+                //     currentColor[0] += hDelta[0];
+                //     currentColor[1] += hDelta[1];
+                //     currentColor[2] += hDelta[2];
+
+                //     vertices.push();
+            }
+        }
 
         return {
-
+            vertices: vertices,
+            indices: indices
         }
     },
 
