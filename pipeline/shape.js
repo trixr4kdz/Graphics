@@ -72,6 +72,31 @@ var Shape = {
         }
     }, 
 
+    cylinder: function (radius, height) {
+        var vertices = [],
+            indices = [],
+            r = radius || 0.5,
+            h = height || 0.5;
+
+        for (var i = 0; i < height; i+= height / 60) {
+            for (var j = 0; j < Math.PI * 2; j+= Math.PI * 2 / 60) {
+                vertices.push ([ Math.cos(j), Math.sin(j), i ]);
+                console.log(Math.cos(j));
+            }
+        }
+
+        for (var i = 0; i < vertices.length; i++) {
+            if (i % 60 == 0) {
+                indices.push([ i, i + 1, i + 60 ]);
+            }
+        }
+
+        return {
+            vertices: vertices,
+            indices: indices
+        }
+    },
+
     sphere: function () {
         var vertices = [],
             indices = [],
@@ -88,7 +113,7 @@ var Shape = {
             for (var j = 0; j < Math.PI * 2; j += 0.1) {
                 var dist = Math.sqrt(Math.pow(Math.sin(j), 2) + Math.pow(Math.cos(j), 2));
                 if (dist <= radius) {
-                    vertices.push([radius, i, j]);
+                    vertices.push([radius, j, i]);
                 }
                 // var dist = Math.sqrt(Math.pow(xc - j, 2) + Math.pow(yc - i, 2));
                 // if (dist <= radius) {
