@@ -106,15 +106,15 @@ var Shape = {
 
         for (var i = 0; i < horizontal + 1; i++) {
 
-            var theta = i * Math.PI / horizontal,
-                sinTheta = Math.sin(theta),
-                cosTheta = Math.cos(theta);
+            var h = i * Math.PI / horizontal,
+                sin = Math.sin(h),
+                cos = Math.cos(h);
 
             for (var j = 0; j < vertical + 1; j++) {
-                var phi = j * 2 * Math.PI / vertical,
-                    x = radius * Math.cos(phi) * sinTheta,
-                    y = radius * cosTheta,
-                    z = radius * Math.sin(phi) * sinTheta;
+                var v = j * 2 * Math.PI / vertical,
+                    x = radius * Math.cos(v) * sin,
+                    y = radius * cos,
+                    z = radius * Math.sin(v) * sin;
 
                 vertices.push([x, y, z]);
             }
