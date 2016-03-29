@@ -4,10 +4,10 @@
  * converting these into "raw" coordinate arrays.
  */
 var Shape = {
-    cube: function () {
-        var X = 0.5,
-            Y = 0.5,
-            Z = 0.5;
+    cube: function (x, y, z) {
+        var X = x || 0.5,
+            Y = y || 0.5,
+            Z = z || 0.5;
 
         return {
             vertices: [
@@ -38,10 +38,10 @@ var Shape = {
         };
     },
 
-    diamond: function () {
-        var X = 0.5,
-            Y = 0.5,
-            Z = 0.5;
+    diamond: function (x, y, z) {
+        var X = x || 0.5,
+            Y = y || 0.5,
+            Z = z || 0.5;
 
         return {
             vertices: [
@@ -54,19 +54,20 @@ var Shape = {
             ],
 
             indices: [
-                [ 2, 0, 3],
-                [ 2, 1, 3],
-                [ 2, 0, 4],
-                [ 2, 1, 4],
-                [ 3, 0, 5],
-                [ 3, 1, 5],
-                [ 5, 0, 4],
-                [ 5, 1, 4]
+                [ 2, 0, 3 ],
+                [ 2, 1, 3 ],
+                [ 2, 0, 4 ],
+                [ 2, 1, 4 ],
+                [ 3, 0, 5 ],
+                [ 3, 1, 5 ],
+                [ 5, 0, 4 ],
+                [ 5, 1, 4 ]
             ]
         }
     }, 
 
     sphere: function (radius, verticalLength, horizontalLength) {
+
         return {
 
         }
