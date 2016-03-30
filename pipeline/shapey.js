@@ -81,13 +81,19 @@
     var objectsToDraw = [
         {
             color: { r: 0.0, g: 0.5, b: 0.0 },
-            vertices: Shape.toRawLineArray(Shape.sphere()),
+            vertices: Shapes.toRawLineArray(new Shape(Shapes.sphere(0.7, 10, 10))),
             mode: gl.LINES
         },
 
         {
             color: { r: 0.0, g: 0.5, b: 0.0 },
-            vertices: Shape.toRawLineArray(Shape.diamond()),
+            vertices: Shapes.toRawLineArray(new Shape(Shapes.cone(100))),
+            mode: gl.LINES
+        },
+
+        {
+            color: { r: 0.0, g: 0.5, b: 0.0 },
+            vertices: Shapes.toRawLineArray(new Shape(Shapes.diamond())),
             mode: gl.LINES
         }
     ];

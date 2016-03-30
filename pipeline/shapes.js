@@ -3,17 +3,16 @@
  * The "shapes" are returned as indexed vertices, with utility functions for
  * converting these into "raw" coordinate arrays.
  */
-// var Shape = function (spec) {
-//     this.x = spec.x;
-//     this.y = spec.y;
-//     this.z = spec.z;
-// }
+var Shape = function (shape) {
+    this.vertices = shape.vertices;
+    this.indices = shape.indices;
+};
 
-var Shape = {
-    cube: function (x, y, z) {
-        var X = x || 0.5,
-            Y = y || 0.5,
-            Z = z || 0.5;
+var Shapes = {
+    cube: function () {
+        var X = 0.5,
+            Y = 0.5,
+            Z = 0.5;
 
         return {
             vertices: [
@@ -72,37 +71,12 @@ var Shape = {
         }
     }, 
 
-    cylinder: function (radius, height) {
-        var vertices = [],
-            indices = [],
-            r = radius || 0.5,
-            h = height || 0.5;
-
-        for (var i = 0; i < height; i+= height / 60) {
-            for (var j = 0; j < Math.PI * 2; j+= Math.PI * 2 / 60) {
-                vertices.push ([ Math.cos(j), Math.sin(j), i ]);
-                console.log(Math.cos(j));
-            }
-        }
-
-        for (var i = 0; i < vertices.length; i++) {
-            if (i % 60 == 0) {
-                indices.push([ i, i + 1, i + 60 ]);
-            }
-        }
-
-        return {
-            vertices: vertices,
-            indices: indices
-        }
-    },
-
     sphere: function (radius, horizontal, vertical) {
         var vertices = [],
             indices = [],
             radius = radius || 0.5,
-            vertical = vertical || 50,
-            horizontal = horizontal || 50;
+            vertical = vertical || 30,
+            horizontal = horizontal || 30;
 
         for (var i = 0; i < horizontal + 1; i++) {
 
@@ -135,6 +109,35 @@ var Shape = {
             indices: indices
         }
     },
+
+    cone: function (faces) {
+        var RADIUS = 0.5,
+            CONE_BASE = -0.5,
+            vertices = [ 
+                [0, 0.5, 0]
+            ],
+            indices = [],
+            thetaDelta = 2 * Math.PI / faces,
+            currentTheta = 0.0;
+
+        for (var i = 0; i < faces + 1; i++) {
+            vertices.push([
+                RADIUS * Math.cos(currentTheta),
+                CONE_BASE,
+                RADIUS * Math.sin(currentTheta)
+            ]);
+            currentTheta += thetaDelta;
+        }
+
+        for (var i = 0; i < faces; i++) {
+            indices.push([0, (i + 1) % faces, (i + 2) % faces]);
+        }
+
+        return {
+            vertices: vertices,
+            indices: indices
+        }
+    }, 
 
     /*
      * Returns the vertices for a small icosahedron.
