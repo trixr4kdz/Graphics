@@ -32,25 +32,14 @@ var Matrix = (function () {
             for (var j = 0; j < m.length; j++) {
                 var sumOfProducts = 0;
                 for (var k = 0; k < this.elements.length; k++) {
-                    sumOfProducts += this.elements[i][j] * matrix.elements[j][i];
+                    sumOfProducts += this.elements[i][k] * matrix.elements[k][j];
+                    // console.log("this.elements[" + i + "][" + k + "] " + this.elements[i][k]);
+                    // console.log("matrix.elements[" + k + "][" + j + "] " + matrix.elements[k][j]);                    
+                    // console.log(sumOfProducts);
                 }
-                // console.log("this.elements[" + 3 + "][" + 2 + "] is " + this.elements[3][2]);
-                // console.log("sumOfProducts is " + sumOfProducts);
-                // result.elements[i][j] = sumOfProducts;
                 result.elements[i][j] = sumOfProducts;
             }
         }
-
-        // for (var i = 0; i < this.elements.length; i++) {
-        //     result.elements[i] = [];
-        //     for (var j = 0; j < this.elements[0].length; j++) {
-        //         var sumOfProducts = 0;
-        //         for (var k = 0; k < this.elements.length; k++) {
-        //             sumOfProducts += this.elements[k][i] * matrix.elements[j][k];
-        //         }
-        //         result.elements[j].push(sumOfProducts);
-        //     }
-        // }
         return result;
     };
 
@@ -98,27 +87,31 @@ var Matrix = (function () {
         var zs = z * s;
 
         // GL expects its matrices in column major order.
-        return [
-            (x2 * oneMinusC) + c,
-            (xy * oneMinusC) + zs,
-            (xz * oneMinusC) - ys,
-            0.0,
+        return new Matrix (
+            [ (x2 * oneMinusC) + c,
+              (xy * oneMinusC) + zs,
+              (xz * oneMinusC) - ys,
+              0.0 
+            ],
 
-            (xy * oneMinusC) - zs,
-            (y2 * oneMinusC) + c,
-            (yz * oneMinusC) + xs,
-            0.0,
+            [ (xy * oneMinusC) - zs,
+              (y2 * oneMinusC) + c,
+              (yz * oneMinusC) + xs,
+              0.0
+            ],
 
-            (xz * oneMinusC) + ys,
-            (yz * oneMinusC) - xs,
-            (z2 * oneMinusC) + c,
-            0.0,
+            [ (xz * oneMinusC) + ys,
+              (yz * oneMinusC) - xs,
+              (z2 * oneMinusC) + c,
+              0.0
+            ],
 
-            0.0,
-            0.0,
-            0.0,
-            1.0
-        ];
+            [ 0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+        );
     };
 
     matrix.prototype.getOrthoMatrix = function (left, right, bottom, top, zNear, zFar) {
@@ -126,31 +119,35 @@ var Matrix = (function () {
         var height = top - bottom;
         var depth = zFar - zNear;
 
-        return [
-            2.0 / width,
-            0.0,
-            0.0,
-            0.0,
+        return new Matrix(
+            [ 2.0 / width,
+              0.0,
+              0.0,
+              0.0 
+            ],
 
-            0.0,
-            2.0 / height,
-            0.0,
-            0.0,
+            [ 0.0,
+              2.0 / height,
+              0.0,
+              0.0 
+            ],
 
-            0.0,
-            0.0,
-            -2.0 / depth,
-            0.0,
+            [ 0.0,
+              0.0,
+              -2.0 / depth,
+              0.0 
+            ],
 
-            -(right + left) / width,
-            -(top + bottom) / height,
-            -(zFar + zNear) / depth,
-            1.0
-        ];
+            [ -(right + left) / width,
+              -(top + bottom) / height,
+              -(zFar + zNear) / depth,
+              1.0 
+            ]
+        );
     };
 
     matrix.prototype.getPerspectMatrix = function () {
-
+        return new Matrix();
     };
 
     matrix.prototype.convert = function () {
