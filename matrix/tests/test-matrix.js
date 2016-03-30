@@ -1,6 +1,6 @@
 var expect = chai.expect;
 
-describe("Constructing a default matrix", function () {
+describe("Constructing a matrix", function () {
     it("successfully creates the 4x4 identity matrix", function (done) {
         var m = new Matrix();
         expect(m.elements).to.eql([
@@ -11,25 +11,24 @@ describe("Constructing a default matrix", function () {
         ]);
         done();
     });
-});
 
-// describe("Constructing a 4x4 matrix", function () {
-//     it("successfully creates the 4x4 matrix with specified elements", function (done) {
-//         var m = new Matrix(
-//             [1, 2, 3, 4],
-//             [2, 3, 4, 5],
-//             [3, 4, 5, 6],
-//             [4, 5, 6, 7]
-//         );
-//         expect(m.elements).to.eql([
-//             [1, 2, 3, 4],
-//             [2, 3, 4, 5],
-//             [3, 4, 5, 6],
-//             [4, 5, 6, 7]
-//         ]);
-//         done();
-//     });
-// });
+    it("successfully creates an arbitrary 4x4 matrix", function (done) {
+        var m = new Matrix(
+            [1, 2, 3, 4],
+            [2, 3, 4, 5],
+            [3, 4, 5, 6],
+            [4, 5, 6, 7]
+        );
+        console.log("m.elements " + m.elements.length);
+        expect(m.elements).to.eql([
+            [1, 2, 3, 4],
+            [2, 3, 4, 5],
+            [3, 4, 5, 6],
+            [4, 5, 6, 7]
+        ]);
+        done();
+    })
+});
 
 describe("Matrix multiplication", function () {
     it("successfully multiplies 2 matrices", function (done) {
@@ -94,6 +93,5 @@ describe("Conversion for WebGL consumption", function () {
             0, 0, 0, 1
         ]);
         done();
-    })
-})
-
+    });
+});

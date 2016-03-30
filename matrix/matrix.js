@@ -11,15 +11,17 @@
  * vectors.  Specific Vector2D and Vector3D implementations can be much
  * more compact, while sacrificing generality.
  */
+
 var Matrix = (function () {
     // Constructor for a 4x4 identity matrix
-    var matrix = function (elements) {
-        this.elements = [
-            [1, 0, 0, 0], 
-            [0, 1, 0, 0], 
-            [0, 0, 1, 0],
-            [0, 0, 0, 1]
-        ];
+    var matrix = function () {
+        this.elements = arguments.length ? [].slice.call(arguments) :
+                            [
+                                [1, 0, 0, 0], 
+                                [0, 1, 0, 0], 
+                                [0, 0, 1, 0],
+                                [0, 0, 0, 1]
+                            ];
     };
 
     matrix.prototype.multiply = function (matrix) {
@@ -52,12 +54,22 @@ var Matrix = (function () {
         return result;
     };
 
-    matrix.prototype.getTranslationMatrix = function () {
-        return [];
+    matrix.prototype.getTranslationMatrix = function (tx, ty, tz) {
+        return new Matrix(
+            [1, 0, 0, tx],
+            [0, 1, 0, ty],
+            [0, 0, 1, tz],
+            [0, 0, 0, 1]
+        );
     };
 
-    matrix.prototype.getScalingMatrix = function () {
-        return [];
+    matrix.prototype.getScalingMatrix = function (sx, sy, sz) {
+        return new Matrix(
+            [sx, 0, 0, 0],
+            [0, sy, 0, 0],
+            [0, 0, sz, 0],
+            [0, 0, 0, 1]  
+        );
     };
 
     matrix.prototype.getRotationMatrix = function (angle, x, y, z) {
