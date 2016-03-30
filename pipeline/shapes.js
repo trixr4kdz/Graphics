@@ -6,7 +6,8 @@
 var Shape = function (shape) {
     this.vertices = shape.vertices;
     this.indices = shape.indices;
-    this.numChildren = shape.numChildren || 0;
+    this.children = [];
+    this.numChildren = this.children.length;
 };
 
 Shape.prototype.toRawTriangleArray = function () {
@@ -49,12 +50,13 @@ Shape.prototype.getNumChildren = function () {
     return this.numChildren;
 };
 
-Shape.prototype.addChild = function () {
-
+Shape.prototype.addChild = function (child) {
+    this.children.push(child);
+    this.numChildren++;
 };
 
-Shape.prototype.getChild = function () {
-
+Shape.prototype.getChildren = function () {
+    return this.children;
 };
 
 var Shapes = {

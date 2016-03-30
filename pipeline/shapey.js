@@ -84,11 +84,11 @@
 
     // Build the objects to display.
     var objectsToDraw = [
-        {
-            color: { r: 0.0, g: 0.5, b: 0.0 },
-            vertices: new Shape(cone).toRawLineArray(),
-            mode: gl.LINES
-        },
+        // {
+        //     color: { r: 0.0, g: 0.5, b: 0.0 },
+        //     vertices: new Shape(cone).toRawLineArray(),
+        //     mode: gl.LINES
+        // },
 
         {
             color: { r: 0.5, g: 0.5, b: 0.0 },
@@ -96,11 +96,11 @@
             mode: gl.LINES
         },
 
-        {
-            color: { r: 0.0, g: 0.5, b: 0.5 },
-            vertices: new Shape(diamond).toRawTriangleArray(),
-            mode: gl.TRIANGLES
-        }
+        // {
+        //     color: { r: 0.0, g: 0.5, b: 0.5 },
+        //     vertices: new Shape(diamond).toRawTriangleArray(),
+        //     mode: gl.TRIANGLES
+        // }
     ];
 
     // Pass the vertices to WebGL.
