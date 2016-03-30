@@ -7,7 +7,6 @@ var Shape = function (shape) {
     this.vertices = shape.vertices;
     this.indices = shape.indices;
     this.children = [];
-    this.numChildren = this.children.length;
 };
 
 Shape.prototype.toRawTriangleArray = function () {
@@ -47,7 +46,7 @@ Shape.prototype.toRawLineArray = function () {
 };
 
 Shape.prototype.getNumChildren = function () {
-    return this.numChildren;
+    return this.children.length;
 };
 
 Shape.prototype.addChild = function (child) {
@@ -58,6 +57,10 @@ Shape.prototype.addChild = function (child) {
 Shape.prototype.getChildren = function () {
     return this.children;
 };
+
+Shape.prototype.removeChild = function (index) {
+    index ? this.children.splice(index, 1) : this.children.pop();
+}
 
 var Shapes = {
     cube: function () {
