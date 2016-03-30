@@ -12,6 +12,11 @@
      * Based on the original glRotate reference:
      *     http://www.opengl.org/sdk/docs/man/xhtml/glRotate.xml
      */
+
+    var diamond = new Shape(Shapes.diamond()),
+        sphere = new Shape(Shapes.sphere(0.7, 20, 20)),
+        cone = new Shape(Shapes.cone(100));
+
     var getRotationMatrix = function (angle, x, y, z) {
         // In production code, this function should be associated
         // with a matrix object with associated functions.
@@ -81,20 +86,20 @@
     var objectsToDraw = [
         {
             color: { r: 0.0, g: 0.5, b: 0.0 },
-            vertices: Shapes.toRawLineArray(new Shape(Shapes.sphere(0.7, 10, 10))),
+            vertices: new Shape(cone).toRawLineArray(),
             mode: gl.LINES
         },
 
         {
-            color: { r: 0.0, g: 0.5, b: 0.0 },
-            vertices: Shapes.toRawLineArray(new Shape(Shapes.cone(100))),
+            color: { r: 0.5, g: 0.5, b: 0.0 },
+            vertices: new Shape(sphere).toRawLineArray(),
             mode: gl.LINES
         },
 
         {
-            color: { r: 0.0, g: 0.5, b: 0.0 },
-            vertices: Shapes.toRawLineArray(new Shape(Shapes.diamond())),
-            mode: gl.LINES
+            color: { r: 0.0, g: 0.5, b: 0.5 },
+            vertices: new Shape(diamond).toRawTriangleArray(),
+            mode: gl.TRIANGLES
         }
     ];
 

@@ -31,7 +31,24 @@ describe("Constructing a matrix", function () {
 });
 
 describe("Matrix multiplication", function () {
-    it("successfully multiplies 2 matrices", function (done) {
+    it("successfully multiplies identity matrix with arbitrary matrix", function (done) {
+        var m1 = new Matrix(
+            [1, 2, 3, 4],
+            [4, 3, 2, 1],
+            [2, 1, 3, 4],
+            [4, 2, 1, 3]
+        );
+        var m2 = new Matrix();
+        var result = m1.multiply(m2);
+        expect(result.elements).to.eql([
+            [1, 2, 3, 4],
+            [4, 3, 2, 1],
+            [2, 1, 3, 4],
+            [4, 2, 1, 3]
+        ]);
+        done();
+    });
+    it("successfully multiplies 2 arbitrary matrices", function (done) {
         var m1 = new Matrix(
             [1, 2, 3, 4],
             [4, 3, 2, 1],
@@ -58,7 +75,8 @@ describe("Matrix multiplication", function () {
 
 describe("Rotating", function () {
     it("successfully rotates the matrix", function (done) {
-        var m = new Matrix();
+        var m = new Matrix(),
+            rotated = m.getTranslationMatrix(45, 1, 2, 3);
         done();
     });
 });

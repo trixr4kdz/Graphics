@@ -6,6 +6,55 @@
 var Shape = function (shape) {
     this.vertices = shape.vertices;
     this.indices = shape.indices;
+    this.numChildren = shape.numChildren || 0;
+};
+
+Shape.prototype.toRawTriangleArray = function () {
+    var result = [];
+
+    for (var i = 0, maxi = this.indices.length; i < maxi; i += 1) {
+        for (var j = 0, maxj = this.indices[i].length; j < maxj; j += 1) {
+            result = result.concat(
+                this.vertices[
+                    this.indices[i][j]
+                ]
+            );
+        }
+    }
+
+    return result;
+};
+
+Shape.prototype.toRawLineArray = function () {
+    var result = [];
+
+    for (var i = 0, maxi = this.indices.length; i < maxi; i += 1) {
+        for (var j = 0, maxj = this.indices[i].length; j < maxj; j += 1) {
+            result = result.concat(
+                this.vertices[
+                    this.indices[i][j]
+                ],
+
+                this.vertices[
+                    this.indices[i][(j + 1) % maxj]
+                ]
+            );
+        }
+    }
+
+    return result;
+};
+
+Shape.prototype.getNumChildren = function () {
+    return this.numChildren;
+};
+
+Shape.prototype.addChild = function () {
+
+};
+
+Shape.prototype.getChild = function () {
+
 };
 
 var Shapes = {
@@ -186,50 +235,6 @@ var Shapes = {
                 [ 11, 2, 7 ]
             ]
         };
-    },
-
-    /*
-     * Utility function for turning indexed vertices into a "raw" coordinate array
-     * arranged as triangles.
-     */
-    toRawTriangleArray: function (indexedVertices) {
-        var result = [];
-
-        for (var i = 0, maxi = indexedVertices.indices.length; i < maxi; i += 1) {
-            for (var j = 0, maxj = indexedVertices.indices[i].length; j < maxj; j += 1) {
-                result = result.concat(
-                    indexedVertices.vertices[
-                        indexedVertices.indices[i][j]
-                    ]
-                );
-            }
-        }
-
-        return result;
-    },
-
-    /*
-     * Utility function for turning indexed vertices into a "raw" coordinate array
-     * arranged as line segments.
-     */
-    toRawLineArray: function (indexedVertices) {
-        var result = [];
-
-        for (var i = 0, maxi = indexedVertices.indices.length; i < maxi; i += 1) {
-            for (var j = 0, maxj = indexedVertices.indices[i].length; j < maxj; j += 1) {
-                result = result.concat(
-                    indexedVertices.vertices[
-                        indexedVertices.indices[i][j]
-                    ],
-
-                    indexedVertices.vertices[
-                        indexedVertices.indices[i][(j + 1) % maxj]
-                    ]
-                );
-            }
-        }
-
-        return result;
     }
 
 };
