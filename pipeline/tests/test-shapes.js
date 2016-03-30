@@ -33,15 +33,15 @@ describe("getChildren", function () {
 
     context("when there are appended child nodes", function () {
         it("returns an array of Shape objects", function (done) {
-            var d = new Shape(Shapes.diamond());
-            d.addChild(new Shape(Shapes.sphere()));
-            d.addChild(new Shape(Shapes.diamond()));
-            d.addChild(new Shape(Shapes.cone()));
-            expect(d.getChildren()).to.eql([
-                new Shape(Shapes.sphere()), 
-                new Shape(Shapes.diamond()), 
-                new Shape(Shapes.cone())
-            ]);
+            var d = new Shape(Shapes.diamond()),
+                s = new Shape(Shapes.sphere()),
+                d2 = new Shape(Shapes.diamond()),
+                c = new Shape(Shapes.cone());
+
+            d.addChild(s);
+            d.addChild(d2);
+            d.addChild(c);
+            expect(d.getChildren()).to.eql([ s, d2, c ]);
             done();
         });
     });
@@ -59,15 +59,15 @@ describe("removeChild", function () {
 
     context("when there is no index provided", function () {
         it("removes the last object appended", function (done) {
-            var d = new Shape(Shapes.diamond());
-            d.addChild(new Shape(Shapes.sphere()));
-            d.addChild(new Shape(Shapes.diamond()));
-            d.addChild(new Shape(Shapes.cone()));
-            d.removeChild(1);
-            expect(d.getChildren()).to.eql([
-                new Shape(Shapes.sphere()), 
-                new Shape(Shapes.cone()), 
-            ]);
+            var d = new Shape(Shapes.diamond()),
+                s = new Shape(Shapes.sphere()),
+                d2 = new Shape(Shapes.diamond()),
+                c = new Shape(Shapes.cone());
+            d.addChild(s);
+            d.addChild(d2);
+            d.addChild(c);
+            d.removeChild();
+            expect(d.getChildren()).to.eql([ s, d2 ]);
             expect(d.getNumChildren()).to.eql(2);
             done();
         });
@@ -75,17 +75,37 @@ describe("removeChild", function () {
 
     context("when there is an index provided", function () {
         it("removes the object at that index", function (done) {
-            var d = new Shape(Shapes.diamond());
-            d.addChild(new Shape(Shapes.sphere()));
-            d.addChild(new Shape(Shapes.diamond()));
-            d.addChild(new Shape(Shapes.cone()));
-            d.removeChild();
-            expect(d.getChildren()).to.eql([
-                new Shape(Shapes.sphere()), 
-                new Shape(Shapes.diamond()), 
-            ]);
+            var d = new Shape(Shapes.diamond()),
+                s = new Shape(Shapes.sphere()),
+                d2 = new Shape(Shapes.diamond()),
+                c = new Shape(Shapes.cone());
+            d.addChild(s);
+            d.addChild(d2);
+            d.addChild(c);
+            d.removeChild(1);
+            expect(d.getChildren()).to.eql([ s, c ]);
             expect(d.getNumChildren()).to.eql(2);
             done();
         });
     });
+});
+
+describe("getParent", function () {
+    context("when there is only one Shape object", function () {
+        it("returns null", function (done) {
+            var d = new Shape(Shapes.diamond());
+            expect(d.getParent()).to.eql(null);
+            done();
+        });
+    });
+
+    context("when there are parent and child objects", function () {
+        it("returns the parent Shape Object", function (done) {
+            var d = new Shape(Shapes.diamond()),
+                s = new Shape(Shapes.sphere());
+            s.addChild(d);
+            expect(d.getParent()).to.eql(s);
+            done();
+        })
+    })
 });

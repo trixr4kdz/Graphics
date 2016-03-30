@@ -13,10 +13,16 @@
      *     http://www.opengl.org/sdk/docs/man/xhtml/glRotate.xml
      */
 
-    var diamond = new Shape(Shapes.diamond()),
-        sphere = new Shape(Shapes.sphere(0.7, 20, 20)),
+    var diamond = new Shape(Shapes.diamond(), 
+                    { r: 0.0, g: 0.5, b: 0.5 }),
+        sphere = new Shape(Shapes.sphere(0.7, 20, 20), 
+                    { r: 0.5, g: 0.5, b: 0.0 }),
         cone = new Shape(Shapes.cone(100));
 
+    var newSphere = new Shape(Shapes.sphere(0.3, 20, 20));
+    sphere.addChild(newSphere);
+
+    // Will need to grab the one that I made in matrix/matrix.js
     var getRotationMatrix = function (angle, x, y, z) {
         // In production code, this function should be associated
         // with a matrix object with associated functions.
@@ -84,23 +90,23 @@
 
     // Build the objects to display.
     var objectsToDraw = [
-        // {
-        //     color: { r: 0.0, g: 0.5, b: 0.0 },
-        //     vertices: new Shape(cone).toRawLineArray(),
-        //     mode: gl.LINES
-        // },
-
         {
-            color: { r: 0.5, g: 0.5, b: 0.0 },
-            vertices: new Shape(sphere).toRawLineArray(),
+            color: cone.color,
+            vertices: cone.toRawLineArray(),
             mode: gl.LINES
         },
 
-        // {
-        //     color: { r: 0.0, g: 0.5, b: 0.5 },
-        //     vertices: new Shape(diamond).toRawTriangleArray(),
-        //     mode: gl.TRIANGLES
-        // }
+        {
+            color: sphere.color,
+            vertices: sphere.toRawLineArray(),
+            mode: gl.LINES
+        },
+
+        {
+            color: diamond.color,
+            vertices: diamond.toRawTriangleArray(),
+            mode: gl.TRIANGLES
+        }
     ];
 
     // Pass the vertices to WebGL.

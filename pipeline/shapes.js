@@ -3,10 +3,12 @@
  * The "shapes" are returned as indexed vertices, with utility functions for
  * converting these into "raw" coordinate arrays.
  */
-var Shape = function (shape) {
+var Shape = function (shape, color) {
+    this.color = color || {r: 0, g: 0, b: 0};
     this.vertices = shape.vertices;
     this.indices = shape.indices;
     this.children = [];
+    this.parent = null;
 };
 
 Shape.prototype.toRawTriangleArray = function () {
@@ -51,7 +53,8 @@ Shape.prototype.getNumChildren = function () {
 
 Shape.prototype.addChild = function (child) {
     this.children.push(child);
-    this.numChildren++;
+    child.parent = this;
+    // console.log(child);
 };
 
 Shape.prototype.getChildren = function () {
@@ -60,6 +63,10 @@ Shape.prototype.getChildren = function () {
 
 Shape.prototype.removeChild = function (index) {
     index ? this.children.splice(index, 1) : this.children.pop();
+};
+
+Shape.prototype.getParent = function () {
+    return this.parent;
 }
 
 var Shapes = {
@@ -172,7 +179,8 @@ var Shapes = {
             ],
             indices = [],
             thetaDelta = 2 * Math.PI / faces,
-            currentTheta = 0.0;
+            currentTheta = 0.0,
+            faces = faces || 8;
 
         for (var i = 0; i < faces + 1; i++) {
             vertices.push([
