@@ -26,12 +26,24 @@ describe("getChildren", function () {
     context("when there are no child nodes", function () {
         it("returns an empty array", function (done) {
             var d = new Shape(Shapes.diamond());
+            console.log(d.getChildren());
+            expect(d.getChildren()).to.eql([]);
+            done();
+        });
+    });
+
+    context("when there appended child nodes", function () {
+        it("returns an array of Shape objects", function (done) {
+            var d = new Shape(Shapes.diamond());
             d.addChild(new Shape(Shapes.sphere()));
             d.addChild(new Shape(Shapes.diamond()));
             d.addChild(new Shape(Shapes.cone()));
-            expect(d.getChildren).to.eql([
-                
+            expect(d.getChildren()).to.eql([
+                new Shape(Shapes.sphere()), 
+                new Shape(Shapes.diamond()), 
+                new Shape(Shapes.cone())
             ]);
-        })
-    })
-})
+            done();
+        });
+    });
+});
