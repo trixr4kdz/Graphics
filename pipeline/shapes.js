@@ -47,27 +47,15 @@ Shape.prototype.toRawLineArray = function () {
     return result;
 };
 
-Shape.prototype.getNumChildren = function () {
-    return this.children.length;
-};
-
 Shape.prototype.addChild = function (child) {
     this.children.push(child);
     child.parent = this;
     // console.log(child);
 };
 
-Shape.prototype.getChildren = function () {
-    return this.children;
-};
-
 Shape.prototype.removeChild = function (index) {
     index ? this.children.splice(index, 1) : this.children.pop();
 };
-
-Shape.prototype.getParent = function () {
-    return this.parent;
-}
 
 var Shapes = {
     cube: function () {
