@@ -17,10 +17,10 @@ var Matrix = (function () {
     var matrix = function () {
         this.elements = arguments.length ? [].slice.call(arguments) :
                             [
-                                [1, 0, 0, 0], 
-                                [0, 1, 0, 0], 
-                                [0, 0, 1, 0],
-                                [0, 0, 0, 1]
+                                [ 1, 0, 0, 0 ], 
+                                [ 0, 1, 0, 0 ], 
+                                [ 0, 0, 1, 0 ],
+                                [ 0, 0, 0, 1 ]
                             ];
     };
 
@@ -41,20 +41,28 @@ var Matrix = (function () {
     };
 
     matrix.prototype.getTranslationMatrix = function (tx, ty, tz) {
+        var tx = tx || 0,
+            ty = ty || 0,
+            tz = tz || 0;
+
         return new Matrix(
-            [1, 0, 0, tx],
-            [0, 1, 0, ty],
-            [0, 0, 1, tz],
-            [0, 0, 0, 1]
+            [ 1, 0, 0, tx ],
+            [ 0, 1, 0, ty ],
+            [ 0, 0, 1, tz ],
+            [ 0, 0, 0, 1 ]
         );
     };
 
     matrix.prototype.getScalingMatrix = function (sx, sy, sz) {
+        var sx = sx || 1,
+            sy = sy || 1,
+            sz = sz || 1;
+
         return new Matrix(
-            [sx, 0, 0, 0],
-            [0, sy, 0, 0],
-            [0, 0, sz, 0],
-            [0, 0, 0, 1]  
+            [ sx, 0, 0, 0 ],
+            [ 0, sy, 0, 0 ],
+            [ 0, 0, sz, 0 ],
+            [ 0, 0, 0, 1 ]  
         );
     };
 
@@ -62,7 +70,7 @@ var Matrix = (function () {
         // In production code, this function should be associated
         // with a matrix object with associated functions.
         if (!(x || y || z)) {
-            console.log("CANNOT DIVIDE BY ZERO");
+            return new Matrix();
         } else {
             var axisLength = Math.sqrt((x * x) + (y * y) + (z * z));
             var s = Math.sin(angle * Math.PI / 180.0);

@@ -153,10 +153,25 @@ describe("getTranslationMatrix()", function () {
         ]);
         done();
     });
+    it("returns the identity matrix if no argument is provided", function (done) {
+        var m = new Matrix().getTranslationMatrix();
+        expect(m).to.eql(new Matrix());
+        done();
+    });
+    it("returns matrix even when provided with less than 3 arguments", function (done) {
+        var m = new Matrix().getTranslationMatrix(3, 7);
+        expect(m.elements).to.eql([
+            [ 1, 0, 0, 3 ],
+            [ 0, 1, 0, 7 ],
+            [ 0, 0, 1, 0 ],
+            [ 0, 0, 0, 1 ]
+        ]);
+        done();
+    });
 });
 
 describe("getScalingMatrix()", function () {
-    it("successfully returns the scaling matrix", function (done) {
+    it("successfully returns the scaling matrix for 3 arguments", function (done) {
         var m = new Matrix(),
             scaled = m.getScalingMatrix(1, 2, 3);
 
@@ -164,6 +179,21 @@ describe("getScalingMatrix()", function () {
             [ 1, 0, 0, 0 ],
             [ 0, 2, 0, 0 ],
             [ 0, 0, 3, 0 ],
+            [ 0, 0, 0, 1 ]
+        ]);
+        done();
+    });
+    it("returns the identity matrix when arguments.length = 0", function (done) {
+        var m = new Matrix().getScalingMatrix();
+        expect(m).to.eql(new Matrix());
+        done();
+    });
+    it("returns the matrix even when argument length < 3", function (done) {
+        var m = new Matrix().getScalingMatrix(3);
+        expect(m.elements).to.eql([
+            [ 3, 0, 0, 0 ],
+            [ 0, 1, 0, 0 ],
+            [ 0, 0, 1, 0 ],
             [ 0, 0, 0, 1 ]
         ]);
         done();
