@@ -33,9 +33,6 @@ var Matrix = (function () {
                 var sumOfProducts = 0;
                 for (var k = 0; k < this.elements.length; k++) {
                     sumOfProducts += this.elements[i][k] * matrix.elements[k][j];
-                    // console.log("this.elements[" + i + "][" + k + "] " + this.elements[i][k]);
-                    // console.log("matrix.elements[" + k + "][" + j + "] " + matrix.elements[k][j]);                    
-                    // console.log(sumOfProducts);
                 }
                 result.elements[i][j] = sumOfProducts;
             }
@@ -64,54 +61,39 @@ var Matrix = (function () {
     matrix.prototype.getRotationMatrix = function (angle, x, y, z) {
         // In production code, this function should be associated
         // with a matrix object with associated functions.
-        var axisLength = Math.sqrt((x * x) + (y * y) + (z * z));
-        var s = Math.sin(angle * Math.PI / 180.0);
-        var c = Math.cos(angle * Math.PI / 180.0);
-        var oneMinusC = 1.0 - c;
+        if (!(x || y || z)) {
+            console.log("CANNOT DIVIDE BY ZERO");
+        } else {
+            var axisLength = Math.sqrt((x * x) + (y * y) + (z * z));
+            var s = Math.sin(angle * Math.PI / 180.0);
+            var c = Math.cos(angle * Math.PI / 180.0);
+            var oneMinusC = 1.0 - c;
 
-        // Normalize the axis vector of rotation.
-        x /= axisLength;
-        y /= axisLength;
-        z /= axisLength;
+            // Normalize the axis vector of rotation.
+            x /= axisLength;
+            y /= axisLength;
+            z /= axisLength;
 
-        // Now we can calculate the other terms.
-        // "2" for "squared."
-        var x2 = x * x;
-        var y2 = y * y;
-        var z2 = z * z;
-        var xy = x * y;
-        var yz = y * z;
-        var xz = x * z;
-        var xs = x * s;
-        var ys = y * s;
-        var zs = z * s;
+            // Now we can calculate the other terms.
+            // "2" for "squared."
+            var x2 = x * x;
+            var y2 = y * y;
+            var z2 = z * z;
+            var xy = x * y;
+            var yz = y * z;
+            var xz = x * z;
+            var xs = x * s;
+            var ys = y * s;
+            var zs = z * s;
 
-        // GL expects its matrices in column major order.
-        return new Matrix (
-            [ (x2 * oneMinusC) + c,
-              (xy * oneMinusC) + zs,
-              (xz * oneMinusC) - ys,
-              0.0 
-            ],
-
-            [ (xy * oneMinusC) - zs,
-              (y2 * oneMinusC) + c,
-              (yz * oneMinusC) + xs,
-              0.0
-            ],
-
-            [ (xz * oneMinusC) + ys,
-              (yz * oneMinusC) - xs,
-              (z2 * oneMinusC) + c,
-              0.0
-            ],
-
-            [ 0.0,
-              0.0,
-              0.0,
-              1.0
-            ]
-        );
+            // GL expects its matrices in column major order.
+            return new Matrix (
+                [ (x2 * oneMinusC) + c, (xy * oneMinusC) - zs, (xz * oneMinusC) + ys, 0.0 ],
+                [ (xy * oneMinusC) + zs, (y2 * oneMinusC) + c, (yz * oneMinusC) - xs, 0.0 ],
+                [ (xz * oneMinusC) - ys, (yz * oneMinusC) + xs, (z2 * oneMinusC) + c, 0.0 ],
+                [                   0.0,                   0.0,                  0.0, 1.0 ]
+            );
+        }
     };
 
     matrix.prototype.getOrthoMatrix = function (left, right, bottom, top, zNear, zFar) {
@@ -120,61 +102,10 @@ var Matrix = (function () {
         var depth = zFar - zNear;
 
         return new Matrix(
-            [
-              2.0 / width,
-              0.0,
-              0.0,
-              -(right + left) / width
-            ],
-
-            [
-              0.0,
-              2.0 / height,
-              0.0,
-              -(top + bottom) / height
-            ],
-
-            [
-              0.0,
-              0.0,
-              -2.0 / depth,
-              -(zFar + zNear) / depth,
-            ],
-
-            [
-              0.0,
-              0.0,
-              0.0,
-              1.0
-            ]
-
-            // [ 
-            //   2.0 / width,
-            //   0.0,
-            //   0.0,
-            //   0.0 
-            // ],
-
-            // [ 
-            //   0.0,
-            //   2.0 / height,
-            //   0.0,
-            //   0.0 
-            // ],
-
-            // [ 
-            //   0.0,
-            //   0.0,
-            //   -2.0 / depth,
-            //   0.0 
-            // ],
-
-            // [ 
-            //   -(right + left) / width,
-            //   -(top + bottom) / height,
-            //   -(zFar + zNear) / depth,
-            //   1.0 
-            // ]
+            [ 2.0 / width,          0.0,          0.0, -(right + left) / width ],
+            [         0.0, 2.0 / height,          0.0, -(top + bottom) / height ],
+            [         0.0,          0.0, -2.0 / depth, -(zFar + zNear) / depth ],
+            [         0.0,          0.0,          0.0,                      1.0 ]
         );
     };
 
@@ -184,33 +115,10 @@ var Matrix = (function () {
             depth = zFar - zNear;
 
         return new Matrix(
-            [ 
-              2.0 * zNear / width,
-              0.0,
-              (right + left) / width,
-              0.0
-            ],
-
-            [
-              0.0,
-              2.0 * zNear / height,
-              (top + bottom) / height,
-              0.0
-            ],
-
-            [
-              0.0,
-              0.0,
-              -(zFar + zNear) / depth,
-              -(2.0 * zFar * zNear) / depth
-            ],
-
-            [
-              0.0,
-              0.0,
-              -1.0,
-              0.0
-            ]
+            [ 2.0 * zNear / width,                  0.0,  (right + left) / width, 0.0 ],
+            [                 0.0, 2.0 * zNear / height, (top + bottom) / height, 0.0 ],
+            [                 0.0,                  0.0, -(zFar + zNear) / depth, -(2.0 * zFar * zNear) / depth ],
+            [                 0.0,                  0.0,                    -1.0, 0.0 ]
         );
     };
 
@@ -226,129 +134,4 @@ var Matrix = (function () {
     };
 
     return matrix;
-})();
-
-var Vector = (function () {
-    // Define the constructor.
-    var vector = function () {
-        this.encapsulatements = [].slice.call(arguments);
-    };
-    
-    // A private method for checking dimensions,
-    // throwing an exception when different.
-    var checkDimensions = function (v1, v2) {
-        if (v1.dimensions() !== v2.dimensions()) {
-            throw "Vectors have different dimensions";
-        }
-    };
-
-    vector.prototype.dimensions = function () {
-        return this.elements.length;
-    };
-
-    vector.prototype.x = function () {
-        return this.elements[0];
-    };
-
-    vector.prototype.y = function () {
-        return this.elements[1];
-    };
-
-    vector.prototype.z = function () {
-        return this.elements[2];
-    };
-
-    vector.prototype.w = function () {
-        return this.elements[3];
-    };
-
-    vector.prototype.add = function (v) {
-        var result = new Vector();
-
-        checkDimensions(this, v);
-
-        for (var i = 0, max = this.dimensions(); i < max; i += 1) {
-            result.elements[i] = this.elements[i] + v.elements[i];
-        }
-
-        return result;
-    };
-
-    vector.prototype.subtract = function (v) {
-        var result = new Vector();
-
-        checkDimensions(this, v);
-
-        for (var i = 0, max = this.dimensions(); i < max; i += 1) {
-            result.elements[i] = this.elements[i] - v.elements[i];
-        }
-
-        return result;
-    };
-
-    vector.prototype.multiply = function (s) {
-        var result = new Vector();
-
-        for (var i = 0, max = this.dimensions(); i < max; i += 1) {
-            result.elements[i] = this.elements[i] * s;
-        }
-
-        return result;
-    };
-
-    vector.prototype.divide = function (s) {
-        var result = new Vector();
-
-        for (var i = 0, max = this.dimensions(); i < max; i += 1) {
-            result.elements[i] = this.elements[i] / s;
-        }
-
-        return result;
-    };
-
-    vector.prototype.dot = function (v) {
-        var result = 0;
-
-        checkDimensions(this, v);
-
-        for (var i = 0, max = this.dimensions(); i < max; i += 1) {
-            result += this.elements[i] * v.elements[i];
-        }
-
-        return result;
-    };
-
-    vector.prototype.cross = function (v) {
-        if (this.dimensions() !== 3 || v.dimensions() !== 3) {
-            throw "Cross product is for 3D vectors only.";
-        }
-
-        // With 3D vectors, we can just return the result directly.
-        return new Vector(
-            (this.y() * v.z()) - (this.z() * v.y()),
-            (this.z() * v.x()) - (this.x() * v.z()),
-            (this.x() * v.y()) - (this.y() * v.x())
-        );
-    };
-
-    vector.prototype.magnitude = function () {
-        return Math.sqrt(this.dot(this));
-    };
-
-    vector.prototype.unit = function () {
-        // At this point, we can leverage our more "primitive" methods.
-        return this.divide(this.magnitude());
-    };
-
-    vector.prototype.projection = function (v) {
-        checkDimensions(this, v);
-
-        // Plug and chug :)
-        // The projection of u onto v is u dot the unit vector of v
-        // times the unit vector of v.
-        var unitv = v.unit();
-        return unitv.multiply(this.dot(unitv));
-    };
-
-    return vector;
 })();
