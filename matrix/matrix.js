@@ -149,7 +149,7 @@ var Matrix = (function () {
             ]
 
             // [ 
-            //   
+            //   2.0 / width,
             //   0.0,
             //   0.0,
             //   0.0 
@@ -214,7 +214,6 @@ var Matrix = (function () {
         );
     };
 
-    // Need to change this
     matrix.prototype.convert = function () {
         var result = [];
         for (var i = 0; i < this.elements.length; i++) {
