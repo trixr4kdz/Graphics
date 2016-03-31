@@ -211,9 +211,15 @@ describe("getPerspectMatrix()", function () {
         ));
         done();
     });
+    it("logs that the matrix is undefined and does not create the matrix", function (done) {
+        var m = new Matrix();
+        var result = m.getPerspectMatrix(0, 0, 1, 6, 1, 6);
+        expect(result).to.eql();
+        done();
+    });
 });
 
-describe("getOrthoMatrix", function () {
+describe("getOrthoMatrix()", function () {
     it("successfully returns the correct orthogonal matrix", function (done) {
         var m = new Matrix();
         var result = m.getOrthoMatrix(1, 6, 1, 6, 1, 6);
@@ -223,6 +229,12 @@ describe("getOrthoMatrix", function () {
             [ 0.0, 0.0, -2.0 / 5.0, -7.0 / 5.0 ],
             [ 0.0, 0.0, 0.0, 1.0 ]
         ));
+        done();
+    });
+    it("logs that the matrix is undefined and does not create the matrix", function (done) {
+        var m = new Matrix();
+        var result = m.getOrthoMatrix(0, 0, 1, 6, 1, 6);
+        expect(result).to.eql();
         done();
     });
 });
@@ -243,8 +255,7 @@ describe("convert()", function () {
         ]);
         done();
     });
-
-    it("successfully changes a perspective projection matrix into 16x1 array for WebGL consumption", function () {
+    it("successfully changes a perspective projection matrix into 16x1 array for WebGL consumption", function (done) {
         var m = (new Matrix()).getPerspectMatrix(1, 6, 1, 6, 1, 6).convert();
         expect(m).to.eql([
             2.0 / 5.0,
@@ -267,5 +278,6 @@ describe("convert()", function () {
             -2.0 * 6.0 / 5.0, 
             0.0
         ]);
-    })
+        done();
+    });
 });

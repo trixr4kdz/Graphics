@@ -105,16 +105,21 @@ var Matrix = (function () {
     };
 
     matrix.prototype.getOrthoMatrix = function (left, right, bottom, top, zNear, zFar) {
-        var width = right - left;
-        var height = top - bottom;
-        var depth = zFar - zNear;
+        var width = right - left,
+            height = top - bottom,
+            depth = zFar - zNear;
 
-        return new Matrix(
-            [ 2.0 / width,          0.0,          0.0, -(right + left) / width ],
-            [         0.0, 2.0 / height,          0.0, -(top + bottom) / height ],
-            [         0.0,          0.0, -2.0 / depth, -(zFar + zNear) / depth ],
-            [         0.0,          0.0,          0.0,                      1.0 ]
-        );
+        if (!(width && height && depth)) {
+            console.log("ORTHOGONAL MATRIX ERROR: MATRIX UNDEFINED AT GIVEN ARGUMENTS");
+        } else {
+
+            return new Matrix(
+                [ 2.0 / width,          0.0,          0.0, -(right + left) / width ],
+                [         0.0, 2.0 / height,          0.0, -(top + bottom) / height ],
+                [         0.0,          0.0, -2.0 / depth, -(zFar + zNear) / depth ],
+                [         0.0,          0.0,          0.0,                      1.0 ]
+            );
+        }
     };
 
     matrix.prototype.getPerspectMatrix = function (left, right, bottom, top, zNear, zFar) {
@@ -122,12 +127,17 @@ var Matrix = (function () {
             height = top - bottom,
             depth = zFar - zNear;
 
-        return new Matrix(
-            [ 2.0 * zNear / width,                  0.0,  (right + left) / width, 0.0 ],
-            [                 0.0, 2.0 * zNear / height, (top + bottom) / height, 0.0 ],
-            [                 0.0,                  0.0, -(zFar + zNear) / depth, -(2.0 * zFar * zNear) / depth ],
-            [                 0.0,                  0.0,                    -1.0, 0.0 ]
-        );
+        if (!(width && height && depth)) {
+            console.log("PERSPECTIVE MATRIX ERROR: MATRIX UNDEFINED AT GIVEN ARGUMENTS");
+        } else {
+
+            return new Matrix(
+                [ 2.0 * zNear / width,                  0.0,  (right + left) / width, 0.0 ],
+                [                 0.0, 2.0 * zNear / height, (top + bottom) / height, 0.0 ],
+                [                 0.0,                  0.0, -(zFar + zNear) / depth, -(2.0 * zFar * zNear) / depth ],
+                [                 0.0,                  0.0,                    -1.0, 0.0 ]
+            );
+        }
     };
 
     matrix.prototype.convert = function () {
