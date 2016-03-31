@@ -114,17 +114,45 @@ describe("Scaling", function () {
 describe("Conversion for WebGL consumption", function () {
     it("successfully creates a 16x1 vector", function (done) {
         var m = new Matrix(
-            [1, 2, 3, 4],
+            [1, 3, 1, 4],
             [2, 3, 4, 5],
             [3, 4, 5, 6],
             [4, 5, 6, 7]
         );
         expect(m.convert()).to.eql([
             1, 2, 3, 4,
-            2, 3, 4, 5,
-            3, 4, 5, 6,
+            3, 3, 4, 5,
+            1, 4, 5, 6,
             4, 5, 6, 7
         ]);
+        done();
+    });
+});
+
+describe("Perspective projection", function () {
+    it("successfully returns the correct matrix for the projection", function (done) {
+        var m = new Matrix();
+        var result = m.getPerspectMatrix(1, 6, 1, 6, 1, 6);
+        expect(result).to.eql(new Matrix(
+            [2.0 / 5.0, 0, 7.0 / 5.0, 0],
+            [0.0, 2 / 5.0, 7.0 / 5.0, 0],
+            [0.0, 0.0, -7.0 / 5.0, -2.0 * 6.0 / 5.0],
+            [0.0, 0.0, -1.0, 0.0]
+        ));
+        done();
+    });
+});
+
+describe("Orthographic projection", function () {
+    it("successfully returns the correct matrix for the projection", function (done) {
+        var m = new Matrix();
+        var result = m.getOrthoMatrix(1, 6, 1, 6, 1, 6);
+        expect(result).to.eql(new Matrix(
+            [2.0 / 5.0, 0, 0, -7.0 / 5.0],
+            [0.0, 2 / 5.0, 0, -7.0 / 5.0],
+            [0.0, 0.0, -2.0 / 5.0, -7.0 / 5.0],
+            [0.0, 0.0, 0.0, 1.0]
+        ));
         done();
     });
 });

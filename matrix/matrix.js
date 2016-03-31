@@ -120,42 +120,107 @@ var Matrix = (function () {
         var depth = zFar - zNear;
 
         return new Matrix(
-            [ 2.0 / width,
+            [
+              2.0 / width,
               0.0,
               0.0,
-              0.0 
+              -(right + left) / width
             ],
 
-            [ 0.0,
+            [
+              0.0,
               2.0 / height,
               0.0,
-              0.0 
+              -(top + bottom) / height
             ],
 
-            [ 0.0,
+            [
+              0.0,
               0.0,
               -2.0 / depth,
-              0.0 
+              -(zFar + zNear) / depth,
             ],
 
-            [ -(right + left) / width,
-              -(top + bottom) / height,
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+
+            // [ 
+            //   
+            //   0.0,
+            //   0.0,
+            //   0.0 
+            // ],
+
+            // [ 
+            //   0.0,
+            //   2.0 / height,
+            //   0.0,
+            //   0.0 
+            // ],
+
+            // [ 
+            //   0.0,
+            //   0.0,
+            //   -2.0 / depth,
+            //   0.0 
+            // ],
+
+            // [ 
+            //   -(right + left) / width,
+            //   -(top + bottom) / height,
+            //   -(zFar + zNear) / depth,
+            //   1.0 
+            // ]
+        );
+    };
+
+    matrix.prototype.getPerspectMatrix = function (left, right, bottom, top, zNear, zFar) {
+        var width = right - left,
+            height = top - bottom,
+            depth = zFar - zNear;
+
+        return new Matrix(
+            [ 
+              2.0 * zNear / width,
+              0.0,
+              (right + left) / width,
+              0.0
+            ],
+
+            [
+              0.0,
+              2.0 * zNear / height,
+              (top + bottom) / height,
+              0.0
+            ],
+
+            [
+              0.0,
+              0.0,
               -(zFar + zNear) / depth,
-              1.0 
+              -(2.0 * zFar * zNear) / depth
+            ],
+
+            [
+              0.0,
+              0.0,
+              -1.0,
+              0.0
             ]
         );
     };
 
-    matrix.prototype.getPerspectMatrix = function () {
-        return new Matrix();
-    };
-
+    // Need to change this
     matrix.prototype.convert = function () {
         var result = [];
         for (var i = 0; i < this.elements.length; i++) {
             var matrix = this.elements[i];
             for (var j = 0; j < matrix.length; j++) {
-                result.push(this.elements[i][j]);
+                result.push(this.elements[j][i]);
             }
         }
         return result;
