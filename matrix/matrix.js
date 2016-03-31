@@ -40,7 +40,7 @@ var Matrix = (function () {
         return result;
     };
 
-    matrix.prototype.getTranslationMatrix = function (tx, ty, tz) {
+    matrix.getTranslationMatrix = function (tx, ty, tz) {
         var tx = tx || 0,
             ty = ty || 0,
             tz = tz || 0;
@@ -53,7 +53,7 @@ var Matrix = (function () {
         );
     };
 
-    matrix.prototype.getScalingMatrix = function (sx, sy, sz) {
+    matrix.getScalingMatrix = function (sx, sy, sz) {
         var sx = sx || 1,
             sy = sy || 1,
             sz = sz || 1;
@@ -66,7 +66,7 @@ var Matrix = (function () {
         );
     };
 
-    matrix.prototype.getRotationMatrix = function (angle, x, y, z) {
+    matrix.getRotationMatrix = function (angle, x, y, z) {
         // In production code, this function should be associated
         // with a matrix object with associated functions.
         if (!(x || y || z)) {
@@ -76,6 +76,7 @@ var Matrix = (function () {
             var s = Math.sin(angle * Math.PI / 180.0);
             var c = Math.cos(angle * Math.PI / 180.0);
             var oneMinusC = 1.0 - c;
+            var angle = angle || 0;
 
             // Normalize the axis vector of rotation.
             x /= axisLength;
@@ -94,7 +95,6 @@ var Matrix = (function () {
             var ys = y * s;
             var zs = z * s;
 
-            // GL expects its matrices in column major order.
             return new Matrix (
                 [ (x2 * oneMinusC) + c, (xy * oneMinusC) - zs, (xz * oneMinusC) + ys, 0.0 ],
                 [ (xy * oneMinusC) + zs, (y2 * oneMinusC) + c, (yz * oneMinusC) - xs, 0.0 ],
@@ -104,7 +104,7 @@ var Matrix = (function () {
         }
     };
 
-    matrix.prototype.getOrthoMatrix = function (left, right, bottom, top, zNear, zFar) {
+    matrix.getOrthoMatrix = function (left, right, bottom, top, zNear, zFar) {
         var width = right - left,
             height = top - bottom,
             depth = zFar - zNear;
@@ -122,7 +122,7 @@ var Matrix = (function () {
         }
     };
 
-    matrix.prototype.getPerspectMatrix = function (left, right, bottom, top, zNear, zFar) {
+    matrix.getPerspectMatrix = function (left, right, bottom, top, zNear, zFar) {
         var width = right - left,
             height = top - bottom,
             depth = zFar - zNear;
@@ -138,6 +138,33 @@ var Matrix = (function () {
                 [                 0.0,                  0.0,                    -1.0, 0.0 ]
             );
         }
+    };
+
+    matrix.getTransformationMatrix = function (transformation) {
+        var translateMatrix = new Matrix(),
+            scaleMatrix = new Matrix(),
+            rotateMatrix = new Matrix();
+
+        translateMatrix = Matrix.getTranslationMatrix(
+            transformation.tx,
+            transformation.ty,
+            transformation.tz
+        );
+
+        scaleMatrix = Matrix.getScalingMatrix(
+            transformation.sx,
+            transformation.sy,
+            transformation.sz
+        );
+
+        rotateMatrix = Matrix.getRotationMatrix(
+            transformation.angle,
+            transformation.rx,
+            transformation.ry,
+            transformation.rz
+        );
+
+        return rotateMatrix.multiply(scaleMatrix.multiply(translateMatrix));
     };
 
     matrix.prototype.convert = function () {
