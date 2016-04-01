@@ -320,23 +320,3 @@ describe("convert()", function () {
         done();
     });
 });
-
-describe("save()", function () {
-    it("stores the current matrix before we do transforms", function (done) {
-        var m = new Matrix([
-            [ 1, 0, 0, 2 ],
-            [ 1, 2, 3, 0 ], 
-            [ 3, 0, 3, 1 ],
-            [ 0, 0, 0, 1 ]
-        ]).save();
-        expect(m).to.eql();
-
-        done();
-    });
-});
-
-describe("restore()", function () {
-    it("loads previously saved matrix", function (done) {
-        done();
-    })
-});

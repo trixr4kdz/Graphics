@@ -47,7 +47,7 @@ describe("Lookup children", function () {
     });
 });
 
-describe("removeChild", function () {
+describe("removeChild()", function () {
     context("when there are no child nodes", function () {
         it("throws something?", function (done) {
         //     var d = new Shape(Shapes.diamond());
@@ -57,7 +57,7 @@ describe("removeChild", function () {
         });
     });
 
-    context("when there is no index provided", function () {
+    context("when there is no argument provided", function () {
         it("removes the last object appended", function (done) {
             var d = new Shape(Shapes.diamond()),
                 s = new Shape(Shapes.sphere()),
@@ -73,8 +73,8 @@ describe("removeChild", function () {
         });
     });
 
-    context("when there is an index provided", function () {
-        it("removes the object at that index", function (done) {
+    context("when there is a Shape object provided", function () {
+        it("removes the first instance of that shape", function (done) {
             var d = new Shape(Shapes.diamond()),
                 s = new Shape(Shapes.sphere()),
                 d2 = new Shape(Shapes.diamond()),
@@ -82,7 +82,7 @@ describe("removeChild", function () {
             d.addChild(s);
             d.addChild(d2);
             d.addChild(c);
-            d.removeChild(1);
+            d.removeChild(d2);
             expect(d.children).to.eql([ s, c ]);
             expect(d.children.length).to.eql(2);
             done();

@@ -30,6 +30,7 @@
 
     <!-- Shapes is a library that generates "canned" shapes. -->
     <script src="shape.js"></script>
+    <script src="./../matrix/matrix.js"></script>
 
     <!-- Set up shaders: we've placed the source in script elements for
         simplicity.  Shaders are ideally kept in separate files for easier
@@ -47,7 +48,11 @@
       // Note this new additional output.
       attribute vec3 vertexColor;
       varying vec4 finalVertexColor;
+
       uniform mat4 rotationMatrix;
+      uniform mat4 transformationMatrix;
+      uniform mat4 projectionMatrix;
+      uniform mat4 modelViewMatrix;
 
       void main(void) {
           gl_Position = rotationMatrix * vec4(vertexPosition, 1.0);
