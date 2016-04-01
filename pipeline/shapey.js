@@ -40,7 +40,7 @@
     iceCream.addChild(cone);       // iceCreamCone XD
 
     var contextStack = [],
-        currentMatrix;
+        currentMatrix = new Matrix().convert();
 
         save = function () {
             contextStack.push(currentMatrix);
@@ -219,17 +219,17 @@
      * Displays the scene.
      */
     var drawScene = function () {
-        currentMatrix = Matrix.getTransformationMatrix(
-            {
-                tx: 0.0,
-                ty: 0.5,
-                tz: 0.0,
-                angle: 180,
-                rx: 1,
-                ry: 0,
-                rz: 0,
-            }
-        ).convert();
+        // currentMatrix = Matrix.getTransformationMatrix(
+        //     {
+        //         tx: 0.0,
+        //         ty: 0.5,
+        //         tz: 0.0,
+        //         angle: 180,
+        //         rx: 1,
+        //         ry: 0,
+        //         rz: 0,
+        //     }
+        // ).convert();
 
         // Clear the display.
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
