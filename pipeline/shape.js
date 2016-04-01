@@ -3,7 +3,7 @@
  * The "shapes" are returned as indexed vertices, with utility functions for
  * converting these into "raw" coordinate arrays.
  */
-var Shape = function (shape, color) {
+var Shape = function (shape, color, mode) {
     this.color = color || {r: 0, g: 0, b: 0};
     this.vertices = shape.vertices;
     this.indices = shape.indices;
@@ -170,7 +170,7 @@ var Shapes = {
             currentTheta = 0.0,
             faces = faces || 8;
 
-        for (var i = 0; i < faces + 1; i++) {
+        for (var i = 0; i < faces; i++) {
             vertices.push([
                 RADIUS * Math.cos(currentTheta),
                 CONE_BASE,
