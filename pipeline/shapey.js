@@ -18,19 +18,12 @@
         sphere = new Shape(Shapes.sphere(0.7, 20, 20), 
                     { r: 0.5, g: 0.5, b: 0.0 }),
         cone = new Shape(Shapes.cone(150)),
-        newSphere = new Shape(Shapes.sphere(0.3, 20, 20));
+        iceCream = new Shape(Shapes.sphere(0.3, 20, 20));
 
-    sphere.addChild(newSphere);
-    newSphere.addChild(cone);
+    iceCream.addChild(cone);       // iceCreamCone :D
 
-    // var iceCreamCone = new Shape(Shapes.cone(150), 
-    //     {r: 0.5, g: 0.5, b: 0.0}),
-
-    //     createIceCream = function () {
-    //         var 
-    //     }
     var contextStack = [],
-        currentMatrix;
+        currentMatrix = new Matrix();
 
         save = function () {
             contextStack.push(currentMatrix);
@@ -58,29 +51,25 @@
     gl.viewport(0, 0, canvas.width, canvas.height);
 
     // Build the objects to display.
-    var objectsToDraw = [
-        {
-            color: cone.color,
-            vertices: cone.toRawLineArray(),
-            mode: gl.LINES,
-            children: cone.children
-        },
+    var objectsToDraw = [],
+        shapes = [diamond, sphere, iceCream];
 
-        {
-            color: sphere.color,
-            vertices: sphere.toRawLineArray(),
-            mode: gl.LINES,
-            children: sphere.children
-        },
-
-        {
-            color: diamond.color,
-            // vertices: diamond.toRawTriangleArray(),
-            vertices: diamond.toRawLineArray(),
-            mode: gl.LINES,
-            children: diamond.children
+    var toDraw = function (shapes) {
+        for (var i = 0; i < shapes.length; i++) {
+            var obj = {
+                color: shapes[i].color,
+                vertices: shapes[i].toRawLineArray(),
+                mode: gl.LINES,
+                children: shapes[i].children
+            };
+            objectsToDraw.push(obj);
+            if (shapes[i].children.length > 0) {
+                toDraw(shapes[i].children)
+            }
         }
-    ];
+    }
+
+    toDraw(shapes);
 
     var verticesToWebGL = function (objectsToDraw) {
     // Pass the vertices to WebGL.
@@ -158,26 +147,24 @@
     var drawObject = function (object) {
 
         // Set the varying colors.
-        /**  Need to change this **/
         gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
         gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
 
-        // gl.uniformMatrix4fv(modelViewMatrix, gl.FALSE, new Float32Array(object.axis ?
-        //         getRotationMatrix(currentRotation, object.axis.x, object.axis.y, object.axis.z) :
-        //         new Matrix()
-        //     ));
+        gl.uniformMatrix4fv(modelViewMatrix, gl.FALSE, new Float32Array(object.axis ?
+                getRotationMatrix(currentRotation, object.axis.x, object.axis.y, object.axis.z) :
+                new Matrix()
+            ));
 
         // Set the varying vertex coordinates.
         gl.bindBuffer(gl.ARRAY_BUFFER, object.buffer);
-        /** And this too**/
         gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
         gl.drawArrays(object.mode, 0, object.vertices.length / 3);
 
-        // if (object.children.length > 0) {
-        //     for (var i = 0; i < object.children.length; i++) {
-        //         drawObject(object.children[i]);
-        //     }
-        // }
+        if (object.children.length > 0) {
+            for (var i = 0; i < object.children.length; i++) {
+                drawObject(object.children[i]);
+            }
+        }
     };
 
     /*
@@ -194,19 +181,20 @@
         // Display the objects.
         for (var i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
             drawObject(objectsToDraw[i]);
+            console.log(objectsToDraw[i]);
         }
 
         // All done.
         gl.flush();
     };
-    
+
     gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(Matrix.getOrthoMatrix(
-        -2 * (canvas.width / canvas.height),
-        2 * (canvas.width / canvas.height),
-        -2,
-        2,
-        -10,
-        10
+        -5 * (canvas.width / canvas.height),
+        5 * (canvas.width / canvas.height),
+        -5,
+        5,
+        -100,
+        100
     ).convert()));
 
     verticesToWebGL(objectsToDraw);

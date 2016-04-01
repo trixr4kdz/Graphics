@@ -3,13 +3,12 @@
  * The "shapes" are returned as indexed vertices, with utility functions for
  * converting these into "raw" coordinate arrays.
  */
-var Shape = function (shape, color, mode) {
+var Shape = function (shape, color) {
     this.color = color || {r: 0, g: 0, b: 0};
     this.vertices = shape.vertices;
     this.indices = shape.indices;
     this.children = [];
     this.parent = null;
-    this.mode = mode;
 };
 
 Shape.prototype.toRawTriangleArray = function () {
