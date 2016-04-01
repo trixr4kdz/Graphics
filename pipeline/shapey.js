@@ -17,7 +17,8 @@
                     { r: 0.0, g: 0.5, b: 0.5 }),
         sphere = new Shape(Shapes.sphere(0.7, 20, 20), 
                     { r: 0.5, g: 0.5, b: 0.0 }),
-        cone = new Shape(Shapes.cone(150)),
+        cone = new Shape(Shapes.cone(150), 
+            { r: 0.75, g: 0.75, b: 0.0 }),
         iceCream = new Shape(Shapes.sphere(0.3, 20, 20));
 
     iceCream.addChild(cone);       // iceCreamCone :D
@@ -67,7 +68,7 @@
                 toDraw(shapes[i].children)
             }
         }
-    }
+    };
 
     toDraw(shapes);
 
@@ -160,11 +161,11 @@
         gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
         gl.drawArrays(object.mode, 0, object.vertices.length / 3);
 
-        if (object.children.length > 0) {
-            for (var i = 0; i < object.children.length; i++) {
-                drawObject(object.children[i]);
-            }
-        }
+        // if (object.children.length > 0) {
+        //     for (var i = 0; i < object.children.length; i++) {
+        //         drawObject(object.children[i]);
+        //     }
+        // }
     };
 
     /*
@@ -176,12 +177,27 @@
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
         // Set up the rotation matrix.
-        gl.uniformMatrix4fv(rotationMatrix, gl.FALSE, new Float32Array(Matrix.getRotationMatrix(currentRotation, 0, 1, 0).convert()));
+        gl.uniformMatrix4fv(rotationMatrix, gl.FALSE, 
+            new Float32Array(Matrix.getRotationMatrix(
+                currentRotation, 0, 1, 0).convert()
+            ));
+
+        gl.uniformMatrix4fv(transformationMatrix, gl.FALSE, 
+            new Float32Array(Matrix.getTransformationMatrix(
+                {
+                    sx: 0.0,
+                    sy: 0.5,
+                    sz: 0.5,
+                    angle: currentRotation,
+                    rx: 1,
+                    ry: 1,
+                    rz: 1
+                }).convert()
+            ));
 
         // Display the objects.
         for (var i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
             drawObject(objectsToDraw[i]);
-            console.log(objectsToDraw[i]);
         }
 
         // All done.
