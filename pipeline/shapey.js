@@ -57,23 +57,23 @@
 
     var makeTransforms = function (object, transform) {
         var obj = shapes[shapes.indexOf(object)],
-            spec = Object.keys(transform);
+            spec = Object.keys(transform),
+            t = {};
         for (var key of spec) {
-            obj[key] = transform[key];
+            t[key] = transform[key];
         }
+        obj["transform"] = t;
     };
 
     makeTransforms(diamond, {
         angle: 40,
-        rx: 1,
-        ry: 1
+        tx: 1,
+        ty: 1,
+        tz: 1
     });
 
     makeTransforms(sphere, {
         tx: 0.5,
-        sx: 2,
-        sy: 2,
-        sz: 2
     });
 
     var toDraw = function (shapes) {
@@ -83,18 +83,7 @@
                 vertices: shapes[i].toRawLineArray(),
                 mode: gl.LINES,
                 children: shapes[i].children,
-                transform: {
-                    tx: shapes[i].tx,
-                    ty: shapes[i].ty,
-                    tz: shapes[i].tz,
-                    sx: shapes[i].sx,
-                    sy: shapes[i].sy,
-                    sz: shapes[i].sz,
-                    angle: shapes[i].angle,
-                    rx: shapes[i].rx,
-                    ry: shapes[i].ry,
-                    rz: shapes[i].rz,
-                }
+                transform: shapes[i].transform
             };
             objectsToDraw.push(obj);
             if (shapes[i].children.length > 0) {
@@ -175,61 +164,63 @@
     var projectionMatrix = gl.getUniformLocation(shaderProgram, "projectionMatrix");
     var modelViewMatrix = gl.getUniformLocation(shaderProgram, "modelViewMatrix");
 
+    // Lighting
+    var lightPosition = gl.getUniformLocation(shaderProgram, "lightPosition");
+    var lightDiffuse = gl.getUniformLocation(shaderProgram, "lightDiffuse");
+    var lightAmbient = gl.getUniformLocation(shaderProgram, "lightAmbient");
+
     /*
      * Displays an individual object.
      */
     var drawObject = function (object) {
+        if (object.transform) {
 
-        // currentMatrix = Matrix.getTransformationMatrix(
-        //     {
-        //         tx: object.tx,
-        //         ty: object.ty,
-        //         tz: object.tz,
-        //         sx: object.sx,
-        //         sy: object.sy,
-        //         sz: object.sz,
-        //         rx: object.rx,
-        //         ry: object.ry,
-        //         rz: object.rz,
-        //         angle: currentRotation
-        //     }).convert()
+            currentMatrix = Matrix.getTransformationMatrix(
+                {
+                    tx: object.transform.tx,
+                    ty: object.transform.ty,
+                    tz: object.transform.tz,
+                    sx: object.transform.sx,
+                    sy: object.transform.sy,
+                    sz: object.transform.sz,
+                    rx: object.transform.rx,
+                    ry: object.transform.ry,
+                    rz: object.transform.rz,
+                    angle: currentRotation
+                }).convert()
 
-        // Set the varying colors.
-        gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
-        gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
+            // Set the varying colors.
+            gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
+            gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
 
-        // gl.uniformMatrix4fv(transformationMatrix, gl.FALSE, 
-        //     new Float32Array(currentMatrix));
+            gl.uniformMatrix4fv(transformationMatrix, gl.FALSE, 
+                new Float32Array(currentMatrix));
 
-        // Set the varying vertex coordinates.
-        gl.bindBuffer(gl.ARRAY_BUFFER, object.buffer);
-        gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
-        gl.drawArrays(object.mode, 0, object.vertices.length / 3);
+            // Set the varying vertex coordinates.
+            gl.bindBuffer(gl.ARRAY_BUFFER, object.buffer);
+            gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
+            gl.drawArrays(object.mode, 0, object.vertices.length / 3);
 
-        if (object.children.length > 0) {
-            for (var i = 0; i < object.children.length; i++) {
-                save();
-                drawObject(object.children[i]);
-                restore();
+            if (object.children.length > 0) {
+                for (var i = 0; i < object.children.length; i++) {
+                    save();
+                    drawObject(object.children[i]);
+                    restore();
+                }
             }
+        } else {
+            gl.uniformMatrix4fv(transformationMatrix, gl.FALSE, 
+                new Float32Array(Matrix.getTransformationMatrix({}).convert()
+            ));
         }
+        console.log("WAT");
+        console.log(currentMatrix);
     };
 
     /*
      * Displays the scene.
      */
     var drawScene = function () {
-        // currentMatrix = Matrix.getTransformationMatrix(
-        //     {
-        //         tx: 0.0,
-        //         ty: 0.5,
-        //         tz: 0.0,
-        //         angle: 180,
-        //         rx: 1,
-        //         ry: 0,
-        //         rz: 0,
-        //     }
-        // ).convert();
 
         // Clear the display.
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -268,6 +259,10 @@
 
     verticesToWebGL(objectsToDraw);
 
+    // Set up our one light source and color.  Note the uniform3fv function.
+    // gl.uniform3fv(lightPosition, [1.0, 1.0, 1.0]); // Can also have multiple light sources
+    // gl.uniform3fv(lightDiffuse, [1.0, 1.0, 1.0]);  // Remember to add the variables in shader
+    // gl.uniform3fv(lightAmbient, [0.1, 0.1, 0.1]);
     /*
      * Animates the scene.
      */
