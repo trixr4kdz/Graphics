@@ -165,11 +165,15 @@
     var transformationMatrix = gl.getUniformLocation(shaderProgram, "transformationMatrix");
     var projectionMatrix = gl.getUniformLocation(shaderProgram, "projectionMatrix");
     var modelViewMatrix = gl.getUniformLocation(shaderProgram, "modelViewMatrix");
+    var lightPosition = gl.getUniformLocation(shaderProgram, "lightPosition");
+    var lightDiffuse = gl.getUniformLocation(shaderProgram, "lightDiffuse");
 
     /*
      * Displays an individual object.
      */
-    var drawObject = function (object) {
+    var drawObject = function (object, parent) {
+
+        var thisMatrix;
 
         // currentMatrix = Matrix.getTransformationMatrix(
         //     {
@@ -192,6 +196,10 @@
         // gl.uniformMatrix4fv(transformationMatrix, gl.FALSE, 
         //     new Float32Array(currentMatrix));
 
+        if (parent) {
+            thisMatrix = thisMatrix.multiply(parent);
+        }
+
         // Set the varying vertex coordinates.
         gl.bindBuffer(gl.ARRAY_BUFFER, object.buffer);
         gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
@@ -199,9 +207,9 @@
 
         if (object.children.length > 0) {
             for (var i = 0; i < object.children.length; i++) {
-                save();
+                // save();
                 drawObject(object.children[i]);
-                restore();
+                // restore();
             }
         }
     };
@@ -249,15 +257,18 @@
     };
 
     gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(Matrix.getOrthoMatrix(
-        -1.25 * (canvas.width / canvas.height),
-        1.25 * (canvas.width / canvas.height),
-        -1.25,
-        1.25,
+        -2 * (canvas.width / canvas.height),
+        2 * (canvas.width / canvas.height),
         -2,
-        2
+        2,
+        -10,
+        10
     ).convert()));
 
     verticesToWebGL(objectsToDraw);
+
+    gl.uniform3fv(lightPosition, [1.0, 1.0, 1.0]);
+    gl. uniform3fv(lightDiffuse, [1.0, 1.0, 1.0]);
 
     /*
      * Animates the scene.
