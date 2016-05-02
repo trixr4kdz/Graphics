@@ -82,18 +82,18 @@
 
     <!-- The fragment shader produces a single unconditional color. -->
     <script id="fragment-shader" type="x-shader/x-fragment">
-      #ifdef GL_ES
-      precision highp float;
-      #endif
+        #ifdef GL_ES
+        precision highp float;
+        #endif
 
-      varying vec4 finalVertexColor;
+        varying vec4 finalVertexColor;
 
-      void main(void) {
-      // We vary the color based on the fragment's z coordinate,
-      // which, at this point, ranges from 0 (near) to 1 (far).
-      // Note the ".rgb" subselector.
-      gl_FragColor = vec4((1.0 - gl_FragCoord.z) * finalVertexColor.rgb, 1.0);
-    }
+        void main(void) {
+            // We vary the color based on the fragment's z coordinate,
+            // which, at this point, ranges from 0 (near) to 1 (far).
+            // Note the ".rgb" subselector.
+            gl_FragColor = vec4((1.0 - gl_FragCoord.z) * finalVertexColor.rgb, 1.0);
+        }
     </script>
 
     <!-- This script sets up the specific scene for this page. -->

@@ -167,6 +167,7 @@
     var modelViewMatrix = gl.getUniformLocation(shaderProgram, "modelViewMatrix");
     var lightPosition = gl.getUniformLocation(shaderProgram, "lightPosition");
     var lightDiffuse = gl.getUniformLocation(shaderProgram, "lightDiffuse");
+    var normalVector = gl.getUniformLocation(shaderProgram, "normalVector");
 
     /*
      * Displays an individual object.
@@ -199,6 +200,9 @@
         if (parent) {
             thisMatrix = thisMatrix.multiply(parent);
         }
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, object.normalBuffer);
+        gl.vertexAttribPointer(normalVector, 3, gl.FLOAT, false, 0, 0);
 
         // Set the varying vertex coordinates.
         gl.bindBuffer(gl.ARRAY_BUFFER, object.buffer);
