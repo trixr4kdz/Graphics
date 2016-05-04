@@ -45,7 +45,7 @@ var Matrix = (function () {
             ty = ty || 0,
             tz = tz || 0;
 
-        return new Matrix(
+        return new Matrix (
             [ 1, 0, 0, tx ],
             [ 0, 1, 0, ty ],
             [ 0, 0, 1, tz ],
@@ -170,8 +170,7 @@ var Matrix = (function () {
     matrix.prototype.convert = function () {
         var result = [];
         for (var i = 0; i < this.elements.length; i++) {
-            var matrix = this.elements[i];
-            for (var j = 0; j < matrix.length; j++) {
+            for (var j = 0; j < this.elements.length; j++) {
                 result.push(this.elements[j][i]);
             }
         }

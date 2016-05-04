@@ -82,8 +82,10 @@
         for (var i = 0; i < shapes.length; i++) {
             var obj = {
                 color: shapes[i].color,
+                // vertices: shapes[i].toRawTriangleArray(),
                 vertices: shapes[i].toRawLineArray(),
                 mode: gl.LINES,
+                // mode: gl.TRIANGLES,
                 children: shapes[i].children,
                 transform: shapes[i].transform
             };
@@ -174,7 +176,18 @@
      */
     var drawObject = function (object, parent) {
 
-        var thisMatrix;
+        var thisMatrix = Matrix.getTransformationMatrix({
+            tx: object.transform.tx, 
+            ty: object.transform.ty, 
+            tz: object.transform.tz,
+            sx: object.transform.sx,
+            sy: object.transform.sy,
+            sz: object.transform.sz,
+            rx: object.transform.rx,
+            ry: object.transform.ry,
+            rz: object.transform.rz,
+            angle: currentRotation
+        }).convert();
 
         // currentMatrix = Matrix.getTransformationMatrix(
         //     {
@@ -222,34 +235,25 @@
      * Displays the scene.
      */
     var drawScene = function () {
-        // currentMatrix = Matrix.getTransformationMatrix(
-        //     {
-        //         tx: 0.0,
-        //         ty: 0.5,
-        //         tz: 0.0,
-        //         angle: 180,
-        //         rx: 1,
-        //         ry: 0,
-        //         rz: 0,
-        //     }
-        // ).convert();
 
         // Clear the display.
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-        gl.uniformMatrix4fv(transformationMatrix, gl.FALSE, 
-            new Float32Array(Matrix.getTransformationMatrix(
-                {
-                    ty: 1.0,
-                    sx: 0.0,
-                    sy: 0.5,
-                    sz: 0.5,
-                    angle: currentRotation,
-                    rx: 1,
-                    ry: 1,
-                    rz: 0
-                }).convert()
-            ));
+        // gl.uniformMatrix4fv(transformationMatrix, gl.FALSE, 
+        //     new Float32Array(Matrix.getTransformationMatrix(
+        //         {
+        //             ty: 1.0,
+        //             sx: 0.0,
+        //             sy: 0.5,
+        //             sz: 0.5,
+        //             angle: currentRotation,
+        //             rx: 1,
+        //             ry: 1,
+        //             rz: 0
+        //         }).convert()
+        //     ));
+
+        // gl.uniformMatrix4fv(modelViewMatrix, gl.FALSE, new Float32Array(modelViewMatrix))
 
         // Display the objects.
         for (var i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
