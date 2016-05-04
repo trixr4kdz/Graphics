@@ -47,10 +47,9 @@
 
         // Note the normal vector.
         attribute vec3 vertexPosition;
-        attribute vec3 vertexDiffuseColor;
-        attribute vec3 vertexSpecularColor;
+        // attribute vec3 vertexDiffuseColor;
+        // attribute vec3 vertexSpecularColor;
         attribute vec3 normalVector;
-
 
         // Note this new additional output.
         attribute vec3 vertexColor;
@@ -60,37 +59,37 @@
         uniform mat4 transformationMatrix;
         uniform mat4 projectionMatrix;
         uniform mat4 modelViewMatrix;
-        uniform mat4 camera;
+        // uniform mat4 camera;
 
         uniform vec4 lightPosition;
         uniform vec3 lightDiffuse;
-        uniform vec3 lightAmbient;
+        // uniform vec3 lightAmbient;
 
-        // We don't calculate color in the vertex shader anymore.  Instead,
-        // we will pass on information that will affect the color later.
-        varying vec3 fragmentDiffuseColor;
-        varying vec3 fragmentSpecularColor;
-        varying vec3 fragmentNormal;
-        varying vec3 fragmentEye;
-        varying vec3 fragmentLight;
+        // // We don't calculate color in the vertex shader anymore.  Instead,
+        // // we will pass on information that will affect the color later.
+        // varying vec3 fragmentDiffuseColor;
+        // varying vec3 fragmentSpecularColor;
+        // varying vec3 fragmentNormal;
+        // varying vec3 fragmentEye;
+        // varying vec3 fragmentLight;
 
 
         void main(void) {
 
-            fragmentNormal = normalVector;
-            fragmentEye = vertexPosition;
-            fragmentLight = lightPosition.xyz;
+            // fragmentNormal = normalVector;
+            // fragmentEye = vertexPosition;
+            // fragmentLight = lightPosition.xyz;
 
-            // No conditional expressions in GLSL, unfortunately.  We have to
-            // do this the other way.
-            if (lightPosition.w != 0.0) {
-                // Calculate the direction vector.
-                fragmentLight = lightPosition.xyz - vertexPosition;
-            }
+            // // No conditional expressions in GLSL, unfortunately.  We have to
+            // // do this the other way.
+            // if (lightPosition.w != 0.0) {
+            //     // Calculate the direction vector.
+            //     fragmentLight = lightPosition.xyz - vertexPosition;
+            // }
 
             // We now defer all color calculations to the fragment shader.
-            fragmentDiffuseColor = vertexDiffuseColor;
-            fragmentSpecularColor = vertexSpecularColor;
+            // fragmentDiffuseColor = vertexDiffuseColor;
+            // fragmentSpecularColor = vertexSpecularColor;
 
             vec3 eyePosition = (modelViewMatrix * vec4(vertexPosition, 1.0)).xyz;
             // Figure out the color of the light that lands on the vertex.
@@ -104,7 +103,7 @@
             float kd = max(dot(l, n), 0.0);
             vec3 finalDiffuse = kd * diffuseProduct;
 
-            gl_Position = projectionMatrix * camera * modelViewMatrix * vec4(vertexPosition, 1.0);
+            gl_Position = projectionMatrix * transformationMatrix * modelViewMatrix * vec4(vertexPosition, 1.0);
             // gl_Position = projectionMatrix * transformationMatrix * vec4(vertexPosition, 1.0);
             finalVertexColor = vec4(vertexColor, 1.0);
         }
@@ -159,7 +158,7 @@
 
             // .rgb suffix not really necessary, but included for emphasis.
             gl_FragColor = vec4(finalDiffuse.rgb + finalSpecular.rgb, 1.0);
-            
+
             // We vary the color based on the fragment's z coordinate,
             // which, at this point, ranges from 0 (near) to 1 (far).
             // Note the ".rgb" subselector.

@@ -82,12 +82,13 @@
         for (var i = 0; i < shapes.length; i++) {
             var obj = {
                 color: shapes[i].color,
-                // vertices: shapes[i].toRawTriangleArray(),
-                vertices: shapes[i].toRawLineArray(),
-                mode: gl.LINES,
-                // mode: gl.TRIANGLES,
+                vertices: shapes[i].toRawTriangleArray(),
+                // vertices: shapes[i].toRawLineArray(),
+                // mode: gl.LINES,
+                mode: gl.TRIANGLES,
                 children: shapes[i].children,
-                transform: shapes[i].transform
+                transform: shapes[i].transform,
+                normals: shapes[i].normals,
             };
             objectsToDraw.push(obj);
             if (shapes[i].children.length > 0) {

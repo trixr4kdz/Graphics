@@ -3,12 +3,13 @@
  * The "shapes" are returned as indexed vertices, with utility functions for
  * converting these into "raw" coordinate arrays.
  */
-var Shape = function (shape, color, mode) {
+var Shape = function (shape, color, normals) {
     this.color = color || {r: 0, g: 0, b: 0};
     this.vertices = shape.vertices;
     this.indices = shape.indices;
     this.children = [];
     this.parent = null;
+    this.normals = normals;
 };
 
 Shape.prototype.toRawTriangleArray = function () {
@@ -66,7 +67,7 @@ Shape.prototype.removeChild = function (shape) {
  * The vector computations involved here mean that the Vector module must be
  * loaded up for this function to work.
  */
-Shape.prototype.toNormalArray = function () {
+Shape.toNormalArray = function (indexedVertices) {
     var result = [],
         i,
         j,
@@ -110,7 +111,7 @@ Shape.prototype.toNormalArray = function () {
      * every vertex into its unit vector version.  This works mainly for objects
      * that are centered around the origin.
      */
-Shape.prototype.toVertexNormalArray = function () {
+Shape.toVertexNormalArray = function (indexedVertices) {
     var result = [],
         i,
         j,
