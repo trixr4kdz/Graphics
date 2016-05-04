@@ -58,15 +58,15 @@ Shape.prototype.removeChild = function (shape) {
 };
 
 /*
-     * Utility function for computing normal vectors based on indexed vertices.
-     * The secret: take the cross product of each triangle.  Note that vertex order
-     * now matters---the resulting normal faces out from the side of the triangle
-     * that "sees" the vertices listed counterclockwise.
-     *
-     * The vector computations involved here mean that the Vector module must be
-     * loaded up for this function to work.
-     */
-Shape.prototype.toNormalArray: function () {
+ * Utility function for computing normal vectors based on indexed vertices.
+ * The secret: take the cross product of each triangle.  Note that vertex order
+ * now matters---the resulting normal faces out from the side of the triangle
+ * that "sees" the vertices listed counterclockwise.
+ *
+ * The vector computations involved here mean that the Vector module must be
+ * loaded up for this function to work.
+ */
+Shape.prototype.toNormalArray = function () {
     var result = [],
         i,
         j,
@@ -110,7 +110,7 @@ Shape.prototype.toNormalArray: function () {
      * every vertex into its unit vector version.  This works mainly for objects
      * that are centered around the origin.
      */
-Shape.prototype.toVertexNormalArray: function () {
+Shape.prototype.toVertexNormalArray = function () {
     var result = [],
         i,
         j,

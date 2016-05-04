@@ -188,7 +188,7 @@
     var transformationMatrix = gl.getUniformLocation(shaderProgram, "transformationMatrix");
     var projectionMatrix = gl.getUniformLocation(shaderProgram, "projectionMatrix");
     var modelViewMatrix = gl.getUniformLocation(shaderProgram, "modelViewMatrix");
-    
+
     var lightPosition = gl.getUniformLocation(shaderProgram, "lightPosition");
     var lightDiffuse = gl.getUniformLocation(shaderProgram, "lightDiffuse");
     var lightSpecular = gl.getUniformLocation(shaderProgram, "lightSpecular");
@@ -219,8 +219,10 @@
         gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
         gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
 
-        // gl.uniformMatrix4fv(transformationMatrix, gl.FALSE, 
-        //     new Float32Array(currentMatrix));
+        gl.uniformMatrix4fv(modelViewMatrix, gl.FALSE, 
+            new Float32Array(thisMatrix));
+
+        gl.uniform1f(shininess, object.shininess);
 
         if (parent) {
             thisMatrix = thisMatrix.multiply(parent);
@@ -251,21 +253,7 @@
         // Clear the display.
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-        // gl.uniformMatrix4fv(transformationMatrix, gl.FALSE, 
-        //     new Float32Array(Matrix.getTransformationMatrix(
-        //         {
-        //             ty: 1.0,
-        //             sx: 0.0,
-        //             sy: 0.5,
-        //             sz: 0.5,
-        //             angle: currentRotation,
-        //             rx: 1,
-        //             ry: 1,
-        //             rz: 0
-        //         }).convert()
-        //     ));
-
-        // gl.uniformMatrix4fv(modelViewMatrix, gl.FALSE, new Float32Array(modelViewMatrix))
+        // gl.uniformMatrix4fv(modelViewMatrix, gl.FALSE, new Float32Array());
 
         // Display the objects.
         for (var i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
