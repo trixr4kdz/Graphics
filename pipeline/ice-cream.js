@@ -121,6 +121,27 @@
             objectsToDraw[i].colorBuffer = GLSLUtilities.initVertexBuffer(gl,
                     objectsToDraw[i].colors);
 
+            // Same trick with specular colors.
+            if (!objectsToDraw[i].specularColors) {
+                // Future refactor: helper function to convert a single value or
+                // array into an array of copies of itself.
+                objectsToDraw[i].specularColors = [];
+                for (j = 0, maxj = objectsToDraw[i].vertices.length / 3;
+                        j < maxj; j += 1) {
+                    objectsToDraw[i].specularColors = objectsToDraw[i].specularColors.concat(
+                        objectsToDraw[i].specularColor.r,
+                        objectsToDraw[i].specularColor.g,
+                        objectsToDraw[i].specularColor.b
+                    );
+                }
+            }
+            objectsToDraw[i].specularBuffer = GLSLUtilities.initVertexBuffer(gl,
+                    objectsToDraw[i].specularColors);
+
+            // One more buffer: normals.
+            objectsToDraw[i].normalBuffer = GLSLUtilities.initVertexBuffer(gl,
+                    objectsToDraw[i].normals);
+
             if (objectsToDraw[i].children.length > 0) {
                 verticesToWebGL(objectsToDraw[i].children);
             }
@@ -162,14 +183,19 @@
     gl.enableVertexAttribArray(vertexPosition);
     var vertexColor = gl.getAttribLocation(shaderProgram, "vertexColor");
     gl.enableVertexAttribArray(vertexColor);
-    var rotationMatrix = gl.getUniformLocation(shaderProgram, "rotationMatrix");
+    // var rotationMatrix = gl.getUniformLocation(shaderProgram, "rotationMatrix");
 
     var transformationMatrix = gl.getUniformLocation(shaderProgram, "transformationMatrix");
     var projectionMatrix = gl.getUniformLocation(shaderProgram, "projectionMatrix");
     var modelViewMatrix = gl.getUniformLocation(shaderProgram, "modelViewMatrix");
+    
     var lightPosition = gl.getUniformLocation(shaderProgram, "lightPosition");
     var lightDiffuse = gl.getUniformLocation(shaderProgram, "lightDiffuse");
+    var lightSpecular = gl.getUniformLocation(shaderProgram, "lightSpecular");
+
+    var vertexDiffuseColor = gl.getUniformLocation(shaderProgram, "vertexDiffuseColor");
     var normalVector = gl.getUniformLocation(shaderProgram, "normalVector");
+    var shininess = gl.getUniformLocation(shaderProgram, "shininess");
 
     /*
      * Displays an individual object.
@@ -188,20 +214,6 @@
             rz: object.transform.rz,
             angle: currentRotation
         }).convert();
-
-        // currentMatrix = Matrix.getTransformationMatrix(
-        //     {
-        //         tx: object.tx,
-        //         ty: object.ty,
-        //         tz: object.tz,
-        //         sx: object.sx,
-        //         sy: object.sy,
-        //         sz: object.sz,
-        //         rx: object.rx,
-        //         ry: object.ry,
-        //         rz: object.rz,
-        //         angle: currentRotation
-        //     }).convert()
 
         // Set the varying colors.
         gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
