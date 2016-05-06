@@ -85,10 +85,12 @@
                 vertices: shapes[i].toRawTriangleArray(),
                 // vertices: shapes[i].toRawLineArray(),
                 // mode: gl.LINES,
+                shininess: shapes[i].shininess,
                 mode: gl.TRIANGLES,
                 children: shapes[i].children,
                 transform: shapes[i].transform,
-                normals: shapes[i].normals,
+                normals: Shapes.toNormalArray(
+                    new Shape(Shapes.sphere(0.1, 10, 10)),
             };
             objectsToDraw.push(obj);
             if (shapes[i].children.length > 0) {
@@ -254,7 +256,11 @@
         // Clear the display.
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-        // gl.uniformMatrix4fv(modelViewMatrix, gl.FALSE, new Float32Array());
+        gl.uniformMatrix4fv(modelViewMatrix, gl.FALSE, 
+            new Float32Array(Matrix
+                .getTransformationMatrix()
+                .convert())
+            );
 
         // Display the objects.
         for (var i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
@@ -277,7 +283,8 @@
     verticesToWebGL(objectsToDraw);
 
     gl.uniform3fv(lightPosition, [1.0, 1.0, 1.0]);
-    gl. uniform3fv(lightDiffuse, [1.0, 1.0, 1.0]);
+    gl.uniform3fv(lightDiffuse, [1.0, 1.0, 1.0]);
+    gl.uniform3fv(lightSpecular, [1.0, 1.0, 1.0]);
 
     /*
      * Animates the scene.
