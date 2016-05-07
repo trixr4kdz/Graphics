@@ -30,10 +30,10 @@
     gl.viewport(0, 0, canvas.width, canvas.height);
 
     // Initialize shapes to be drawn
-    var cone = new Shape(Shapes.cone(50), 
+    var cone = new Shape(Shapes.cone(100), 
             { r: 0.75, g: 0.75, b: 0.0 }),
         iceCream = new Shape(Shapes.sphere(0.6, 15, 15),
-            { r: 0.5, g: 0.5, b: 1.0 });
+            { r: 1.0, g: 0.41, b: 0.70 });
     iceCream.addChild(cone);
 
     var contextStack = [],
@@ -85,7 +85,7 @@
             vertices: iceCream.toRawTriangleArray(),
             mode: gl.TRIANGLES,
             transform: iceCream.transform,
-            shininess: 6,
+            shininess: 69,
             normals: iceCream.toNormalArray(),
             children: [{
                 color: cone.color,
@@ -95,11 +95,11 @@
                 transform: cone.transform,
                 children: [],
                 shininess: 10,
-                normals: cone.toNormalArray
+                normals: cone.toNormalArray()
             }]
         }
     ];
-    
+
     var verticesToWebGL = function (objectsToDraw) {
     // Pass the vertices to WebGL.
         for (var i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
@@ -120,8 +120,28 @@
                     );
                 }
             }
+            if (!objectsToDraw[i].specularColors) {
+            // Future refactor: helper function to convert a single value or
+            // array into an array of copies of itself.
+            objectsToDraw[i].specularColors = [];
+                for (j = 0, maxj = objectsToDraw[i].vertices.length / 3;
+                        j < maxj; j += 1) {
+                    objectsToDraw[i].specularColors = objectsToDraw[i].specularColors.concat(
+                        objectsToDraw[i].specularColor.r,
+                        objectsToDraw[i].specularColor.g,
+                        objectsToDraw[i].specularColor.b
+                    );
+                }
+            }
+            objectsToDraw[i].specularBuffer = GLSLUtilities.initVertexBuffer(gl,
+                objectsToDraw[i].specularColors);
+
             objectsToDraw[i].colorBuffer = GLSLUtilities.initVertexBuffer(gl,
                     objectsToDraw[i].colors);
+
+            // normals buffer
+            objectsToDraw[i].normalBuffer = GLSLUtilities.initVertexBuffer(gl,
+                    objectsToDraw[i].normals);
 
             if (objectsToDraw[i].children.length > 0) {
                 verticesToWebGL(objectsToDraw[i].children);
@@ -170,6 +190,15 @@
     var projectionMatrix = gl.getUniformLocation(shaderProgram, "projectionMatrix");
     var modelViewMatrix = gl.getUniformLocation(shaderProgram, "modelViewMatrix");
 
+    var lightPosition = gl.getUniformLocation(shaderProgram, "lightPosition");
+    var lightDiffuse = gl.getUniformLocation(shaderProgram, "lightDiffuse");
+    var lightSpecular = gl.getUniformLocation(shaderProgram, "lightSpecular");
+
+    gl.uniform4fv(lightPosition, [150, 0, 0, 1]);
+    gl.uniform3fv(lightDiffuse, [1, 1, 1]);
+    gl.uniform3fv(lightSpecular, [1, 1, 1]); 
+    gl.uniform1f(gl.getUniformLocation(shaderProgram, "shininess"), 1);
+
     /*
      * Displays an individual object.
      */
@@ -217,11 +246,19 @@
      * Displays the scene.
      */
     var drawScene = function () {
+
         // Clear the display.
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
         gl.uniformMatrix4fv(modelViewMatrix, gl.FALSE, 
-            new Float32Array(new Matrix().convert()));
+            new Float32Array(Matrix.getTransformationMatrix(
+                {
+                    angle: currentRotation,
+                    rx: 0,
+                    ry: 1,
+                    rz: 0
+                }).convert()
+            ));
 
         // Display the objects.
         for (var i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
@@ -237,8 +274,8 @@
         3 * (canvas.width / canvas.height),
         -3,
         3,
-        -100,
-        100
+        -10,
+        10
     ).convert()));
 
     verticesToWebGL(objectsToDraw);
