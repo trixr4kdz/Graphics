@@ -62,16 +62,21 @@
     var shapes = [iceCream, cone];
 
     makeTransforms(iceCream, {
-        tx: 2 ,
-        ty: 1,
+        ty: 0.75,
+        tx: 0.5,
+        sx: 2,
+        sy: 2,
+        sz: 2
     });
 
     makeTransforms(cone, {
-        ty: -0.5,
+        ty: 0.5,
         sy: 2,
-        // rx: 0.1,
-        // angle: 10
-    })
+        rz: 0,
+        rx: 1,
+        ry: 0,
+        angle: 180
+    });
 
     var objectsToDraw = [
         {
@@ -94,23 +99,7 @@
             }]
         }
     ];
-
-    // var toDraw = function (shapes) {
-    //     for (var i = 0; i < shapes.length; i++) {
-    //         var obj = {
-    //             color: shapes[i].color,
-    //             vertices: shapes[i].toRawTriangleArray(),
-    //             mode: gl.TRIANGLES,
-    //             children: shapes[i].children,
-    //             transform: shapes[i].transform
-    //         };
-    //         objectsToDraw.push(obj);
-    //     }
-    // };
-
-    // toDraw(shapes);
-    // console.log(objectsToDraw)
-
+    
     var verticesToWebGL = function (objectsToDraw) {
     // Pass the vertices to WebGL.
         for (var i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
@@ -207,6 +196,7 @@
 
         console.log(currentMatrix)
         currentMatrix = currentMatrix.multiply(transform);
+        console.log(currentMatrix)
 
         gl.uniformMatrix4fv(transformationMatrix, gl.FALSE, 
             new Float32Array(currentMatrix.convert()));
@@ -247,8 +237,8 @@
         3 * (canvas.width / canvas.height),
         -3,
         3,
-        -10,
-        10
+        -100,
+        100
     ).convert()));
 
     verticesToWebGL(objectsToDraw);
