@@ -62,16 +62,20 @@
     var shapes = [iceCream, cone];
 
     makeTransforms(iceCream, {
-        ty: 0.75,
-        tx: 0.5,
-        sx: 2,
-        sy: 2,
-        sz: 2
+        ty: -1.4,
+        sx: 1.5/1.5,
+        sy: 1.5/3,
+        sz: 1.5,
+        // tx: 0.5,
+        // sx: 2,
+        // sy: 2,
+        // sz: 2
     });
 
     makeTransforms(cone, {
-        ty: 0.5,
-        sy: 2,
+        ty: 0.3,
+        sx: 1.5,
+        sy: 3,
         rz: 0,
         rx: 1,
         ry: 0,
@@ -80,22 +84,22 @@
 
     var objectsToDraw = [
         {
-            color: iceCream.color,
+            color: cone.color,
             specularColor: {r: 10, g: 10, b: 10},
-            vertices: iceCream.toRawTriangleArray(),
+            vertices: cone.toRawTriangleArray(),
             mode: gl.TRIANGLES,
-            transform: iceCream.transform,
-            shininess: 69,
-            normals: iceCream.toNormalArray(),
+            transform: cone.transform,
+            shininess: 10,
+            normals: cone.toNormalArray(),
             children: [{
-                color: cone.color,
+                color: iceCream.color,
                 specularColor: {r: 10, g: 10, b: 10},
-                vertices: cone.toRawTriangleArray(),
+                vertices: iceCream.toRawTriangleArray(),
                 mode: gl.TRIANGLES,
-                transform: cone.transform,
-                children: [],
-                shininess: 10,
-                normals: cone.toNormalArray()
+                transform: iceCream.transform,
+                shininess: 69,
+                normals: iceCream.toNormalArray(),
+                children: []
             }]
         }
     ];
@@ -223,7 +227,6 @@
                 angle: object.transform.angle
             });
 
-        console.log(currentMatrix)
         currentMatrix = currentMatrix.multiply(transform);
         console.log(currentMatrix)
 
@@ -246,9 +249,10 @@
      * Displays the scene.
      */
     var drawScene = function () {
-
         // Clear the display.
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+        console.log(iceCream.transform.sx)
 
         gl.uniformMatrix4fv(modelViewMatrix, gl.FALSE, 
             new Float32Array(Matrix.getTransformationMatrix(
@@ -270,10 +274,10 @@
     };
 
     gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(Matrix.getOrthoMatrix(
-        -3 * (canvas.width / canvas.height),
-        3 * (canvas.width / canvas.height),
-        -3,
-        3,
+        -2.5 * (canvas.width / canvas.height),
+        2.5 * (canvas.width / canvas.height),
+        -2.5,
+        2.5,
         -10,
         10
     ).convert()));
@@ -331,5 +335,13 @@
             window.requestAnimationFrame(advanceScene);
         }
     });
+
+    $("#lick").click(function () {
+        iceCream.transform.sx /= 1.05;
+        iceCream.transform.sy /= 1.05;
+        iceCream.transform.sz /= 1.05;
+
+        drawScene();
+    })
 
 }(document.getElementById("hello-webgl")));
