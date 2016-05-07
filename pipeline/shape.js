@@ -48,7 +48,6 @@ Shape.prototype.toRawLineArray = function () {
 };
 
 Shape.prototype.addChild = function (child) {
-    // this.children = [];
     this.children.push(child);
     child.parent = this;
 };

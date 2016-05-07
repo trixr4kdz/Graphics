@@ -49,9 +49,6 @@
         };
 
     // Build the objects to display.
-    var objectsToDraw = [],
-        shapes = [iceCream, cone];
-
     var makeTransforms = function (object, transform) {
         var obj = shapes[shapes.indexOf(object)],
             spec = Object.keys(transform);
@@ -62,6 +59,9 @@
         obj["transform"] = t;
     };
 
+     var shapes = [iceCream, cone];
+
+
     makeTransforms(iceCream, {
         tx: 1,
         sx: 2,
@@ -70,30 +70,42 @@
     });
 
     makeTransforms(cone, {
-        tx: 10,
-        ty: 10,
-        tz: 10
+        tx: 5,
+        ty: 1,
+        tz: 1
     })
 
-    var toDraw = function (shapes) {
-        for (var i = 0; i < shapes.length; i++) {
-            var obj = {
-                color: shapes[i].color,
-                vertices: shapes[i].toRawTriangleArray(),
+    var objectsToDraw = [
+        {
+            color: iceCream.color,
+            vertices: iceCream.toRawTriangleArray(),
+            mode: gl.TRIANGLES,
+            transform: iceCream.transform,
+            children: [{
+                color: cone.color,
+                vertices: cone.toRawTriangleArray(),
                 mode: gl.TRIANGLES,
-                // vertices: shapes[i].toRawLineArray(),
-                // mode: gl.LINES,
-                children: shapes[i].children,
-                transform: shapes[i].transform
-            };
-            objectsToDraw.push(obj);
-            if (shapes[i].children.length > 0) {
-                toDraw(shapes[i].children)
-            }
+                transform: cone.transform,
+                children: []
+            }]
         }
-    };
+    ];
 
-    toDraw(shapes);
+    // var toDraw = function (shapes) {
+    //     for (var i = 0; i < shapes.length; i++) {
+    //         var obj = {
+    //             color: shapes[i].color,
+    //             vertices: shapes[i].toRawTriangleArray(),
+    //             mode: gl.TRIANGLES,
+    //             children: shapes[i].children,
+    //             transform: shapes[i].transform
+    //         };
+    //         objectsToDraw.push(obj);
+    //     }
+    // };
+
+    // toDraw(shapes);
+    // console.log(objectsToDraw)
 
     var verticesToWebGL = function (objectsToDraw) {
     // Pass the vertices to WebGL.
@@ -169,8 +181,7 @@
      * Displays an individual object.
      */
     var drawObject = function (object, parent) {
-        console.log(parent)
-        currentMatrix = Matrix.getTransformationMatrix(
+        var currentMatrix = Matrix.getTransformationMatrix(
             {
                 tx: object.transform.tx,
                 ty: object.transform.ty,
@@ -183,6 +194,7 @@
                 rz: object.transform.rz,
                 angle: object.transform.angle
             });
+        console.log(currentMatrix)
 
         if (parent) {
             currentMatrix = currentMatrix.multiply(parent);
