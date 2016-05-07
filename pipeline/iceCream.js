@@ -70,7 +70,7 @@
     var objectsToDraw = [
         {
             color: cone.color,
-            specularColor: {r: 10, g: 10, b: 10},
+            specularColor: {r: 1, g: 1, b: 1},
             vertices: cone.toRawTriangleArray(),
             mode: gl.TRIANGLES,
             transform: cone.transform,
@@ -78,11 +78,11 @@
             normals: cone.toNormalArray(),
             children: [{
                 color: iceCream.color,
-                specularColor: {r: 10, g: 10, b: 10},
+                specularColor: {r: 1, g: 1, b: 1},
                 vertices: iceCream.toRawTriangleArray(),
                 mode: gl.TRIANGLES,
                 transform: iceCream.transform,
-                shininess: 69,
+                shininess: 6,
                 normals: iceCream.toNormalArray(),
                 children: []
             }]
@@ -128,7 +128,6 @@
             objectsToDraw[i].colorBuffer = GLSLUtilities.initVertexBuffer(gl,
                     objectsToDraw[i].colors);
 
-            // normals buffer
             objectsToDraw[i].normalBuffer = GLSLUtilities.initVertexBuffer(gl,
                     objectsToDraw[i].normals);
 
@@ -185,12 +184,18 @@
     var lightAmbient = gl.getUniformLocation(shaderProgram, "lightAmbient");
     var camera = gl.getUniformLocation(shaderProgram, "camera");
 
-    gl.uniform3fv(lightPosition, [150, 0, 1]);
+    var vertexSpecularColor = gl.getUniformLocation(shaderProgram, "vertexSpecularColor");
+    gl.enableVertexAttribArray(vertexSpecularColor);
+    var shininess = gl.getUniformLocation(shaderProgram, "shininess");
+    var normalVector = gl.getUniformLocation(shaderProgram, "normalVector");
+    gl.enableVertexAttribArray(normalVector);
+
+    gl.uniform3fv(lightPosition, [10, 0, 1]);
     gl.uniform3fv(lightDiffuse, [1, 1, 1]);
     gl.uniform3fv(lightSpecular, [1, 1, 1]); 
-    gl.uniform3fv(lightAmbient, [0.5, 0.5, 0.5]);
+    gl.uniform3fv(lightAmbient, [-0.1, -0.1, -0.1]);
 
-    gl.uniform1f(gl.getUniformLocation(shaderProgram, "shininess"), 10);
+    gl.uniform1f(shininess, 10);
     gl.uniformMatrix4fv(camera, gl.FALSE, 
         new Float32Array(Matrix.getTransformationMatrix({}).convert()));
     /*
@@ -200,6 +205,11 @@
         // Set the varying colors.
         gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
         gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, object.specularBuffer);
+        gl.vertexAttribPointer(vertexSpecularColor, 3, gl.FLOAT, false, 0, 0);
+
+        gl.uniform1f(shininess, object.shininess);
 
         var currentMatrix = parent || new Matrix();
 
@@ -222,6 +232,9 @@
         gl.uniformMatrix4fv(transformationMatrix, gl.FALSE, 
             new Float32Array(currentMatrix.convert()));
 
+        gl.bindBuffer(gl.ARRAY_BUFFER, object.normalBuffer);
+        gl.vertexAttribPointer(normalVector, 3, gl.FLOAT, false, 0, 0);
+
         // Set the varying vertex coordinates.
         gl.bindBuffer(gl.ARRAY_BUFFER, object.buffer);
         gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
@@ -232,8 +245,6 @@
                 drawObject(object.children[i], currentMatrix);
             }
         }
-
-        globalMatrix = currentMatrix;
     };
 
     /*
