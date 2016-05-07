@@ -17,7 +17,7 @@
         further functionality can be added to the software stack.
         Click the canvas to see what else is new.</p>
 
-    <canvas id="hello-webgl" width="1024" height="1024">
+    <canvas id="hello-webgl" width="1024" height="512">
         Sorry, your web browser does not appear to support
         the <code>canvas</code> element, either.
     </canvas>
@@ -46,8 +46,6 @@
         #endif
 
         attribute vec3 vertexPosition;
-
-        // Note this new additional output.
         attribute vec3 vertexColor;
         varying vec4 finalVertexColor;
 
@@ -55,7 +53,6 @@
         uniform mat4 transformationMatrix;
         uniform mat4 projectionMatrix;
         uniform mat4 modelViewMatrix;
-        uniform mat4 camera;
 
         uniform vec3 lightPosition;
         uniform vec3 lightDiffuse;

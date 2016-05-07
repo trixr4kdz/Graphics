@@ -59,34 +59,38 @@
         obj["transform"] = t;
     };
 
-     var shapes = [iceCream, cone];
-
+    var shapes = [iceCream, cone];
 
     makeTransforms(iceCream, {
-        tx: 1,
-        sx: 2,
-        sy: 2,
-        sz: 2
+        tx: 2 ,
+        ty: 1,
     });
 
     makeTransforms(cone, {
-        tx: 5,
-        ty: 1,
-        tz: 1
+        ty: -0.5,
+        sy: 2,
+        // rx: 0.1,
+        // angle: 10
     })
 
     var objectsToDraw = [
         {
             color: iceCream.color,
+            specularColor: {r: 10, g: 10, b: 10},
             vertices: iceCream.toRawTriangleArray(),
             mode: gl.TRIANGLES,
             transform: iceCream.transform,
+            shininess: 6,
+            normals: iceCream.toNormalArray(),
             children: [{
                 color: cone.color,
+                specularColor: {r: 10, g: 10, b: 10},
                 vertices: cone.toRawTriangleArray(),
                 mode: gl.TRIANGLES,
                 transform: cone.transform,
-                children: []
+                children: [],
+                shininess: 10,
+                normals: cone.toNormalArray
             }]
         }
     ];
@@ -181,7 +185,13 @@
      * Displays an individual object.
      */
     var drawObject = function (object, parent) {
-        var currentMatrix = Matrix.getTransformationMatrix(
+        // Set the varying colors.
+        gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
+        gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
+
+        var currentMatrix = parent || new Matrix();
+
+        var transform = Matrix.getTransformationMatrix(
             {
                 tx: object.transform.tx,
                 ty: object.transform.ty,
@@ -194,17 +204,11 @@
                 rz: object.transform.rz,
                 angle: object.transform.angle
             });
+
         console.log(currentMatrix)
+        currentMatrix = currentMatrix.multiply(transform);
 
-        if (parent) {
-            currentMatrix = currentMatrix.multiply(parent);
-        }
-
-        // Set the varying colors.
-        gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
-        gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
-
-        gl.uniformMatrix4fv(modelViewMatrix, gl.FALSE, 
+        gl.uniformMatrix4fv(transformationMatrix, gl.FALSE, 
             new Float32Array(currentMatrix.convert()));
 
         // Set the varying vertex coordinates.
@@ -226,7 +230,7 @@
         // Clear the display.
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-        gl.uniformMatrix4fv(transformationMatrix, gl.FALSE, 
+        gl.uniformMatrix4fv(modelViewMatrix, gl.FALSE, 
             new Float32Array(new Matrix().convert()));
 
         // Display the objects.
@@ -239,10 +243,10 @@
     };
 
     gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(Matrix.getOrthoMatrix(
-        -5 * (canvas.width / canvas.height),
-        5 * (canvas.width / canvas.height),
-        -5,
-        5,
+        -3 * (canvas.width / canvas.height),
+        3 * (canvas.width / canvas.height),
+        -3,
+        3,
         -10,
         10
     ).convert()));

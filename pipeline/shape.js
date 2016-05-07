@@ -3,7 +3,7 @@
  * The "shapes" are returned as indexed vertices, with utility functions for
  * converting these into "raw" coordinate arrays.
  */
-var Shape = function (shape, color, mode) {
+var Shape = function (shape, color) {
     this.color = color || {r: 0, g: 0, b: 0};
     this.vertices = shape.vertices;
     this.indices = shape.indices;
@@ -54,6 +54,45 @@ Shape.prototype.addChild = function (child) {
 
 Shape.prototype.removeChild = function (shape) {
     shape ? this.children.splice(this.children.indexOf(shape), 1) : this.children.pop();
+};
+
+Shape.prototype.toNormalArray = function () {
+    var result = [],
+        i,
+        j,
+        maxi,
+        maxj,
+        p0,
+        p1,
+        p2,
+        v0,
+        v1,
+        v2,
+        normal;
+
+    // For each face...
+    for (i = 0, maxi = this.indices.length; i < maxi; i += 1) {
+        // We form vectors from the first and second then second and third vertices.
+        p0 = this.vertices[this.indices[i][0]];
+        p1 = this.vertices[this.indices[i][1]];
+        p2 = this.vertices[this.indices[i][2]];
+
+        // Technically, the first value is not a vector, but v can stand for vertex
+        // anyway, so...
+        v0 = new Vector(p0[0], p0[1], p0[2]);
+        v1 = new Vector(p1[0], p1[1], p1[2]).subtract(v0);
+        v2 = new Vector(p2[0], p2[1], p2[2]).subtract(v0);
+        normal = v1.cross(v2).unit();
+
+        // We then use this same normal for every vertex in this face.
+        for (j = 0, maxj = this.indices[i].length; j < maxj; j += 1) {
+            result = result.concat(
+                [ normal.x(), normal.y(), normal.z() ]
+            );
+        }
+    }
+
+    return result;
 };
 
 var Shapes = {
