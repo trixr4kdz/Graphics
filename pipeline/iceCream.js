@@ -36,18 +36,6 @@
             { r: 1.0, g: 0.41, b: 0.70 });
     iceCream.addChild(cone);
 
-    var contextStack = [],
-        currentMatrix = new Matrix().convert();
-
-        save = function () {
-            contextStack.push(currentMatrix);
-        },
-
-        restore = function () {
-            gl.uniformMatrix4fv(transformationMatrix, gl.FALSE, 
-                new Float32Array(contextStack.pop()));
-        };
-
     // Build the objects to display.
     var makeTransforms = function (object, transform) {
         var obj = shapes[shapes.indexOf(object)],
@@ -63,13 +51,10 @@
 
     makeTransforms(iceCream, {
         ty: -1.4,
-        sx: 1.5/1.5,
-        sy: 1.5/3,
+        sx: 1,
+        sy: 0.5,
         sz: 1.5,
-        // tx: 0.5,
-        // sx: 2,
-        // sy: 2,
-        // sz: 2
+        tz: 1
     });
 
     makeTransforms(cone, {
@@ -197,12 +182,17 @@
     var lightPosition = gl.getUniformLocation(shaderProgram, "lightPosition");
     var lightDiffuse = gl.getUniformLocation(shaderProgram, "lightDiffuse");
     var lightSpecular = gl.getUniformLocation(shaderProgram, "lightSpecular");
+    var lightAmbient = gl.getUniformLocation(shaderProgram, "lightAmbient");
+    var camera = gl.getUniformLocation(shaderProgram, "camera");
 
-    gl.uniform4fv(lightPosition, [150, 0, 0, 1]);
+    gl.uniform3fv(lightPosition, [150, 0, 1]);
     gl.uniform3fv(lightDiffuse, [1, 1, 1]);
     gl.uniform3fv(lightSpecular, [1, 1, 1]); 
-    gl.uniform1f(gl.getUniformLocation(shaderProgram, "shininess"), 1);
+    gl.uniform3fv(lightAmbient, [0.5, 0.5, 0.5]);
 
+    gl.uniform1f(gl.getUniformLocation(shaderProgram, "shininess"), 10);
+    gl.uniformMatrix4fv(camera, gl.FALSE, 
+        new Float32Array(Matrix.getTransformationMatrix({}).convert()));
     /*
      * Displays an individual object.
      */
@@ -228,7 +218,6 @@
             });
 
         currentMatrix = currentMatrix.multiply(transform);
-        console.log(currentMatrix)
 
         gl.uniformMatrix4fv(transformationMatrix, gl.FALSE, 
             new Float32Array(currentMatrix.convert()));
@@ -243,6 +232,8 @@
                 drawObject(object.children[i], currentMatrix);
             }
         }
+
+        globalMatrix = currentMatrix;
     };
 
     /*
@@ -251,8 +242,6 @@
     var drawScene = function () {
         // Clear the display.
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-        console.log(iceCream.transform.sx)
 
         gl.uniformMatrix4fv(modelViewMatrix, gl.FALSE, 
             new Float32Array(Matrix.getTransformationMatrix(
@@ -342,6 +331,6 @@
         iceCream.transform.sz /= 1.05;
 
         drawScene();
-    })
+    });
 
 }(document.getElementById("hello-webgl")));
