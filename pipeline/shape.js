@@ -50,7 +50,6 @@ Shape.prototype.toRawLineArray = function () {
 };
 
 Shape.prototype.addChild = function (child) {
-    // this.children = [];
     this.children.push(child);
     child.parent = this;
 };
@@ -59,16 +58,7 @@ Shape.prototype.removeChild = function (shape) {
     shape ? this.children.splice(this.children.indexOf(shape), 1) : this.children.pop();
 };
 
-/*
- * Utility function for computing normal vectors based on indexed vertices.
- * The secret: take the cross product of each triangle.  Note that vertex order
- * now matters---the resulting normal faces out from the side of the triangle
- * that "sees" the vertices listed counterclockwise.
- *
- * The vector computations involved here mean that the Vector module must be
- * loaded up for this function to work.
- */
-Shape.toNormalArray = function (indexedVertices) {
+Shape.prototype.toNormalArray = function () {
     var result = [],
         i,
         j,
@@ -82,12 +72,11 @@ Shape.toNormalArray = function (indexedVertices) {
         v2,
         normal;
 
-    // For each face...
-    for (i = 0, maxi = indexedVertices.indices.length; i < maxi; i += 1) {
+    for (i = 0, maxi = this.indices.length; i < maxi; i += 1) {
         // We form vectors from the first and second then second and third vertices.
-        p0 = indexedVertices.vertices[indexedVertices.indices[i][0]];
-        p1 = indexedVertices.vertices[indexedVertices.indices[i][1]];
-        p2 = indexedVertices.vertices[indexedVertices.indices[i][2]];
+        p0 = this.vertices[this.indices[i][0]];
+        p1 = this.vertices[this.indices[i][1]];
+        p2 = this.vertices[this.indices[i][2]];
 
         // Technically, the first value is not a vector, but v can stand for vertex
         // anyway, so...
@@ -97,36 +86,7 @@ Shape.toNormalArray = function (indexedVertices) {
         normal = v1.cross(v2).unit();
 
         // We then use this same normal for every vertex in this face.
-        for (j = 0, maxj = indexedVertices.indices[i].length; j < maxj; j += 1) {
-            result = result.concat(
-                [ normal.x(), normal.y(), normal.z() ]
-            );
-        }
-    }
-
-    return result;
-};
-
-    /*
-     * Another utility function for computing normals, this time just converting
-     * every vertex into its unit vector version.  This works mainly for objects
-     * that are centered around the origin.
-     */
-Shape.toVertexNormalArray = function (indexedVertices) {
-    var result = [],
-        i,
-        j,
-        maxi,
-        maxj,
-        p,
-        normal;
-
-    // For each face...
-    for (i = 0, maxi = indexedVertices.indices.length; i < maxi; i += 1) {
-        // For each vertex in that face...
-        for (j = 0, maxj = indexedVertices.indices[i].length; j < maxj; j += 1) {
-            p = indexedVertices.vertices[indexedVertices.indices[i][j]];
-            normal = new Vector(p[0], p[1], p[2]).unit();
+        for (j = 0, maxj = this.indices[i].length; j < maxj; j += 1) {
             result = result.concat(
                 [ normal.x(), normal.y(), normal.z() ]
             );

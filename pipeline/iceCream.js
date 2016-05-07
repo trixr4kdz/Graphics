@@ -30,14 +30,11 @@
     gl.viewport(0, 0, canvas.width, canvas.height);
 
     // Initialize shapes to be drawn
-    var diamond = new Shape(Shapes.diamond(), 
-                    { r: 0.0, g: 0.5, b: 0.5 }),
-        sphere = new Shape(Shapes.sphere(0.7, 20, 20), 
-                    { r: 0.5, g: 0.5, b: 0.0 }),
-        cone = new Shape(Shapes.cone(150), 
+    var cone = new Shape(Shapes.cone(50), 
             { r: 0.75, g: 0.75, b: 0.0 }),
-        iceCream = new Shape(Shapes.sphere(0.3, 20, 20));
-    iceCream.addChild(cone);       // iceCreamCone XD
+        iceCream = new Shape(Shapes.sphere(0.6, 15, 15),
+            { r: 0.5, g: 0.5, b: 1.0 });
+    iceCream.addChild(cone);
 
     var contextStack = [],
         currentMatrix = new Matrix().convert();
@@ -52,9 +49,6 @@
         };
 
     // Build the objects to display.
-    var objectsToDraw = [],
-        shapes = [diamond, sphere, iceCream];
-
     var makeTransforms = function (object, transform) {
         var obj = shapes[shapes.indexOf(object)],
             spec = Object.keys(transform);
@@ -65,41 +59,57 @@
         obj["transform"] = t;
     };
 
-    makeTransforms(diamond, {
-        angle: 40,
-        rx: 1,
-        ry: 1
+    var shapes = [iceCream, cone];
+
+    makeTransforms(iceCream, {
+        tx: 2 ,
+        ty: 1,
     });
 
-    makeTransforms(sphere, {
-        tx: 0.5,
-        sx: 2,
+    makeTransforms(cone, {
+        ty: -0.5,
         sy: 2,
-        sz: 2
-    });
+        // rx: 0.1,
+        // angle: 10
+    })
 
-    var toDraw = function (shapes) {
-        for (var i = 0; i < shapes.length; i++) {
-            var obj = {
-                color: shapes[i].color,
-                vertices: shapes[i].toRawTriangleArray(),
-                // vertices: shapes[i].toRawLineArray(),
-                // mode: gl.LINES,
-                shininess: shapes[i].shininess,
+    var objectsToDraw = [
+        {
+            color: iceCream.color,
+            specularColor: {r: 10, g: 10, b: 10},
+            vertices: iceCream.toRawTriangleArray(),
+            mode: gl.TRIANGLES,
+            transform: iceCream.transform,
+            shininess: 6,
+            normals: iceCream.toNormalArray(),
+            children: [{
+                color: cone.color,
+                specularColor: {r: 10, g: 10, b: 10},
+                vertices: cone.toRawTriangleArray(),
                 mode: gl.TRIANGLES,
-                children: shapes[i].children,
-                transform: shapes[i].transform,
-                normals: Shapes.toNormalArray(
-                    new Shape(Shapes.sphere(0.1, 10, 10)),
-            };
-            objectsToDraw.push(obj);
-            if (shapes[i].children.length > 0) {
-                toDraw(shapes[i].children)
-            }
+                transform: cone.transform,
+                children: [],
+                shininess: 10,
+                normals: cone.toNormalArray
+            }]
         }
-    };
+    ];
 
-    toDraw(shapes);
+    // var toDraw = function (shapes) {
+    //     for (var i = 0; i < shapes.length; i++) {
+    //         var obj = {
+    //             color: shapes[i].color,
+    //             vertices: shapes[i].toRawTriangleArray(),
+    //             mode: gl.TRIANGLES,
+    //             children: shapes[i].children,
+    //             transform: shapes[i].transform
+    //         };
+    //         objectsToDraw.push(obj);
+    //     }
+    // };
+
+    // toDraw(shapes);
+    // console.log(objectsToDraw)
 
     var verticesToWebGL = function (objectsToDraw) {
     // Pass the vertices to WebGL.
@@ -123,27 +133,6 @@
             }
             objectsToDraw[i].colorBuffer = GLSLUtilities.initVertexBuffer(gl,
                     objectsToDraw[i].colors);
-
-            // Same trick with specular colors.
-            if (!objectsToDraw[i].specularColors) {
-                // Future refactor: helper function to convert a single value or
-                // array into an array of copies of itself.
-                objectsToDraw[i].specularColors = [];
-                for (j = 0, maxj = objectsToDraw[i].vertices.length / 3;
-                        j < maxj; j += 1) {
-                    objectsToDraw[i].specularColors = objectsToDraw[i].specularColors.concat(
-                        objectsToDraw[i].specularColor.r,
-                        objectsToDraw[i].specularColor.g,
-                        objectsToDraw[i].specularColor.b
-                    );
-                }
-            }
-            objectsToDraw[i].specularBuffer = GLSLUtilities.initVertexBuffer(gl,
-                    objectsToDraw[i].specularColors);
-
-            // One more buffer: normals.
-            objectsToDraw[i].normalBuffer = GLSLUtilities.initVertexBuffer(gl,
-                    objectsToDraw[i].normals);
 
             if (objectsToDraw[i].children.length > 0) {
                 verticesToWebGL(objectsToDraw[i].children);
@@ -186,53 +175,41 @@
     gl.enableVertexAttribArray(vertexPosition);
     var vertexColor = gl.getAttribLocation(shaderProgram, "vertexColor");
     gl.enableVertexAttribArray(vertexColor);
-    // var rotationMatrix = gl.getUniformLocation(shaderProgram, "rotationMatrix");
+    var rotationMatrix = gl.getUniformLocation(shaderProgram, "rotationMatrix");
 
     var transformationMatrix = gl.getUniformLocation(shaderProgram, "transformationMatrix");
     var projectionMatrix = gl.getUniformLocation(shaderProgram, "projectionMatrix");
     var modelViewMatrix = gl.getUniformLocation(shaderProgram, "modelViewMatrix");
 
-    var lightPosition = gl.getUniformLocation(shaderProgram, "lightPosition");
-    var lightDiffuse = gl.getUniformLocation(shaderProgram, "lightDiffuse");
-    var lightSpecular = gl.getUniformLocation(shaderProgram, "lightSpecular");
-
-    var vertexDiffuseColor = gl.getUniformLocation(shaderProgram, "vertexDiffuseColor");
-    var normalVector = gl.getUniformLocation(shaderProgram, "normalVector");
-    var shininess = gl.getUniformLocation(shaderProgram, "shininess");
-
     /*
      * Displays an individual object.
      */
     var drawObject = function (object, parent) {
-
-        var thisMatrix = Matrix.getTransformationMatrix({
-            tx: object.transform.tx, 
-            ty: object.transform.ty, 
-            tz: object.transform.tz,
-            sx: object.transform.sx,
-            sy: object.transform.sy,
-            sz: object.transform.sz,
-            rx: object.transform.rx,
-            ry: object.transform.ry,
-            rz: object.transform.rz,
-            angle: currentRotation
-        }).convert();
-
         // Set the varying colors.
         gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
         gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
 
-        gl.uniformMatrix4fv(modelViewMatrix, gl.FALSE, 
-            new Float32Array(thisMatrix));
+        var currentMatrix = parent || new Matrix();
 
-        gl.uniform1f(shininess, object.shininess);
+        var transform = Matrix.getTransformationMatrix(
+            {
+                tx: object.transform.tx,
+                ty: object.transform.ty,
+                tz: object.transform.tz,
+                sx: object.transform.sx,
+                sy: object.transform.sy,
+                sz: object.transform.sz,
+                rx: object.transform.rx,
+                ry: object.transform.ry,
+                rz: object.transform.rz,
+                angle: object.transform.angle
+            });
 
-        if (parent) {
-            thisMatrix = thisMatrix.multiply(parent);
-        }
+        console.log(currentMatrix)
+        currentMatrix = currentMatrix.multiply(transform);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, object.normalBuffer);
-        gl.vertexAttribPointer(normalVector, 3, gl.FLOAT, false, 0, 0);
+        gl.uniformMatrix4fv(transformationMatrix, gl.FALSE, 
+            new Float32Array(currentMatrix.convert()));
 
         // Set the varying vertex coordinates.
         gl.bindBuffer(gl.ARRAY_BUFFER, object.buffer);
@@ -241,9 +218,7 @@
 
         if (object.children.length > 0) {
             for (var i = 0; i < object.children.length; i++) {
-                // save();
-                drawObject(object.children[i]);
-                // restore();
+                drawObject(object.children[i], currentMatrix);
             }
         }
     };
@@ -252,15 +227,11 @@
      * Displays the scene.
      */
     var drawScene = function () {
-
         // Clear the display.
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
         gl.uniformMatrix4fv(modelViewMatrix, gl.FALSE, 
-            new Float32Array(Matrix
-                .getTransformationMatrix()
-                .convert())
-            );
+            new Float32Array(new Matrix().convert()));
 
         // Display the objects.
         for (var i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
@@ -272,19 +243,15 @@
     };
 
     gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(Matrix.getOrthoMatrix(
-        -2 * (canvas.width / canvas.height),
-        2 * (canvas.width / canvas.height),
-        -2,
-        2,
+        -3 * (canvas.width / canvas.height),
+        3 * (canvas.width / canvas.height),
+        -3,
+        3,
         -10,
         10
     ).convert()));
 
     verticesToWebGL(objectsToDraw);
-
-    gl.uniform3fv(lightPosition, [1.0, 1.0, 1.0]);
-    gl.uniform3fv(lightDiffuse, [1.0, 1.0, 1.0]);
-    gl.uniform3fv(lightSpecular, [1.0, 1.0, 1.0]);
 
     /*
      * Animates the scene.
