@@ -30,14 +30,11 @@
     gl.viewport(0, 0, canvas.width, canvas.height);
 
     // Initialize shapes to be drawn
-    var diamond = new Shape(Shapes.diamond(), 
-                    { r: 0.0, g: 0.5, b: 0.5 }),
-        sphere = new Shape(Shapes.sphere(0.7, 20, 20), 
-                    { r: 0.5, g: 0.5, b: 0.0 }),
-        cone = new Shape(Shapes.cone(150), 
+    var cone = new Shape(Shapes.cone(50), 
             { r: 0.75, g: 0.75, b: 0.0 }),
-        iceCream = new Shape(Shapes.sphere(0.3, 20, 20));
-    iceCream.addChild(cone);       // iceCreamCone XD
+        iceCream = new Shape(Shapes.sphere(0.6, 15, 15),
+            { r: 0.5, g: 0.5, b: 1.0 });
+    iceCream.addChild(cone);
 
     var contextStack = [],
         currentMatrix = new Matrix().convert();
@@ -53,7 +50,7 @@
 
     // Build the objects to display.
     var objectsToDraw = [],
-        shapes = [diamond, sphere, iceCream];
+        shapes = [iceCream, cone];
 
     var makeTransforms = function (object, transform) {
         var obj = shapes[shapes.indexOf(object)],
@@ -65,25 +62,27 @@
         obj["transform"] = t;
     };
 
-    makeTransforms(diamond, {
-        angle: 40,
-        rx: 1,
-        ry: 1
-    });
-
-    makeTransforms(sphere, {
-        tx: 0.5,
+    makeTransforms(iceCream, {
+        tx: 1,
         sx: 2,
         sy: 2,
         sz: 2
     });
 
+    makeTransforms(cone, {
+        tx: 10,
+        ty: 10,
+        tz: 10
+    })
+
     var toDraw = function (shapes) {
         for (var i = 0; i < shapes.length; i++) {
             var obj = {
                 color: shapes[i].color,
-                vertices: shapes[i].toRawLineArray(),
-                mode: gl.LINES,
+                vertices: shapes[i].toRawTriangleArray(),
+                mode: gl.TRIANGLES,
+                // vertices: shapes[i].toRawLineArray(),
+                // mode: gl.LINES,
                 children: shapes[i].children,
                 transform: shapes[i].transform
             };
@@ -169,28 +168,32 @@
     /*
      * Displays an individual object.
      */
-    var drawObject = function (object) {
+    var drawObject = function (object, parent) {
+        console.log(parent)
+        currentMatrix = Matrix.getTransformationMatrix(
+            {
+                tx: object.transform.tx,
+                ty: object.transform.ty,
+                tz: object.transform.tz,
+                sx: object.transform.sx,
+                sy: object.transform.sy,
+                sz: object.transform.sz,
+                rx: object.transform.rx,
+                ry: object.transform.ry,
+                rz: object.transform.rz,
+                angle: object.transform.angle
+            });
 
-        // currentMatrix = Matrix.getTransformationMatrix(
-        //     {
-        //         tx: object.tx,
-        //         ty: object.ty,
-        //         tz: object.tz,
-        //         sx: object.sx,
-        //         sy: object.sy,
-        //         sz: object.sz,
-        //         rx: object.rx,
-        //         ry: object.ry,
-        //         rz: object.rz,
-        //         angle: currentRotation
-        //     }).convert()
+        if (parent) {
+            currentMatrix = currentMatrix.multiply(parent);
+        }
 
         // Set the varying colors.
         gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
         gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
 
-        // gl.uniformMatrix4fv(transformationMatrix, gl.FALSE, 
-        //     new Float32Array(currentMatrix));
+        gl.uniformMatrix4fv(modelViewMatrix, gl.FALSE, 
+            new Float32Array(currentMatrix.convert()));
 
         // Set the varying vertex coordinates.
         gl.bindBuffer(gl.ARRAY_BUFFER, object.buffer);
@@ -199,9 +202,7 @@
 
         if (object.children.length > 0) {
             for (var i = 0; i < object.children.length; i++) {
-                save();
-                drawObject(object.children[i]);
-                restore();
+                drawObject(object.children[i], currentMatrix);
             }
         }
     };
@@ -210,34 +211,11 @@
      * Displays the scene.
      */
     var drawScene = function () {
-        // currentMatrix = Matrix.getTransformationMatrix(
-        //     {
-        //         tx: 0.0,
-        //         ty: 0.5,
-        //         tz: 0.0,
-        //         angle: 180,
-        //         rx: 1,
-        //         ry: 0,
-        //         rz: 0,
-        //     }
-        // ).convert();
-
         // Clear the display.
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
         gl.uniformMatrix4fv(transformationMatrix, gl.FALSE, 
-            new Float32Array(Matrix.getTransformationMatrix(
-                {
-                    ty: 1.0,
-                    sx: 0.0,
-                    sy: 0.5,
-                    sz: 0.5,
-                    angle: currentRotation,
-                    rx: 1,
-                    ry: 1,
-                    rz: 0
-                }).convert()
-            ));
+            new Float32Array(new Matrix().convert()));
 
         // Display the objects.
         for (var i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
@@ -249,12 +227,12 @@
     };
 
     gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(Matrix.getOrthoMatrix(
-        -1.25 * (canvas.width / canvas.height),
-        1.25 * (canvas.width / canvas.height),
-        -1.25,
-        1.25,
-        -2,
-        2
+        -5 * (canvas.width / canvas.height),
+        5 * (canvas.width / canvas.height),
+        -5,
+        5,
+        -10,
+        10
     ).convert()));
 
     verticesToWebGL(objectsToDraw);
